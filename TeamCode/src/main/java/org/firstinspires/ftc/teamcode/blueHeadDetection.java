@@ -39,6 +39,9 @@ public class blueHeadDetection extends LinearOpMode{
 
         robot.resetDriveEncoders();
 
+        robot.clawL.setPosition(0);
+        robot.clawR.setPosition(1);
+
         // OpenCV lift webcam
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -74,7 +77,7 @@ public class blueHeadDetection extends LinearOpMode{
         //this replaces waitForStart()
 
         while(!isStarted() && !isStopRequested()){
-            if(myPipeline.getRectMidpointX() >= 290 && myPipeline.getRectMidpointX() <= 330){
+            if(myPipeline.getRectMidpointX() >= 260 && myPipeline.getRectMidpointX() <= 330){
                 telemetry.addData("location", 2);
                 startingPos = 2;
             } else if(myPipeline.getRectMidpointX() >= 450 && myPipeline.getRectMidpointX() <= 525){
@@ -96,8 +99,8 @@ public class blueHeadDetection extends LinearOpMode{
 
         }
         else if(startingPos == 2){
-            //starting middle
-
+            robot.driveToPos(0,12,0);
+            robot.wait(5000, robot.drive);
         }
         else if(startingPos == 3){
             //starting right

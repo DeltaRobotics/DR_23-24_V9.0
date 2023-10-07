@@ -19,7 +19,7 @@ public class robotHardware extends LinearOpMode
 {
     FtcDashboard dashboard = FtcDashboard.getInstance();
     //drive motors
-    public DcMotor motorRF = null;
+    public DcMotor motorRF = null; 
     public DcMotor motorLF = null;
     public DcMotor motorRB = null;
     public DcMotor motorLB = null;
@@ -33,6 +33,9 @@ public class robotHardware extends LinearOpMode
     public Servo launcher = null;
     public DcMotor slidesL = null;
     public DcMotor slidesR = null;
+    public Servo clawL = null;
+    public Servo clawR = null;
+    public Servo wrist = null;
 
     DcMotor[] odometers = new DcMotor[3];
     DcMotor[] drive = new DcMotor[4];
@@ -106,6 +109,9 @@ public class robotHardware extends LinearOpMode
         launcher = ahwMap.servo.get("launcher");
         slidesR = ahwMap.dcMotor.get("slidesR");
         slidesL = ahwMap.dcMotor.get("slidesL");
+        clawL = ahwMap.servo.get("clawL");
+        clawR = ahwMap.servo.get("clawR");
+        wrist = ahwMap.servo.get("wrist");
 
         //drive motors and odometry encoders
         motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -124,7 +130,7 @@ public class robotHardware extends LinearOpMode
         slidesR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slidesL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        slidesR.setDirection(DcMotorSimple.Direction.REVERSE);
+        slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         motorLF.setDirection(DcMotorSimple.Direction.REVERSE);
         motorLB.setDirection(DcMotorSimple.Direction.REVERSE);
