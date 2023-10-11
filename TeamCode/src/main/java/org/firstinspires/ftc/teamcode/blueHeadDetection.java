@@ -99,7 +99,12 @@ public class blueHeadDetection extends LinearOpMode{
 
         }
         else if(startingPos == 2){
-            robot.driveToPos(0,12,0);
+            while(robot.GlobalX > -12) {
+                robot.driveToPos(-12, 0);
+                telemetry.addData("GlobalX", robot.GlobalX);
+                telemetry.addData("pid", Math.hypot(-12 - robot.GlobalX, 0 - robot.GlobalY));
+                telemetry.update();
+            }
             robot.wait(5000, robot.drive);
         }
         else if(startingPos == 3){

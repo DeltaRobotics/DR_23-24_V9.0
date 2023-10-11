@@ -514,7 +514,7 @@ public class robotHardware extends LinearOpMode
             return movementTurnPower;
     }
 
-    public void driveToPos(double x, double y, double finalAngle){
+    public void driveToPos(double x, double y){
         //bring in the encoder and motor objects
         //odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
 
@@ -555,7 +555,7 @@ public class robotHardware extends LinearOpMode
 
 
         //set the motors to the correct powers to move toward the target
-        mecanumDrive(movementXpower, movementYpower, movementTurnPower, voltComp);
+        mecanumDrive(movementXpower, movementYpower, 0, voltComp);
     }
 
     public void turnToAngle(double x, double y, double finalAngle){
