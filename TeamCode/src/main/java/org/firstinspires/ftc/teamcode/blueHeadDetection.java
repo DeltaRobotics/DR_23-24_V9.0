@@ -77,7 +77,7 @@ public class blueHeadDetection extends LinearOpMode{
         //this replaces waitForStart()
 
         while(!isStarted() && !isStopRequested()){
-            if(myPipeline.getRectMidpointX() >= 260 && myPipeline.getRectMidpointX() <= 330){
+            if(myPipeline.getRectMidpointX() >= 260 && myPipeline.getRectMidpointX() <= 350){
                 telemetry.addData("location", 2);
                 startingPos = 2;
             } else if(myPipeline.getRectMidpointX() >= 450 && myPipeline.getRectMidpointX() <= 525){
@@ -88,6 +88,7 @@ public class blueHeadDetection extends LinearOpMode{
                 startingPos = 3;
             } else{
                 telemetry.addData("location", "no head seen");
+                startingPos = 2;
             }
 
             telemetry.addData("x", myPipeline.getRectMidpointX());
@@ -99,13 +100,16 @@ public class blueHeadDetection extends LinearOpMode{
 
         }
         else if(startingPos == 2){
-            while(robot.GlobalX > -12) {
-                robot.driveToPos(-12, 0);
+            while(robot.GlobalX < 12) {
+                robot.driveToPos(12, 0);
                 telemetry.addData("GlobalX", robot.GlobalX);
-                telemetry.addData("pid", Math.hypot(-12 - robot.GlobalX, 0 - robot.GlobalY));
+                telemetry.addData("GlobalY", robot.GlobalY);
+                telemetry.addData("pid", robot.odoDrivePID(0,Math.hypot(-12 - robot.GlobalX, 0 - robot.GlobalY)));
+                telemetry.addData("RelativeX", 12 - robot.GlobalX);
+                telemetry.addData("RelativeY", 0- robot.GlobalY);
                 telemetry.update();
             }
-            robot.wait(5000, robot.drive);
+            robot.mecanumDrive(0,0,0,0);
         }
         else if(startingPos == 3){
             //starting right

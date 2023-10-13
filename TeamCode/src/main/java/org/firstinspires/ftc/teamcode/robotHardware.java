@@ -41,8 +41,8 @@ public class robotHardware extends LinearOpMode
     DcMotor[] drive = new DcMotor[4];
     VoltageSensor ControlHub_VoltageSensor = null;
 
-    double moveSpeed = 1;
-    double turnSpeed = 1;
+    double moveSpeed = 0.5;
+    double turnSpeed = 0.5;
 
     double moveAccuracy  = 1;
     double angleAccuracy = Math.toRadians(1);
@@ -344,7 +344,7 @@ public class robotHardware extends LinearOpMode
         //add the robots movement this loop to the global location
         //double theta = (dtheta / 2.0);
         GlobalHeading += dtheta;
-        GlobalX -= dx * Math.cos(GlobalHeading) - dy * Math.sin(GlobalHeading);
+        GlobalX += dx * Math.cos(GlobalHeading) + dy * Math.sin(GlobalHeading);
         GlobalY += dx * Math.sin(GlobalHeading) + dy * Math.cos(GlobalHeading);
 
 
@@ -552,6 +552,18 @@ public class robotHardware extends LinearOpMode
         double reletiveTurnAngle;
         reletiveTurnAngle = angleWrapRad(reletiveAngleToTarget);
         movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
+
+
+        //Josephs breaking of code
+
+        //double relativeXToTarget = x - GlobalX;
+        //double relativeYToTarget = y - GlobalY;
+
+        //double slowDownX = Range.clip(odoDrivePID(0,relativeXToTarget), 0, moveSpeed);
+        //double slowDownY = Range.clip(odoDrivePID(0,relativeYToTarget), 0, moveSpeed);
+
+        //double movementXPower = (relativeXToTarget / (Math.abs(relativeXToTarget) + Math.abs(relativeYToTarget))) * slowDownX;
+        //double movementYPower = (relativeYToTarget / (Math.abs(relativeYToTarget) + Math.abs(relativeXToTarget))) * slowDownY;
 
 
         //set the motors to the correct powers to move toward the target

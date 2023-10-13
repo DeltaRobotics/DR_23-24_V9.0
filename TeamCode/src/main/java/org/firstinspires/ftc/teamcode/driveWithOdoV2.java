@@ -14,7 +14,10 @@ public class driveWithOdoV2 extends LinearOpMode{
 
     double wristPower = .455;
 
-    int loopNumber = 1000;
+    int loopNumber = 0;
+    int oldLoop = 0;
+    boolean clawOpen = true;
+
 
 
     public void runOpMode() throws InterruptedException {
@@ -23,7 +26,7 @@ public class driveWithOdoV2 extends LinearOpMode{
 
         robot.resetDriveEncoders();
 
-        robot.launcher.setPosition(0.85);
+        robot.launcher.setPosition(0.75);
         robot.clawL.setPosition(0);
         robot.clawR.setPosition(1);
         robot.wrist.setPosition(wristPower);
@@ -43,11 +46,14 @@ public class driveWithOdoV2 extends LinearOpMode{
             //drone
             if(gamepad1.right_trigger > .5 && gamepad1.left_trigger > .5){
                 //launch drone
-                robot.launcher.setPosition(0.65);
+                slideEncoder = 0;
+                if(robot.slidesL.getCurrentPosition() < 100) {
+                    robot.launcher.setPosition(0.6);
+                }
             }
             if(gamepad1.dpad_right){
                 //reload
-                robot.launcher.setPosition(0.85);
+                robot.launcher.setPosition(0.75);
 
             }
             //claw
@@ -55,19 +61,22 @@ public class driveWithOdoV2 extends LinearOpMode{
                 //open
                 robot.clawL.setPosition(.1);
                 robot.clawR.setPosition(.7);
-                loopNumber = 0;
-
+                clawOpen = true;
+                oldLoop = loopNumber;
             }
             if(gamepad1.left_bumper){
                 //close
                 robot.clawL.setPosition(0);
                 robot.clawR.setPosition(1);
-                loopNumber = 0;
+                clawOpen = false;
+                oldLoop = loopNumber;
             }
-            if(slideEncoder < 900 && (loopNumber == 30 && robot.clawR.getPosition() == 1)){
+            if(slideEncoder < 900 && (loopNumber == oldLoop + 20 && !clawOpen)){
+                //close
                 wristPower = .55;
             }
-            else if(slideEncoder < 900 && (loopNumber == 30 && robot.clawR.getPosition() == .7)){
+            else if(slideEncoder < 900 && (loopNumber == oldLoop + 20 && clawOpen)){
+                //open
                 wristPower = .4;
             }
 
@@ -76,7 +85,7 @@ public class driveWithOdoV2 extends LinearOpMode{
             if(gamepad1.a){
                 //slides down
                 slideEncoder = 400;
-                wristPower = .4;
+                wristPower = .55;
             }
             else if(gamepad1.b){
                 //slides low
@@ -127,6 +136,8 @@ public class driveWithOdoV2 extends LinearOpMode{
             telemetry.addData("x",robot.GlobalX);
             telemetry.addData("y",robot.GlobalY);
             telemetry.addData("heading",robot.GlobalHeading);
+            telemetry.addData("left encoder",robot.odometers[0].getCurrentPosition());
+            telemetry.addData("right encoder",robot.odometers[1].getCurrentPosition());
             telemetry.addData("perp encoder",robot.odometers[2].getCurrentPosition());
             telemetry.addData("slide encoder",slideEncoder);
             telemetry.addData("servo", robot.wrist.getPosition());
