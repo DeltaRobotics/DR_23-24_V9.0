@@ -41,8 +41,8 @@ public class robotHardware extends LinearOpMode
     DcMotor[] drive = new DcMotor[4];
     VoltageSensor ControlHub_VoltageSensor = null;
 
-    double moveSpeed = 0.5;
-    double turnSpeed = 0.5;
+    double moveSpeed = 0.4;
+    double turnSpeed = 0.4;
 
     double moveAccuracy  = 1;
     double angleAccuracy = Math.toRadians(1);
@@ -50,9 +50,9 @@ public class robotHardware extends LinearOpMode
     //PID Drive Variables
 
     public static double DriveF = .175; // = 32767 / maxV      (do not edit from this number)
-    public static double DriveP = -0.06; // = 0.1 * F           (raise till real's apex touches Var apex)
+    public static double DriveP = 0.2; // = 0.1 * F           (raise till real's apex touches Var apex)
     public static double DriveI = 0;// = 0.1 * P           (fine ajustment of P)
-    public static double DriveD = 0.0005; // = 0                     (raise to reduce ocolation)
+    public static double DriveD = 0; // = 0                     (raise to reduce ocolation)
 
     double DrivePIDCurrentTime = 0;
     double DrivePIDTime = 0;
@@ -481,11 +481,11 @@ public class robotHardware extends LinearOpMode
             double reletiveYToTarget = Math.sin(reletiveAngleToTarget) * distanceToTarget;
 
             //slow down ensures the robot does not over shoot the target
-            double slowDown = Range.clip(odoDrivePID(0,distanceToTarget), 0, moveSpeed);
+            double slowDown = Range.clip(odoDrivePID(distanceToTarget,0), 0, moveSpeed);
 
             //calculate the vector powers for the mecanum math
-            double movementXpower = (reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
-            double movementYpower = (reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
+            double movementXpower = (-reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
+            double movementYpower = (-reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
             if (Double.isNaN(movementYpower)){
                 movementYpower = 0;
             }
@@ -511,10 +511,10 @@ public class robotHardware extends LinearOpMode
             //mecanumDrive(0, 0, movementTurnPower, 1);
 
 
-            return movementTurnPower;
+            return reletiveAngleToTarget;
     }
 
-    public void driveToPos(double x, double y){
+    public double driveToPos(double x, double y){
         //bring in the encoder and motor objects
         //odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
 
@@ -534,11 +534,11 @@ public class robotHardware extends LinearOpMode
         double reletiveYToTarget = Math.sin(reletiveAngleToTarget) * distanceToTarget;
 
         //slow down ensures the robot does not over shoot the target
-        double slowDown = Range.clip(odoDrivePID(0,distanceToTarget), 0, moveSpeed);
+        double slowDown = Range.clip(odoDrivePID(distanceToTarget,0), 0, moveSpeed);
 
         //calculate the vector powers for the mecanum math
-        double movementXpower = (reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
-        double movementYpower = (reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
+        double movementXpower = (-reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
+        double movementYpower = (-reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
         if (Double.isNaN(movementYpower)){
             movementYpower = 0;
         }
@@ -568,6 +568,8 @@ public class robotHardware extends LinearOpMode
 
         //set the motors to the correct powers to move toward the target
         mecanumDrive(movementXpower, movementYpower, 0, voltComp);
+
+        return slowDown;
     }
 
     public void turnToAngle(double x, double y, double finalAngle){

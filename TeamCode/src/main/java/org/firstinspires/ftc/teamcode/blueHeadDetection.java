@@ -91,8 +91,8 @@ public class blueHeadDetection extends LinearOpMode{
                 startingPos = 2;
             }
 
-            telemetry.addData("x", myPipeline.getRectMidpointX());
-            telemetry.addData("y", myPipeline.getRectMidpointY());
+            //telemetry.addData("x", myPipeline.getRectMidpointX());
+            //telemetry.addData("y", myPipeline.getRectMidpointY());
             telemetry.update();
         }
         if(startingPos == 1){
@@ -100,16 +100,27 @@ public class blueHeadDetection extends LinearOpMode{
 
         }
         else if(startingPos == 2){
-            while(robot.GlobalX < 12) {
-                robot.driveToPos(12, 0);
+            int x = 12;
+            int y = 0;
+            double finalAngle = Math.toRadians(90);
+
+
+            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
+
+                //robot.goToPosSingle(x,y,0,0);
+                telemetry.addData("drive telem", robot.goToPosSingle(x,y,finalAngle,0));
+
+                //robot.driveToPos(x, y);
+                //telemetry.addData("drive telem", robot.driveToPos(x, y));
+
                 telemetry.addData("GlobalX", robot.GlobalX);
                 telemetry.addData("GlobalY", robot.GlobalY);
-                telemetry.addData("pid", robot.odoDrivePID(0,Math.hypot(-12 - robot.GlobalX, 0 - robot.GlobalY)));
-                telemetry.addData("RelativeX", 12 - robot.GlobalX);
-                telemetry.addData("RelativeY", 0- robot.GlobalY);
+                telemetry.addData("GlobalHeading",Math.toDegrees(robot.GlobalHeading));
+                //telemetry.addData("pid", robot.odoDrivePID(Math.hypot(x - robot.GlobalX, y - robot.GlobalY),0));
                 telemetry.update();
             }
-            robot.mecanumDrive(0,0,0,0);
+
+            sleep(2000);
         }
         else if(startingPos == 3){
             //starting right
