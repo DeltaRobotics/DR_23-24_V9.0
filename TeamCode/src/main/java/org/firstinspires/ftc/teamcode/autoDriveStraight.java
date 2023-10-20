@@ -39,7 +39,7 @@ public class autoDriveStraight extends LinearOpMode
             //telemetry.addData("hello world",x);
 
 
-            telemetry.addData("value",robot.goToPosSingle(x, y, finalAngle, Math.toRadians(0)));
+            //telemetry.addData("value",robot.goToPosSingle(x, y, finalAngle, Math.toRadians(0)));
             //robot.goToPosSingle(x, y, finalAngle, 0);
 
             telemetry.addData("pid 90",robot.odoTurnPID(0,Math.toRadians(90)));

@@ -289,7 +289,7 @@ public class robotHardware extends LinearOpMode
 
     //odometry constants (tune these)
     double L = 10.1;   //distance between left and right odometers (in inches)
-    double B = 4.75;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
+    double B = 5;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
     double R = .7514;   //wheel radius (in inches)
     double N = 8192;  //encoder ticks per revoluton
     double inPerTick = 2.0 * Math.PI * R / N;
@@ -345,7 +345,7 @@ public class robotHardware extends LinearOpMode
         double theta = (dtheta / 2.0);
         GlobalHeading += dtheta;
         GlobalX += dx * Math.cos(GlobalHeading) + dy * Math.sin(GlobalHeading);
-        GlobalY += dx * Math.sin(GlobalHeading) - dy * Math.cos(GlobalHeading);
+        GlobalY -= dx * Math.sin(GlobalHeading) - dy * Math.cos(GlobalHeading);
 
 
         //makes heading 180 to -180
@@ -430,11 +430,11 @@ public class robotHardware extends LinearOpMode
             double reletiveYToTarget = Math.sin(reletiveAngleToTarget) * distanceToTarget;
 
             //slow down ensures the robot does not over shoot the target
-            double slowDown = Range.clip(odoDrivePID(0,distanceToTarget), 0, moveSpeed);
+            double slowDown = Range.clip(odoDrivePID(distanceToTarget,0), 0, moveSpeed);
 
             //calculate the vector powers for the mecanum math
-            double movementXpower = (reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
-            double movementYpower = (reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
+            double movementXpower = (-reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
+            double movementYpower = (-reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
 
             //when far away from the target the robot will point at the target to get there faster.
             //at the end of the movement the robot will begin moving toward the desired final angle
@@ -460,7 +460,7 @@ public class robotHardware extends LinearOpMode
 
     }
 
-    public double goToPosSingle(double x, double y, double finalAngle, double followAngle)
+    public void goToPosSingle(double x, double y, double finalAngle, double followAngle)
     {
         //bring in the encoder and motor objects
         //odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
@@ -486,12 +486,12 @@ public class robotHardware extends LinearOpMode
             //calculate the vector powers for the mecanum math
             double movementXpower = (-reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
             double movementYpower = (-reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
-            //if (Double.isNaN(movementYpower)){
-            //    movementYpower = 0;
-            //}
-            //if (Double.isNaN(movementXpower)){
-            //    movementXpower = 0;
-            //}
+            if (Double.isNaN(movementYpower)){
+                movementYpower = 0;
+            }
+            if (Double.isNaN(movementXpower)){
+                movementXpower = 0;
+            }
 
             //when far away from the target the robot will point at the target to get there faster.
             //at the end of the movement the robot will begin moving toward the desired final angle
@@ -507,11 +507,8 @@ public class robotHardware extends LinearOpMode
             }
 
             //set the motors to the correct powers to move toward the target
-            mecanumDrive(movementXpower, movementYpower, movementTurnPower, 1);//voltComp);
-            //mecanumDrive(0, 0, movementTurnPower, 1);
+            mecanumDrive(movementXpower, movementYpower, movementTurnPower, voltComp);
 
-
-            return reletiveAngleToTarget;
     }
 
     public double driveToPos(double x, double y){

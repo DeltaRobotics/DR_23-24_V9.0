@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Camera.PoleDetectionPipeline;
@@ -30,8 +32,14 @@ public class blueHeadDetection extends LinearOpMode{
 
     int startingPos;
 
+    double doubleLoop = 10;
+    boolean pixelGrab = false;
+
     @Override
     public void runOpMode() throws InterruptedException {
+
+        ElapsedTime servoTime = new ElapsedTime();
+
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = dashboard.getTelemetry();
 
@@ -90,6 +98,26 @@ public class blueHeadDetection extends LinearOpMode{
                 telemetry.addData("location", "no head seen");
                 startingPos = 2;
             }
+            robot.slidesR.setTargetPosition(400);
+            robot.slidesR.setPower(.5);
+            robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            robot.slidesL.setTargetPosition(400);
+            robot.slidesL.setPower(.5);
+            robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            if (robot.slidesL.getCurrentPosition() > 370 && !pixelGrab){
+                robot.wrist.setPosition(.4);
+                //doubleLoop = servoTime.seconds();
+                pixelGrab = true;
+            }
+            if (doubleLoop + 2 < servoTime.seconds()){
+                robot.clawR.setPosition(1);
+                robot.clawL.setPosition(0);
+            }
+            telemetry.addData("time", servoTime);
+
+
 
             //telemetry.addData("x", myPipeline.getRectMidpointX());
             //telemetry.addData("y", myPipeline.getRectMidpointY());
@@ -100,25 +128,16 @@ public class blueHeadDetection extends LinearOpMode{
 
         }
         else if(startingPos == 2){
-            int x = 0;
-            int y = 0;
-            double finalAngle = Math.toRadians(90);
 
 
-            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
+            //While loop for goToPosSingle:
+            //Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy
 
-                //robot.goToPosSingle(x,y,0,0);
-                telemetry.addData("drive telem", Math.toDegrees(robot.goToPosSingle(x,y,finalAngle,0)));
+            telemetry.addData("GlobalX", robot.GlobalX);
+            telemetry.addData("GlobalY", robot.GlobalY);
+            telemetry.addData("GlobalHeading",Math.toDegrees(robot.GlobalHeading));
+            telemetry.update();
 
-                //robot.driveToPos(x, y);
-                //telemetry.addData("drive telem", robot.driveToPos(x, y));
-
-                telemetry.addData("GlobalX", robot.GlobalX);
-                telemetry.addData("GlobalY", robot.GlobalY);
-                telemetry.addData("GlobalHeading",Math.toDegrees(robot.GlobalHeading));
-                //telemetry.addData("pid", robot.odoDrivePID(Math.hypot(x - robot.GlobalX, y - robot.GlobalY),0));
-                telemetry.update();
-            }
 
             robot.mecanumDrive(0,0,0,0);
 
