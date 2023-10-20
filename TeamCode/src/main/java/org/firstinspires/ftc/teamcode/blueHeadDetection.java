@@ -100,7 +100,7 @@ public class blueHeadDetection extends LinearOpMode{
 
         }
         else if(startingPos == 2){
-            int x = 12;
+            int x = 0;
             int y = 0;
             double finalAngle = Math.toRadians(90);
 
@@ -108,7 +108,7 @@ public class blueHeadDetection extends LinearOpMode{
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
                 //robot.goToPosSingle(x,y,0,0);
-                telemetry.addData("drive telem", robot.goToPosSingle(x,y,finalAngle,0));
+                telemetry.addData("drive telem", Math.toDegrees(robot.goToPosSingle(x,y,finalAngle,0)));
 
                 //robot.driveToPos(x, y);
                 //telemetry.addData("drive telem", robot.driveToPos(x, y));
@@ -119,6 +119,8 @@ public class blueHeadDetection extends LinearOpMode{
                 //telemetry.addData("pid", robot.odoDrivePID(Math.hypot(x - robot.GlobalX, y - robot.GlobalY),0));
                 telemetry.update();
             }
+
+            robot.mecanumDrive(0,0,0,0);
 
             sleep(2000);
         }

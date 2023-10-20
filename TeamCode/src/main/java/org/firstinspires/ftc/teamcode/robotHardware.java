@@ -342,14 +342,14 @@ public class robotHardware extends LinearOpMode
         double dy = inPerTick * (dn3 - (dn2 - dn1) * B / L);
 
         //add the robots movement this loop to the global location
-        //double theta = (dtheta / 2.0);
+        double theta = (dtheta / 2.0);
         GlobalHeading += dtheta;
         GlobalX += dx * Math.cos(GlobalHeading) + dy * Math.sin(GlobalHeading);
-        GlobalY += dx * Math.sin(GlobalHeading) + dy * Math.cos(GlobalHeading);
+        GlobalY += dx * Math.sin(GlobalHeading) - dy * Math.cos(GlobalHeading);
 
 
         //makes heading 180 to -180
-        angleWrapRad(GlobalHeading);
+        //angleWrapRad(GlobalHeading);
     }
 
     // used to mantain angle values between Pi and -Pi
@@ -486,12 +486,12 @@ public class robotHardware extends LinearOpMode
             //calculate the vector powers for the mecanum math
             double movementXpower = (-reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
             double movementYpower = (-reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
-            if (Double.isNaN(movementYpower)){
-                movementYpower = 0;
-            }
-            if (Double.isNaN(movementXpower)){
-                movementXpower = 0;
-            }
+            //if (Double.isNaN(movementYpower)){
+            //    movementYpower = 0;
+            //}
+            //if (Double.isNaN(movementXpower)){
+            //    movementXpower = 0;
+            //}
 
             //when far away from the target the robot will point at the target to get there faster.
             //at the end of the movement the robot will begin moving toward the desired final angle
