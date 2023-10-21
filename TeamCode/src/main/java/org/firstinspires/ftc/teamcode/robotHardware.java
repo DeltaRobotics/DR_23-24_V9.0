@@ -41,8 +41,8 @@ public class robotHardware extends LinearOpMode
     DcMotor[] drive = new DcMotor[4];
     VoltageSensor ControlHub_VoltageSensor = null;
 
-    double moveSpeed = 0.4;
-    double turnSpeed = 0.4;
+    double moveSpeed = 0.5;
+    double turnSpeed = 0.5;
 
     double moveAccuracy  = 1;
     double angleAccuracy = Math.toRadians(1);
