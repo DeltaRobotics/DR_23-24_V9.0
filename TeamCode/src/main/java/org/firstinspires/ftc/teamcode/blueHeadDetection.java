@@ -132,13 +132,17 @@ public class blueHeadDetection extends LinearOpMode{
             //first drive forward
             robot.goToPos(16,0,0,0);
 
+            //nudging pixel mess
+            robot.changeSpeed(.25,.25);
             robot.goToPos(13,0,0,0);
-            robot.goToPos(13,-5,0,Math.toRadians(90));
-            robot.goToPos(16,-5,0,0);
+            robot.goToPos(16,-3,Math.toRadians(30),Math.toRadians(30));
             robot.goToPos(16,0,0,Math.toRadians(-90));
+            robot.changeSpeed(.5,.5);
 
-            //back up
+            //move back
             robot.goToPos(10,0,0,0);
+
+            //turn and move to backdrop
             robot.goToPos(10,20,Math.toRadians(-90),0);
 
             x = 13;
@@ -146,7 +150,6 @@ public class blueHeadDetection extends LinearOpMode{
             finalAngle = Math.toRadians(-90);
             sildeEncoder = 2000;
 
-            //drive to the backdrop
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
                 robot.goToPosSingle(x, y, finalAngle, 0);
@@ -171,10 +174,12 @@ public class blueHeadDetection extends LinearOpMode{
 
             }
 
+            robot.wait(500, robot.odometers);
+
             robot.clawL.setPosition(.1);
             robot.clawR.setPosition(.7);
 
-            robot.wait(2000, robot.odometers);
+            robot.wait(500, robot.odometers);
 
             //back away
             robot.goToPos(13,30,Math.toRadians(-90),0);
@@ -339,6 +344,112 @@ public class blueHeadDetection extends LinearOpMode{
         }
         else if(startingPos == 3){
             //starting right
+
+            //place purple pixel
+            robot.goToPos(18,0,0,0);
+            //todo speed up and reduce the accuracy for the parts the robot is not touching the pixel
+            robot.goToPos(12,0,0,0);
+            robot.goToPos(12,20,0,Math.toRadians(90));
+            robot.goToPos(24,20,0,0);
+            robot.goToPos(24,-3,0,Math.toRadians(-90));
+
+            robot.goToPos(25,5,0,0);
+
+            x = 25;
+            y = 40;
+            finalAngle = Math.toRadians(-90);
+            sildeEncoder = 2000;
+
+            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
+
+                robot.goToPosSingle(x, y, finalAngle, 0);
+
+                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            }
+
+            ElapsedTime driveF = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveF.milliseconds() < 300) {
+
+                robot.mecanumDrive(-0.5,0,0,0.5);
+                robot.refresh(robot.odometers);
+
+            }
+
+            robot.wait(500, robot.odometers);
+
+            robot.clawL.setPosition(.1);
+            robot.clawR.setPosition(.7);
+
+            robot.wait(500, robot.odometers);
+
+            //back away
+            robot.goToPos(13,30,Math.toRadians(-90),0);
+
+            //move to wall
+            x = 1;
+            y = 30;
+            finalAngle = Math.toRadians(-90);
+            sildeEncoder = 200;
+
+            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
+
+                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(90));
+
+                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            }
+
+            ElapsedTime driveR = new ElapsedTime();
+
+            //drive to wall
+            while(driveR.milliseconds() < 1000) {
+
+                robot.mecanumDrive(0,0.75,0,0.75);
+                robot.refresh(robot.odometers);
+
+            }
+
+            ElapsedTime driveF2 = new ElapsedTime();
+
+            //drive to park
+            while(driveF2.milliseconds() < 1000) {
+
+                robot.mecanumDrive(-0.75,0,0,0.5);
+                robot.refresh(robot.odometers);
+
+            }
+
+            sildeEncoder = 0;
+            while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
+                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+
+            //While loop for goToPosSingle:
+            //Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy
+
+            robot.mecanumDrive(0,0,0,0);
+
 
         }
 
