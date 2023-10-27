@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -14,10 +13,10 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name="redHeadDetection")
-@Disabled
+@Autonomous(name="redBoardSide")
+//@Disabled
 
-public class redHeadDetection extends LinearOpMode{
+public class redBoardSide extends LinearOpMode{
 
     private OpenCvCamera camera;//find webcam statement
 
@@ -87,13 +86,13 @@ public class redHeadDetection extends LinearOpMode{
         FtcDashboard.getInstance().startCameraStream(camera, 10);
 
         while(!isStarted() && !isStopRequested()){
-            if(myPipeline.getRectMidpointX() >= 230 && myPipeline.getRectMidpointX() <= 380){
+            if(myPipeline.getRectMidpointX() >= 220 && myPipeline.getRectMidpointX() <= 420){
                 telemetry.addData("location", 2);
                 startingPos = 2;
-            } else if(myPipeline.getRectMidpointX() >= 460 && myPipeline.getRectMidpointX() <= 530){
+            } else if(myPipeline.getRectMidpointX() >= 440 && myPipeline.getRectMidpointX() <= 600){
                 telemetry.addData("location", 1);
                 startingPos = 1;
-            } else if(myPipeline.getRectMidpointX() >= 95 && myPipeline.getRectMidpointX() <= 190){
+            } else if(myPipeline.getRectMidpointX() >= 80 && myPipeline.getRectMidpointX() <= 200){
                 telemetry.addData("location", 3);
                 startingPos = 3;
             } else{
@@ -129,16 +128,14 @@ public class redHeadDetection extends LinearOpMode{
         if(startingPos == 1){
             //starting left
 
-            //nudging pixel mess
+            //place purple pixel
             robot.goToPos(18,0,0,0);
             robot.goToPos(12,0,0,0);
-            robot.goToPos(12,-7,0,Math.toRadians(-90));
-            robot.goToPos(24,-7,0,0);
-            robot.goToPos(24,6,0,Math.toRadians(90));
+            robot.goToPos(12,-20,0,Math.toRadians(-90));
+            robot.goToPos(24,-20,0,0);
+            robot.goToPos(24,4,0,Math.toRadians(90));
 
-            //move back
-            robot.goToPos(24,0,0,Math.toRadians(-90));
-
+            robot.goToPos(25,-5,0,0);
 
             //turn and move to backdrop
             robot.goToPos(18,-20,Math.toRadians(90),0);
@@ -166,7 +163,7 @@ public class redHeadDetection extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 250) {
+            while(driveF.milliseconds() < 500) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -244,20 +241,21 @@ public class redHeadDetection extends LinearOpMode{
         else if(startingPos == 2){
             //starting middle
 
-            //nudging pixel mess
-            robot.goToPos(26,0,0,0);
+            //first drive forward
+            robot.goToPos(25,0,Math.toRadians(-25),0);
 
-            //move back
-            robot.goToPos(16,0,0,Math.toRadians(-90));
+            //back up
+            robot.goToPos(22,-5,0,0);
 
 
             //turn and move to backdrop
             robot.goToPos(16,-20,Math.toRadians(90),0);
 
+            robot.changeAccuracy(0.5,1);
             x = 24;
-            y = -35;
+            y = -36;
             finalAngle = Math.toRadians(90);
-            sildeEncoder = 2000;
+            sildeEncoder = 1800;
 
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
@@ -273,23 +271,24 @@ public class redHeadDetection extends LinearOpMode{
 
             }
 
+            robot.changeAccuracy(1,1);
 
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 250) {
+            while(driveF.milliseconds() < 1000) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
 
             }
 
-            robot.wait(500, robot.odometers);
+            robot.wait(750, robot.odometers);
 
             robot.clawL.setPosition(.1);
             robot.clawR.setPosition(.7);
 
-            robot.wait(500, robot.odometers);
+            robot.wait(750, robot.odometers);
 
 
             //back away
@@ -354,23 +353,23 @@ public class redHeadDetection extends LinearOpMode{
         }
         else if(startingPos == 3){
             //starting right
+            //first drive forward
+            robot.goToPos(16,0,0,0);
 
             //nudging pixel mess
-            robot.goToPos(6,0,Math.toRadians(10),0);
-            robot.goToPos(8,-2,Math.toRadians(25),0);
-            robot.goToPos(10,-4,Math.toRadians(20),0);
-            robot.goToPos(12,-6,Math.toRadians(25),0);
-            robot.goToPos(16,-10,Math.toRadians(30),0);
-
+            robot.changeSpeed(.25,.25);
+            robot.goToPos(13,0,0,0);
+            robot.goToPos(16,3,Math.toRadians(-30),Math.toRadians(-30));
+            robot.goToPos(16,0,0,Math.toRadians(90));
+            robot.changeSpeed(.5,.5);
 
             //move back
-            robot.goToPos(10,-4,Math.toRadians(90),Math.toRadians(180));
-
+            robot.goToPos(10,0,0,0);
 
             //turn and move to backdrop
             robot.goToPos(10,-20,Math.toRadians(90),0);
 
-            x = 28;
+            x = 33;
             y = -35;
             finalAngle = Math.toRadians(90);
             sildeEncoder = 2000;
@@ -393,7 +392,7 @@ public class redHeadDetection extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 250) {
+            while(driveF.milliseconds() < 500) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -409,7 +408,8 @@ public class redHeadDetection extends LinearOpMode{
 
 
             //back away
-            robot.goToPos(22,-30,Math.toRadians(90),0);
+            robot.goToPos(33,-30,Math.toRadians(90), Math.toRadians(180));
+            robot.goToPos(22,-28,Math.toRadians(90),0);
 
 
             //move to wall
