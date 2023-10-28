@@ -136,9 +136,20 @@ public class blueDepotSide extends LinearOpMode{
             robot.goToPos(24,-18,0,0);
             robot.goToPos(24,4,0,Math.toRadians(90));
 
-            robot.goToPos(25,-5,0,Math.toRadians(180));
+            robot.goToPos(25,2,0,0);
 
-            robot.goToPos(0,-5,0,Math.toRadians(180));
+            robot.goToPos(10,2,0,Math.toRadians(180));
+
+            sildeEncoder = 0;
+            while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
+                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
         }
         else if(startingPos == 2){
             //starting middle
@@ -146,9 +157,20 @@ public class blueDepotSide extends LinearOpMode{
             robot.goToPos(25,0,Math.toRadians(-25),0);
 
             //back up
-            robot.goToPos(22,-5,0,0);
+            robot.goToPos(22,0,0,0);
 
-            robot.goToPos(0,-5,0,0);
+            robot.goToPos(10,0,0,Math.toRadians(180));
+
+            sildeEncoder = 0;
+            while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
+                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
         }
         else if(startingPos == 3){
             //starting right
@@ -165,7 +187,18 @@ public class blueDepotSide extends LinearOpMode{
             //move back
             robot.goToPos(10,0,0,0);
 
-            robot.goToPos(0,0,0,0);
+            robot.goToPos(0,0,0,Math.toRadians(180));
+
+            sildeEncoder = 0;
+            while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
+                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
         }
 
     }
