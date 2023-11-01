@@ -41,7 +41,7 @@ public class driveWithOdoV2 extends LinearOpMode{
 
             robot.refresh(robot.odometers);
 
-            //robot.mecanumDrive(gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, 0.75);//Joseph
+            //robot.mecanumDrive(gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, 0.75);//normal people
             robot.mecanumDrive(gamepad1.right_stick_y, -gamepad1.right_stick_x, -gamepad1.left_stick_x, 0.75);//Nolan
 
             //drone

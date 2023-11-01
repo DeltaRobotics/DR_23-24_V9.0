@@ -50,7 +50,7 @@ public class robotHardware extends LinearOpMode
     //PID Drive Variables
 
     public static double DriveF = .175; // = 32767 / maxV      (do not edit from this number)
-    public static double DriveP = 0.2; // = 0.1 * F           (raise till real's apex touches Var apex)
+    public static double DriveP = 0.03; // = 0.1 * F           (raise till real's apex touches Var apex)
     public static double DriveI = 0;// = 0.1 * P           (fine ajustment of P)
     public static double DriveD = 0; // = 0                     (raise to reduce ocolation)
 
@@ -67,8 +67,8 @@ public class robotHardware extends LinearOpMode
     //PID Turning Variables
 
     public static double TurnF = .175; // = 32767 / maxV      (do not edit from this number)
-    public static double TurnP = 0.5; // = 0.1 * F           (raise till real's apex touches Var apex)
-    public static double TurnI = 0.05; // = 0.1 * P           (fine ajustment of P)
+    public static double TurnP = 0.55; // = 0.1 * F           (raise till real's apex touches Var apex)
+    public static double TurnI = 0; // = 0.1 * P           (fine ajustment of P)
     public static double TurnD = 0; // = 0                     (raise to reduce ocolation)
 
     double TurningPIDCurrentTime = 0;
@@ -240,7 +240,7 @@ public class robotHardware extends LinearOpMode
      *      to tune:
      *      - push the robot straight forward 100".
      *      - if the distance is not close to 100, adjust R
-     *      - repeat till the distance read is close to 100"
+     *      - repeat till the distance read is close to 100
      *
      *
      * 2. enter the distance between the 2 forward facing encoder wheels in inches as L.
@@ -288,8 +288,8 @@ public class robotHardware extends LinearOpMode
      */
 
     //odometry constants (tune these)
-    double L = 10.1;   //distance between left and right odometers (in inches)
-    double B = 5;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
+    double L = 10.5;   //distance between left and right odometers (in inches)
+    double B = 2;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
     double R = .7514;   //wheel radius (in inches)
     double N = 8192;  //encoder ticks per revoluton
     double inPerTick = 2.0 * Math.PI * R / N;
