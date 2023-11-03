@@ -97,6 +97,7 @@ public class redBoardSide extends LinearOpMode{
                 startingPos = 3;
             } else{
                 telemetry.addData("location", "no head seen");
+                startingPos = 1;
             }
 
             robot.slidesR.setTargetPosition(sildeEncoder);
@@ -126,6 +127,7 @@ public class redBoardSide extends LinearOpMode{
         }
 
         if(startingPos == 1){
+            camera.stopStreaming();
             //starting left
 
             //place purple pixel
@@ -138,16 +140,16 @@ public class redBoardSide extends LinearOpMode{
             robot.goToPos(25,-5,0,0);
 
             //turn and move to backdrop
-            robot.goToPos(18,-20,Math.toRadians(90),0);
+            robot.goToPos(10,-25,Math.toRadians(90),Math.toRadians(-90));
 
-            x = 18;
-            y = -35;
+            x = 30;
+            y = -25;
             finalAngle = Math.toRadians(90);
             sildeEncoder = 2000;
 
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
-                robot.goToPosSingle(x, y, finalAngle, 0);
+                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(90));
 
                 robot.slidesR.setTargetPosition(sildeEncoder);
                 robot.slidesR.setPower(.5);
@@ -163,7 +165,7 @@ public class redBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 500) {
+            while(driveF.milliseconds() < 1500) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -179,11 +181,11 @@ public class redBoardSide extends LinearOpMode{
 
 
             //back away
-            robot.goToPos(18,-30,Math.toRadians(90),0);
+            robot.goToPos(33,-30,Math.toRadians(90), Math.toRadians(180));
 
 
             //move to wall
-            x = 1;
+            x = 3;
             y = -30;
             finalAngle = Math.toRadians(90);
             sildeEncoder = 200;
@@ -205,7 +207,7 @@ public class redBoardSide extends LinearOpMode{
             ElapsedTime driveR = new ElapsedTime();
 
             //drive to wall
-            while(driveR.milliseconds() < 1000) {
+            while(driveR.milliseconds() < 500) {
 
                 robot.mecanumDrive(0,-0.75,0,0.75);
                 robot.refresh(robot.odometers);
@@ -240,20 +242,21 @@ public class redBoardSide extends LinearOpMode{
         }
         else if(startingPos == 2){
             //starting middle
+            camera.stopStreaming();
 
             //first drive forward
-            robot.goToPos(25,0,Math.toRadians(-25),0);
+            robot.goToPos(24,0,Math.toRadians(-25),0);
 
             //back up
             robot.goToPos(22,-5,0,0);
 
 
             //turn and move to backdrop
-            robot.goToPos(16,-20,Math.toRadians(90),0);
+            robot.goToPos(29,-20,Math.toRadians(90),0);
 
             robot.changeAccuracy(0.5,1);
-            x = 24;
-            y = -36;
+            x = 29;
+            y = -34;
             finalAngle = Math.toRadians(90);
             sildeEncoder = 1800;
 
@@ -276,7 +279,7 @@ public class redBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 1000) {
+            while(driveF.milliseconds() < 750) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -292,11 +295,11 @@ public class redBoardSide extends LinearOpMode{
 
 
             //back away
-            robot.goToPos(22,-30,Math.toRadians(90),0);
+            robot.goToPos(27,-30,Math.toRadians(90),Math.toRadians(180));
 
 
             //move to wall
-            x = 1;
+            x = 3;
             y = -30;
             finalAngle = Math.toRadians(90);
             sildeEncoder = 200;
@@ -353,24 +356,25 @@ public class redBoardSide extends LinearOpMode{
         }
         else if(startingPos == 3){
             //starting right
+            camera.stopStreaming();
             //first drive forward
             robot.goToPos(16,0,0,0);
 
             //nudging pixel mess
             robot.changeSpeed(.25,.25);
-            robot.goToPos(13,0,0,0);
-            robot.goToPos(16,3,Math.toRadians(-30),Math.toRadians(-30));
-            robot.goToPos(16,0,0,Math.toRadians(90));
+            robot.goToPos(12,0,0,0);
+            robot.goToPos(17,3,Math.toRadians(-30),Math.toRadians(-30));
+            robot.goToPos(17,1,0,Math.toRadians(90));
             robot.changeSpeed(.5,.5);
 
             //move back
-            robot.goToPos(10,0,0,0);
+            robot.goToPos(10,1,0,0);
 
             //turn and move to backdrop
-            robot.goToPos(10,-20,Math.toRadians(90),0);
+            robot.goToPos(10,-25,Math.toRadians(90),Math.toRadians(-90));
 
-            x = 33;
-            y = -35;
+            x = 20;
+            y = -25;
             finalAngle = Math.toRadians(90);
             sildeEncoder = 2000;
 
@@ -392,7 +396,7 @@ public class redBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 500) {
+            while(driveF.milliseconds() < 1500) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -408,12 +412,11 @@ public class redBoardSide extends LinearOpMode{
 
 
             //back away
-            robot.goToPos(33,-30,Math.toRadians(90), Math.toRadians(180));
-            robot.goToPos(22,-28,Math.toRadians(90),0);
+            robot.goToPos(18,-30,Math.toRadians(90),0);
 
 
             //move to wall
-            x = 1;
+            x = 3;
             y = -30;
             finalAngle = Math.toRadians(90);
             sildeEncoder = 200;

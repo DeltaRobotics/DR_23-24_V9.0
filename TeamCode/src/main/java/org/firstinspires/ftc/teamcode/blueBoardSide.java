@@ -129,14 +129,15 @@ public class blueBoardSide extends LinearOpMode{
         }
         if(startingPos == 1){
             //starting left
+            camera.stopStreaming();
             //first drive forward
             robot.goToPos(16,0,0,0);
 
             //nudging pixel mess
             robot.changeSpeed(.25,.25);
-            robot.goToPos(13,0,0,0);
-            robot.goToPos(16,-3,Math.toRadians(30),Math.toRadians(30));
-            robot.goToPos(16,0,0,Math.toRadians(-90));
+            robot.goToPos(12,0,0,0);
+            robot.goToPos(17,-3,Math.toRadians(30),Math.toRadians(30));
+            robot.goToPos(17,0,0,Math.toRadians(-90));
             robot.changeSpeed(.5,.5);
 
             //move back
@@ -145,8 +146,8 @@ public class blueBoardSide extends LinearOpMode{
             //turn and move to backdrop
             robot.goToPos(10,20,Math.toRadians(-90),0);
 
-            x = 13;
-            y = 40;
+            x = 17;
+            y = 35;
             finalAngle = Math.toRadians(-90);
             sildeEncoder = 2000;
 
@@ -167,7 +168,7 @@ public class blueBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 250) {
+            while(driveF.milliseconds() < 500) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -204,66 +205,7 @@ public class blueBoardSide extends LinearOpMode{
 
             }
 
-            robot.changeAccuracy(0.25,Math.toRadians(0.5));
 
-            //back up to bar
-            robot.goToPos(3,5,0,Math.toRadians(180));
-
-            ElapsedTime driveR = new ElapsedTime();
-
-            while(driveR.milliseconds() < 400) {
-
-                robot.mecanumDrive(0.5,0,0,0.75);
-                robot.refresh(robot.odometers);
-
-            }
-
-            robot.goToPos(3,-5,0,Math.toRadians(-90));
-
-            //back up under bar
-            robot.changeSpeed(0.35,0.35);
-            robot.goToPos(3,-26.75,0,Math.toRadians(-90));
-            robot.changeSpeed(0.5,0.5);
-
-            //drive through bar
-            robot.goToPos(23,-26.75,0,0);
-            robot.goToPos(47,-26.75,0,0);
-
-            //turn under bar
-            robot.goToPos(50,-26.75,Math.toRadians(90),0);
-
-            //move towards pile
-            x = 48;
-            y = -80;
-            finalAngle = Math.toRadians(90);
-            sildeEncoder = 600;
-
-            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
-
-                robot.goToPosSingle(x, y, finalAngle, 0);
-
-                robot.slidesR.setTargetPosition(sildeEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                robot.slidesL.setTargetPosition(sildeEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                robot.wrist.setPosition(.55);
-            }
-
-            robot.clawR.setPosition(1);
-            robot.clawL.setPosition(0);
-
-            robot.wait(250,robot.odometers);
-
-            robot.wrist.setPosition(.4);
-
-
-
-
-            /**
             ElapsedTime driveR = new ElapsedTime();
 
             //drive to wall
@@ -293,7 +235,7 @@ public class blueBoardSide extends LinearOpMode{
                 robot.slidesL.setTargetPosition(sildeEncoder);
                 robot.slidesL.setPower(.5);
                 robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }**/
+            }
 
             //While loop for goToPosSingle:
             //Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy
@@ -302,14 +244,15 @@ public class blueBoardSide extends LinearOpMode{
         }
         else if(startingPos == 2){
             //starting middle
+            camera.stopStreaming();
             //first drive forward
             robot.goToPos(26,0,Math.toRadians(10),0);
 
             //back up
-            robot.goToPos(22,6,0,0);
+            robot.goToPos(22,0,0,0);
 
-            x = 20;
-            y = 40;
+            x = 25;
+            y = 35;
             finalAngle = Math.toRadians(-90);
             sildeEncoder = 2000;
 
@@ -404,6 +347,7 @@ public class blueBoardSide extends LinearOpMode{
         }
         else if(startingPos == 3){
             //starting right
+            camera.stopStreaming();
 
             //place purple pixel
             robot.goToPos(18,0,0,0);
@@ -415,8 +359,8 @@ public class blueBoardSide extends LinearOpMode{
 
             robot.goToPos(25,5,0,0);
 
-            x = 30;
-            y = 38;
+            x = 34;
+            y = 35;
             finalAngle = Math.toRadians(-90);
             sildeEncoder = 2000;
 
@@ -437,7 +381,7 @@ public class blueBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 500) {
+            while(driveF.milliseconds() < 750) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -452,10 +396,10 @@ public class blueBoardSide extends LinearOpMode{
             robot.wait(500, robot.odometers);
 
             //back away
-            robot.goToPos(13,30,Math.toRadians(-90),0);
+            robot.goToPos(35,30,Math.toRadians(-90),Math.toRadians(180));
 
             //move to wall
-            x = 1;
+            x = 3;
             y = 30;
             finalAngle = Math.toRadians(-90);
             sildeEncoder = 200;
