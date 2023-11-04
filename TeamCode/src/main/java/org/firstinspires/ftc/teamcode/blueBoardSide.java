@@ -46,8 +46,8 @@ public class blueBoardSide extends LinearOpMode{
 
         ElapsedTime servoTime = new ElapsedTime();
 
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
+        //FtcDashboard dashboard = FtcDashboard.getInstance();
+        //telemetry = dashboard.getTelemetry();
 
         robotHardware robot = new robotHardware(hardwareMap);
 
@@ -94,7 +94,7 @@ public class blueBoardSide extends LinearOpMode{
             } else if(myPipeline.getRectMidpointX() >= 450 && myPipeline.getRectMidpointX() <= 525){
                 telemetry.addData("location", 1);
                 startingPos = 1;
-            } else if(myPipeline.getRectMidpointX() >= 100 && myPipeline.getRectMidpointX() <= 160){
+            } else if(myPipeline.getRectMidpointX() >= 100 && myPipeline.getRectMidpointX() <= 230){
                 telemetry.addData("location", 3);
                 startingPos = 3;
             } else{
@@ -360,7 +360,7 @@ public class blueBoardSide extends LinearOpMode{
             robot.goToPos(25,5,0,0);
 
             x = 34;
-            y = 35;
+            y = 30;
             finalAngle = Math.toRadians(-90);
             sildeEncoder = 2000;
 
