@@ -154,7 +154,7 @@ public class driveWithOdoV2 extends LinearOpMode{
 
             telemetry.addData("x",robot.GlobalX);
             telemetry.addData("y",robot.GlobalY);
-            telemetry.addData("heading",robot.GlobalHeading);
+            telemetry.addData("heading",Math.toDegrees(robot.GlobalHeading));
             telemetry.addData("slide encoder",slideEncoder);
             telemetry.addData("servo", robot.wrist.getPosition());
             telemetry.update();

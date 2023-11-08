@@ -146,7 +146,7 @@ public class blueBoardSide extends LinearOpMode{
             //turn and move to backdrop
             robot.goToPos(10,20,Math.toRadians(-90),0);
 
-            x = 17;
+            x = 12;
             y = 35;
             finalAngle = Math.toRadians(-90);
             sildeEncoder = 2000;
@@ -205,6 +205,13 @@ public class blueBoardSide extends LinearOpMode{
 
             }
 
+            //for cycling
+            //back up to bar
+            //robot.goToPos(3,5,0,Math.toRadians(180));
+
+            //strafe into bar
+            //robot.goToPos(3,-26,0,Math.toRadians(-90));
+
 
             ElapsedTime driveR = new ElapsedTime();
 
@@ -251,7 +258,7 @@ public class blueBoardSide extends LinearOpMode{
             //back up
             robot.goToPos(22,0,0,0);
 
-            x = 25;
+            x = 20;
             y = 35;
             finalAngle = Math.toRadians(-90);
             sildeEncoder = 2000;
@@ -359,7 +366,7 @@ public class blueBoardSide extends LinearOpMode{
 
             robot.goToPos(25,5,0,0);
 
-            x = 34;
+            x = 30;
             y = 30;
             finalAngle = Math.toRadians(-90);
             sildeEncoder = 2000;

@@ -46,8 +46,8 @@ public class redBoardSide extends LinearOpMode{
 
         ElapsedTime servoTime = new ElapsedTime();
 
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
+        //FtcDashboard dashboard = FtcDashboard.getInstance();
+        //telemetry = dashboard.getTelemetry();
 
         robotHardware robot = new robotHardware(hardwareMap);
 
@@ -140,7 +140,7 @@ public class redBoardSide extends LinearOpMode{
             robot.goToPos(25,-5,0,0);
 
             //turn and move to backdrop
-            robot.goToPos(10,-25,Math.toRadians(90),Math.toRadians(-90));
+            robot.goToPos(30,-20,Math.toRadians(90),0);
 
             x = 30;
             y = -25;
@@ -248,7 +248,7 @@ public class redBoardSide extends LinearOpMode{
             robot.goToPos(24,0,Math.toRadians(-25),0);
 
             //back up
-            robot.goToPos(22,-5,0,0);
+            robot.goToPos(18,-5,0,0);
 
 
             //turn and move to backdrop
@@ -273,6 +273,7 @@ public class redBoardSide extends LinearOpMode{
                 robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
+
 
             robot.changeAccuracy(1,1);
 
@@ -358,13 +359,13 @@ public class redBoardSide extends LinearOpMode{
             //starting right
             camera.stopStreaming();
             //first drive forward
-            robot.goToPos(16,0,0,0);
+            robot.goToPos(17,0,0,0);
 
             //nudging pixel mess
             robot.changeSpeed(.25,.25);
             robot.goToPos(12,0,0,0);
-            robot.goToPos(17,3,Math.toRadians(-30),Math.toRadians(-30));
-            robot.goToPos(17,1,0,Math.toRadians(90));
+            robot.goToPos(18,3,Math.toRadians(-30),Math.toRadians(-30));
+            robot.goToPos(18,2,0,Math.toRadians(90));
             robot.changeSpeed(.5,.5);
 
             //move back
@@ -373,14 +374,16 @@ public class redBoardSide extends LinearOpMode{
             //turn and move to backdrop
             robot.goToPos(10,-25,Math.toRadians(90),Math.toRadians(-90));
 
-            x = 20;
+            x = 18;
             y = -25;
             finalAngle = Math.toRadians(90);
             sildeEncoder = 2000;
 
+            robot.changeAccuracy(1,Math.toRadians(.5));
+
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
-                robot.goToPosSingle(x, y, finalAngle, 0);
+                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(90));
 
                 robot.slidesR.setTargetPosition(sildeEncoder);
                 robot.slidesR.setPower(.5);
@@ -391,6 +394,10 @@ public class redBoardSide extends LinearOpMode{
                 robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
+
+            robot.goToPos(18,-25,Math.toRadians(90),0);
+
+            robot.changeAccuracy(1,Math.toRadians(1));
 
 
             ElapsedTime driveF = new ElapsedTime();
