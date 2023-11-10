@@ -31,8 +31,8 @@ public class driveWithOdoV2 extends LinearOpMode{
         robot.resetDriveEncoders();
 
         robot.launcher.setPosition(0.75);
-        robot.clawL.setPosition(0);
-        robot.clawR.setPosition(1);
+        robot.clawL.setPosition(0.1);
+        robot.clawR.setPosition(0.7);
 
         waitForStart();
 
@@ -40,8 +40,8 @@ public class driveWithOdoV2 extends LinearOpMode{
 
             robot.refresh(robot.odometers);
 
-            //robot.mecanumDrive(gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, 0.75);//normal people
-            robot.mecanumDrive(gamepad1.right_stick_y, -gamepad1.right_stick_x, -gamepad1.left_stick_x, robotSpeed);//Nolan
+            robot.mecanumDrive(gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, 0.75);//normal people
+            //robot.mecanumDrive(gamepad1.right_stick_y, -gamepad1.right_stick_x, -gamepad1.left_stick_x, robotSpeed);//Nolan
 
             //drone
             if(gamepad1.right_trigger > .5 && gamepad1.left_trigger > .5){

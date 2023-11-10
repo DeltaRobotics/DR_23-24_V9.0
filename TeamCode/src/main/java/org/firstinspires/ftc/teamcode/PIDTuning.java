@@ -1,20 +1,20 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.FtcDashboard;
+//import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name="PIDTuning")
-//@Disabled
+@Disabled
 
 public class PIDTuning extends LinearOpMode
 {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
+        //FtcDashboard dashboard = FtcDashboard.getInstance();
+        //telemetry = dashboard.getTelemetry();
 
         robotHardware robot = new robotHardware(hardwareMap);
 

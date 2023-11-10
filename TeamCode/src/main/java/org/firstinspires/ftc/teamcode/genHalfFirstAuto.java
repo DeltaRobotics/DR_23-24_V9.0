@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.FtcDashboard;
+//import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -30,8 +30,8 @@ public class genHalfFirstAuto extends LinearOpMode
 
     @Override
     public void runOpMode() throws InterruptedException {
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
+        //FtcDashboard dashboard = FtcDashboard.getInstance();
+        //telemetry = dashboard.getTelemetry();
 
         robotHardware robot = new robotHardware(hardwareMap);
 
@@ -66,7 +66,7 @@ public class genHalfFirstAuto extends LinearOpMode
                 telemetry.addData("camera not started", myPipeline.debug);
             }
         });
-        FtcDashboard.getInstance().startCameraStream(camera, 10);
+        //FtcDashboard.getInstance().startCameraStream(camera, 10);
 
         while(true){
             if(myPipeline.getRectMidpointX() >= 225 && myPipeline.getRectMidpointX() <= 245){

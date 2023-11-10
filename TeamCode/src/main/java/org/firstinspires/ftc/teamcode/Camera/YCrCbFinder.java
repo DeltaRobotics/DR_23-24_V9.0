@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Camera;
 
-import com.acmerobotics.dashboard.FtcDashboard;
+//import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -70,9 +70,9 @@ public class YCrCbFinder extends LinearOpMode {
 
 
         // Only if you are using ftcdashboard
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
-        FtcDashboard.getInstance().startCameraStream(camera2, 10);
+        //FtcDashboard dashboard = FtcDashboard.getInstance();
+        //telemetry = dashboard.getTelemetry();
+        //FtcDashboard.getInstance().startCameraStream(camera2, 10);
 
         telemetry.update();
         waitForStart();

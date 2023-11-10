@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.FtcDashboard;
+//import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,8 +13,8 @@ public class autoDriveStraight extends LinearOpMode
 
     @Override
     public void runOpMode() throws InterruptedException {
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
+        //FtcDashboard dashboard = FtcDashboard.getInstance();
+        //telemetry = dashboard.getTelemetry();
 
         robotHardware robot = new robotHardware(hardwareMap);
 

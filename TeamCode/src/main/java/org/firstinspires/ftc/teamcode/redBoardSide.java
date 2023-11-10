@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.FtcDashboard;
+//import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -83,7 +83,7 @@ public class redBoardSide extends LinearOpMode{
                 telemetry.addData("camera not started", myPipeline.debug);
             }
         });
-        FtcDashboard.getInstance().startCameraStream(camera, 10);
+        //FtcDashboard.getInstance().startCameraStream(camera, 10);
 
         while(!isStarted() && !isStopRequested()){
             if(myPipeline.getRectMidpointX() >= 220 && myPipeline.getRectMidpointX() <= 420){
