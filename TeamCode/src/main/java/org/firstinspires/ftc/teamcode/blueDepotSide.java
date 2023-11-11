@@ -94,12 +94,12 @@ public class blueDepotSide extends LinearOpMode{
             } else if(myPipeline.getRectMidpointX() >= 420 && myPipeline.getRectMidpointX() <= 600){
                 telemetry.addData("location", 1);
                 startingPos = 1;
-            } else if(myPipeline.getRectMidpointX() >= 80 && myPipeline.getRectMidpointX() <= 200){
+            } else if(myPipeline.getRectMidpointX() >= 80 && myPipeline.getRectMidpointX() <= 210){
                 telemetry.addData("location", 3);
                 startingPos = 3;
             } else{
                 telemetry.addData("location", "no head seen");
-                startingPos = 2;
+                startingPos = 1;
             }
 
             robot.slidesR.setTargetPosition(sildeEncoder);
@@ -129,6 +129,7 @@ public class blueDepotSide extends LinearOpMode{
         }
         if(startingPos == 1){
             //starting left
+            camera.stopStreaming();
             //place purple pixel
             robot.goToPos(18,0,0,0);
             robot.goToPos(12,0,0,0);
@@ -136,22 +137,42 @@ public class blueDepotSide extends LinearOpMode{
             robot.goToPos(24,-18,0,0);
             robot.goToPos(24,4,0,Math.toRadians(90));
 
-            robot.goToPos(25,-5,0,Math.toRadians(180));
+            robot.goToPos(25,2,0,0);
 
-            robot.goToPos(0,-5,0,Math.toRadians(180));
+            sildeEncoder = 0;
+            while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
+                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
         }
         else if(startingPos == 2){
             //starting middle
+            camera.stopStreaming();
             //first drive forward
             robot.goToPos(25,0,Math.toRadians(-25),0);
 
             //back up
-            robot.goToPos(22,-5,0,0);
+            robot.goToPos(22,0,0,0);
 
-            robot.goToPos(0,-5,0,0);
+            sildeEncoder = 0;
+            while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
+                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
         }
         else if(startingPos == 3){
             //starting right
+            camera.stopStreaming();
             //first drive forward
             robot.goToPos(16,0,0,0);
 
@@ -165,7 +186,16 @@ public class blueDepotSide extends LinearOpMode{
             //move back
             robot.goToPos(10,0,0,0);
 
-            robot.goToPos(0,0,0,0);
+            sildeEncoder = 0;
+            while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
+                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
         }
 
     }
