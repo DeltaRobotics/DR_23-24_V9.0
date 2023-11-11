@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class driveWithOdoV2 extends LinearOpMode{
 
-    int slideEncoder = 20;
+    int slideEncoder = 400;
     double slidePower = .5;
 
     double wristPower = .455;
@@ -18,22 +18,21 @@ public class driveWithOdoV2 extends LinearOpMode{
     int oldLoop = 0;
     boolean clawOpen = true;
 
+    double robotSpeed = .75;
+
+    boolean wristAdjustA = true;
+    boolean wristAdjustB = true;
 
 
     public void runOpMode() throws InterruptedException {
-
 
         robotHardware robot = new robotHardware(hardwareMap);
 
         robot.resetDriveEncoders();
 
         robot.launcher.setPosition(0.75);
-        robot.clawL.setPosition(0);
-        robot.clawR.setPosition(1);
-        robot.wrist.setPosition(wristPower);
-
-
-
+        robot.clawL.setPosition(0.1);
+        robot.clawR.setPosition(0.7);
 
         waitForStart();
 
@@ -41,8 +40,8 @@ public class driveWithOdoV2 extends LinearOpMode{
 
             robot.refresh(robot.odometers);
 
-            //robot.mecanumDrive(gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, 0.75);//Joseph
-            robot.mecanumDrive(gamepad1.right_stick_y, -gamepad1.right_stick_x, -gamepad1.left_stick_x, 0.75);//Nolan
+            robot.mecanumDrive(gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, 0.75);//normal people
+            //robot.mecanumDrive(gamepad1.right_stick_y, -gamepad1.right_stick_x, -gamepad1.left_stick_x, robotSpeed);//Nolan
 
             //drone
             if(gamepad1.right_trigger > .5 && gamepad1.left_trigger > .5){
@@ -52,11 +51,11 @@ public class driveWithOdoV2 extends LinearOpMode{
                     robot.launcher.setPosition(0.6);
                 }
             }
-            if(gamepad1.dpad_right){
-                //reload
-                robot.launcher.setPosition(0.75);
+            //if(gamepad1.dpad_right){
+            //    //reload
+            //    robot.launcher.setPosition(0.75);
 
-            }
+            //}
             //claw
             if(gamepad1.right_bumper){
                 //open
@@ -81,6 +80,15 @@ public class driveWithOdoV2 extends LinearOpMode{
                 wristPower = .4;
             }
 
+            if(gamepad1.dpad_right){
+                //slow
+                robotSpeed = .75;
+            }
+            else if(gamepad1.dpad_left){
+                //speed
+                robotSpeed = .9;
+            }
+
 
 
             if(gamepad1.a){
@@ -93,12 +101,12 @@ public class driveWithOdoV2 extends LinearOpMode{
                 slideEncoder = 1000;
                 wristPower = .55;
             }
-            else if(gamepad1.y){
+            else if(gamepad1.x){
                 //slides mid
                 slideEncoder = 2000;
                 wristPower = .55;
             }
-            else if(gamepad1.x){
+            else if(gamepad1.y){
                 //slides top
                 slideEncoder = 3400;
                 wristPower = .55;
@@ -113,13 +121,23 @@ public class driveWithOdoV2 extends LinearOpMode{
             }
 
             //wrist fine adjust
-            if(gamepad1.dpad_up){
-                wristPower += 0.005;
+            if(gamepad1.dpad_up && wristAdjustA){
+                //1st stack pixel
+                wristPower = 0.5;
+                wristAdjustA = false;
             }
-            else if(gamepad1.dpad_down){
-                wristPower -= 0.005;
+            else if(!gamepad1.dpad_up && !wristAdjustA){
+                wristAdjustA = true;
             }
-
+            if(gamepad1.dpad_down && wristAdjustB){
+                //2nd stack pixel
+                wristPower = 0.47;
+                wristAdjustB = false;
+            }
+            else if(!gamepad1.dpad_down && !wristAdjustB){
+                wristAdjustB = true;
+            }
+            //.5 and .47 for wrist set pos
             robot.wrist.setPosition(wristPower);
 
             robot.slidesR.setTargetPosition(slideEncoder);
@@ -136,10 +154,7 @@ public class driveWithOdoV2 extends LinearOpMode{
 
             telemetry.addData("x",robot.GlobalX);
             telemetry.addData("y",robot.GlobalY);
-            telemetry.addData("heading",robot.GlobalHeading);
-            telemetry.addData("left encoder",robot.odometers[0].getCurrentPosition());
-            telemetry.addData("right encoder",robot.odometers[1].getCurrentPosition());
-            telemetry.addData("perp encoder",robot.odometers[2].getCurrentPosition());
+            telemetry.addData("heading",Math.toDegrees(robot.GlobalHeading));
             telemetry.addData("slide encoder",slideEncoder);
             telemetry.addData("servo", robot.wrist.getPosition());
             telemetry.update();

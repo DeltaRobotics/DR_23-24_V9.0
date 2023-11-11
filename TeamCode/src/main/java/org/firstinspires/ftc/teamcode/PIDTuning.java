@@ -5,10 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="autoDriveStraight")
+@Autonomous(name="PIDTuning")
 @Disabled
 
-public class autoDriveStraight extends LinearOpMode
+public class PIDTuning extends LinearOpMode
 {
 
     @Override
@@ -20,47 +20,40 @@ public class autoDriveStraight extends LinearOpMode
 
         robot.resetDriveEncoders();
 
-        //telemetry.addData("hello",1.5);
-        telemetry.addData("heading", robot.GlobalHeading);
-        telemetry.addData("distanceX", robot.GlobalX);
-        telemetry.addData("value",0);
+        telemetry.addData("GlobalHeading", robot.GlobalHeading);
+        telemetry.addData("finalAngle",0);
         telemetry.update();
 
         waitForStart();
 
-        robot.wait(2000, robot.odometers);
+        robot.changeSpeed(0.4,0.4);
 
         double y = 0;
-        double x = 20;
-        double finalAngle = Math.toRadians(0);
+        double x = 0;
+        double finalAngle = Math.toRadians(90);
 
         while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
-            //robot.goToPosSingle(20, 00, 00, 0);
-            //telemetry.addData("hello world",x);
+
+            robot.goToPosSingle(x, y, finalAngle, 0);
 
 
-            //telemetry.addData("value",robot.goToPosSingle(x, y, finalAngle, Math.toRadians(0)));
-            //robot.goToPosSingle(x, y, finalAngle, 0);
-
-            telemetry.addData("pid 90",robot.odoTurnPID(0,Math.toRadians(90)));
-
-            telemetry.addData("globalY",robot.GlobalY);
-            telemetry.addData("distanceX", robot.GlobalX);
-
-
-
-
-            telemetry.addData("heading", robot.GlobalHeading);
-            telemetry.addData("90", 2);
+            telemetry.addData("GlobalHeading", robot.GlobalHeading);
+            telemetry.addData("finalAngle",finalAngle);
             telemetry.update();
         }
+        robot.mecanumDrive(0,0,0,0);
         telemetry.addData("bye world", 1);
+        telemetry.addData("GlobalHeading", robot.GlobalHeading);
+        telemetry.addData("finalAngle",finalAngle);
         telemetry.update();
 
         //telemetry.addData("deg",robot.GlobalHeading * 57.295);
         //telemetry.update();
 
-        //robot.wait(2000, robot.odometers);
+        robot.wait(1000, robot.odometers);
+        telemetry.addData("GlobalHeading", robot.GlobalHeading);
+        telemetry.addData("finalAngle",finalAngle);
+        telemetry.update();
 
     }
 }
