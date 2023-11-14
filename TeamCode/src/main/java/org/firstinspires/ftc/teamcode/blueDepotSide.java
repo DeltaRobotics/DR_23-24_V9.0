@@ -35,7 +35,7 @@ public class blueDepotSide extends LinearOpMode{
     double doubleLoop = 10;
     boolean pixelGrab = false;
 
-    int sildeEncoder = 400;
+    int slideEncoder = 400;
 
     int x;
     int y;
@@ -102,11 +102,11 @@ public class blueDepotSide extends LinearOpMode{
                 startingPos = 1;
             }
 
-            robot.slidesR.setTargetPosition(sildeEncoder);
+            robot.slidesR.setTargetPosition(slideEncoder);
             robot.slidesR.setPower(.5);
             robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            robot.slidesL.setTargetPosition(sildeEncoder);
+            robot.slidesL.setTargetPosition(slideEncoder);
             robot.slidesL.setPower(.5);
             robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -121,6 +121,9 @@ public class blueDepotSide extends LinearOpMode{
             }
             if (doubleLoop + 2 < servoTime.seconds()){
                 robot.wrist.setPosition(.55);
+            }
+            if (doubleLoop + 3 < servoTime.seconds()){
+                slideEncoder = 50;
             }
 
             //telemetry.addData("x", myPipeline.getRectMidpointX());
@@ -139,13 +142,13 @@ public class blueDepotSide extends LinearOpMode{
 
             robot.goToPos(25,2,0,0);
 
-            sildeEncoder = 0;
+            slideEncoder = 0;
             while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
-                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setTargetPosition(slideEncoder);
                 robot.slidesR.setPower(.5);
                 robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setTargetPosition(slideEncoder);
                 robot.slidesL.setPower(.5);
                 robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
@@ -154,18 +157,18 @@ public class blueDepotSide extends LinearOpMode{
             //starting middle
             camera.stopStreaming();
             //first drive forward
-            robot.goToPos(25,0,Math.toRadians(-25),0);
+            robot.goToPos(24,0,Math.toRadians(-25),0);
 
             //back up
             robot.goToPos(22,0,0,0);
 
-            sildeEncoder = 0;
+            slideEncoder = 0;
             while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
-                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setTargetPosition(slideEncoder);
                 robot.slidesR.setPower(.5);
                 robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setTargetPosition(slideEncoder);
                 robot.slidesL.setPower(.5);
                 robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
@@ -186,13 +189,13 @@ public class blueDepotSide extends LinearOpMode{
             //move back
             robot.goToPos(10,0,0,0);
 
-            sildeEncoder = 0;
+            slideEncoder = 0;
             while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
-                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setTargetPosition(slideEncoder);
                 robot.slidesR.setPower(.5);
                 robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setTargetPosition(slideEncoder);
                 robot.slidesL.setPower(.5);
                 robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }

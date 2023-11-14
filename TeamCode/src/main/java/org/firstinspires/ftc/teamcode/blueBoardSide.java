@@ -130,6 +130,7 @@ public class blueBoardSide extends LinearOpMode{
             //telemetry.addData("y", myPipeline.getRectMidpointY());
             telemetry.update();
         }
+        camera.stopStreaming();
         if(startingPos == 1){
             //starting left
             //first drive forward

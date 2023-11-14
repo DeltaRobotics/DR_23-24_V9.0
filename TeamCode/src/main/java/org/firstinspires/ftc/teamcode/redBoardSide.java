@@ -128,7 +128,7 @@ public class redBoardSide extends LinearOpMode{
             //telemetry.addData("y", myPipeline.getRectMidpointY());
             telemetry.update();
         }
-
+        camera.stopStreaming();
         if(startingPos == 1){
             camera.stopStreaming();
             //starting left
@@ -138,14 +138,14 @@ public class redBoardSide extends LinearOpMode{
             robot.goToPos(12,0,0,0);
             robot.goToPos(12,-20,0,Math.toRadians(-90));
             robot.goToPos(24,-20,0,0);
-            robot.goToPos(24,4,0,Math.toRadians(90));
+            robot.goToPos(24,5,0,Math.toRadians(90));
 
             robot.goToPos(25,-5,0,0);
 
             //turn and move to backdrop
             robot.goToPos(10,-25,Math.toRadians(90),Math.toRadians(-90));
 
-            x = 28;
+            x = 32;
             y = -30;
             finalAngle = Math.toRadians(90);
             slideEncoder = 2000;

@@ -35,7 +35,7 @@ public class redDepotSide extends LinearOpMode{
     double doubleLoop = 10;
     boolean pixelGrab = false;
 
-    int sildeEncoder = 400;
+    int slideEncoder = 400;
 
     int x;
     int y;
@@ -99,12 +99,15 @@ public class redDepotSide extends LinearOpMode{
                 telemetry.addData("location", "no head seen");
                 startingPos = 1;
             }
+            if (doubleLoop + 3 < servoTime.seconds()){
+                slideEncoder = 50;
+            }
 
-            robot.slidesR.setTargetPosition(sildeEncoder);
+            robot.slidesR.setTargetPosition(slideEncoder);
             robot.slidesR.setPower(.5);
             robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            robot.slidesL.setTargetPosition(sildeEncoder);
+            robot.slidesL.setTargetPosition(slideEncoder);
             robot.slidesL.setPower(.5);
             robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -142,13 +145,13 @@ public class redDepotSide extends LinearOpMode{
             //move back
             robot.goToPos(10,0,0,0);
 
-            sildeEncoder = 0;
+            slideEncoder = 0;
             while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
-                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setTargetPosition(slideEncoder);
                 robot.slidesR.setPower(.5);
                 robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setTargetPosition(slideEncoder);
                 robot.slidesL.setPower(.5);
                 robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
@@ -162,13 +165,13 @@ public class redDepotSide extends LinearOpMode{
             //back up
             robot.goToPos(22,6,0,0);
 
-            sildeEncoder = 0;
+            slideEncoder = 0;
             while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
-                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setTargetPosition(slideEncoder);
                 robot.slidesR.setPower(.5);
                 robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setTargetPosition(slideEncoder);
                 robot.slidesL.setPower(.5);
                 robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
@@ -185,13 +188,13 @@ public class redDepotSide extends LinearOpMode{
 
             robot.goToPos(25,5,0,0);
 
-            sildeEncoder = 0;
+            slideEncoder = 0;
             while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
-                robot.slidesR.setTargetPosition(sildeEncoder);
+                robot.slidesR.setTargetPosition(slideEncoder);
                 robot.slidesR.setPower(.5);
                 robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(sildeEncoder);
+                robot.slidesL.setTargetPosition(slideEncoder);
                 robot.slidesL.setPower(.5);
                 robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }

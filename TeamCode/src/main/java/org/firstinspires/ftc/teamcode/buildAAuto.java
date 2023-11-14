@@ -15,7 +15,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name="buildAAuto")
-//@Disabled
+@Disabled
 
 public class buildAAuto extends LinearOpMode{
 

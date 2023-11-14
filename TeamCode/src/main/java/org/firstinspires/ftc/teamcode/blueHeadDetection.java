@@ -15,7 +15,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name="blueHeadDetection")
-//@Disabled
+@Disabled
 
 public class blueHeadDetection extends LinearOpMode{
 
