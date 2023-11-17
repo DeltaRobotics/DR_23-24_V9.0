@@ -259,7 +259,7 @@ public class redBoardSide extends LinearOpMode{
 
             robot.changeAccuracy(0.5,1);
             x = 26;
-            y = -34;
+            y = -30;
             finalAngle = Math.toRadians(90);
             slideEncoder = 1800;
 

@@ -134,6 +134,7 @@ public class blueBoardSide extends LinearOpMode{
         if(startingPos == 1){
             //starting left
             //first drive forward
+            robot.changeSpeed(.3,.3);
             robot.goToPos(16,0,0,0);
 
             //nudging pixel mess
@@ -141,16 +142,18 @@ public class blueBoardSide extends LinearOpMode{
             robot.goToPos(13,0,0,0);
             robot.goToPos(16,-3,Math.toRadians(30),Math.toRadians(30));
             robot.goToPos(16,0,0,Math.toRadians(-90));
-            robot.changeSpeed(.5,.5);
+
+            robot.changeSpeed(.3,.3);
 
             //move back
             robot.goToPos(10,0,0,0);
 
+
             //turn and move to backdrop
             robot.goToPos(10,20,Math.toRadians(-90),0);
 
-            x = 13;
-            y = 40;
+            x = 17;
+            y = 35;
             finalAngle = Math.toRadians(-90);
             slideEncoder = 2000;
 
@@ -171,7 +174,7 @@ public class blueBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 250) {
+            while(driveF.milliseconds() < 750) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -314,7 +317,7 @@ public class blueBoardSide extends LinearOpMode{
             robot.goToPos(22,6,0,0);
 
             x = 20;
-            y = 40;
+            y = 30;
             finalAngle = Math.toRadians(-90);
             slideEncoder = 2000;
 
@@ -421,7 +424,7 @@ public class blueBoardSide extends LinearOpMode{
             robot.goToPos(25,5,0,0);
 
             x = 29;
-            y = 35;
+            y = 30;
             finalAngle = Math.toRadians(-90);
             slideEncoder = 2000;
 

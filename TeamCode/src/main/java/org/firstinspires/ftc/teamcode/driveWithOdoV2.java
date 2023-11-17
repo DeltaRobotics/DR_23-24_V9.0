@@ -98,12 +98,12 @@ public class driveWithOdoV2 extends LinearOpMode{
             }
             else if(gamepad1.b){
                 //slides low
-                slideEncoder = 1000;
+                slideEncoder = 2000;
                 wristPower = .55;
             }
             else if(gamepad1.x){
                 //slides mid
-                slideEncoder = 2000;
+                slideEncoder = 2700;
                 wristPower = .55;
             }
             else if(gamepad1.y){

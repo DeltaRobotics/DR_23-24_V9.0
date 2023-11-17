@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name="PIDTuning")
-@Disabled
+//@Disabled
 
 public class PIDTuning extends LinearOpMode
 {
@@ -29,8 +29,8 @@ public class PIDTuning extends LinearOpMode
         robot.changeSpeed(0.4,0.4);
 
         double y = 0;
-        double x = 0;
-        double finalAngle = Math.toRadians(90);
+        double x = 50;
+        double finalAngle = 0;
 
         while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
@@ -38,21 +38,24 @@ public class PIDTuning extends LinearOpMode
 
 
             telemetry.addData("GlobalHeading", robot.GlobalHeading);
-            telemetry.addData("finalAngle",finalAngle);
+            telemetry.addData("x",robot.GlobalX);
+            telemetry.addData("y",robot.GlobalY);
             telemetry.update();
         }
         robot.mecanumDrive(0,0,0,0);
         telemetry.addData("bye world", 1);
         telemetry.addData("GlobalHeading", robot.GlobalHeading);
-        telemetry.addData("finalAngle",finalAngle);
+        telemetry.addData("x",robot.GlobalX);
+        telemetry.addData("y",robot.GlobalY);
         telemetry.update();
 
         //telemetry.addData("deg",robot.GlobalHeading * 57.295);
         //telemetry.update();
 
-        robot.wait(1000, robot.odometers);
+        robot.wait(10000, robot.odometers);
         telemetry.addData("GlobalHeading", robot.GlobalHeading);
-        telemetry.addData("finalAngle",finalAngle);
+        telemetry.addData("x",robot.GlobalX);
+        telemetry.addData("y",robot.GlobalY);
         telemetry.update();
 
     }
