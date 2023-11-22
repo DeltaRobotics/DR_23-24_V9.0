@@ -131,19 +131,20 @@ public class redBoardSide extends LinearOpMode{
         camera.stopStreaming();
         if(startingPos == 1){
             camera.stopStreaming();
+            robot.changeSpeed(.4,.4);
             //starting left
 
             //place purple pixel
             robot.goToPos(18,0,0,0);
-            robot.goToPos(12,0,0,0);
-            robot.goToPos(12,-20,0,Math.toRadians(-90));
+            robot.goToPos(6,0,0,Math.toRadians(180));
+            robot.goToPos(6,-20,0,0);
             robot.goToPos(24,-20,0,0);
             robot.goToPos(24,5,0,Math.toRadians(90));
 
-            robot.goToPos(25,-5,0,0);
+            robot.goToPos(24,-5,0,0);
 
             //turn and move to backdrop
-            robot.goToPos(10,-25,Math.toRadians(90),Math.toRadians(-90));
+            robot.goToPos(30,-25,Math.toRadians(90),0);
 
             x = 32;
             y = -30;
@@ -175,12 +176,28 @@ public class redBoardSide extends LinearOpMode{
 
             }
 
-            robot.wait(500, robot.odometers);
+            slideEncoder = 1500;
+
+            //move slides down
+            while(robot.slidesL.getCurrentPosition() > 1500){
+
+                robot.slidesR.setTargetPosition(slideEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(slideEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.refresh(robot.odometers);
+            }
+
+            robot.wait(1000, robot.odometers);
 
             robot.clawL.setPosition(.1);
             robot.clawR.setPosition(.7);
 
-            robot.wait(500, robot.odometers);
+            robot.wait(1000, robot.odometers);
 
 
             //back away
@@ -246,19 +263,19 @@ public class redBoardSide extends LinearOpMode{
         else if(startingPos == 2){
             //starting middle
             camera.stopStreaming();
-
+            robot.changeSpeed(.4,.4);
             //first drive forward
             robot.goToPos(24,0,Math.toRadians(-25),0);
 
             //back up
-            robot.goToPos(22,-5,0,0);
+            robot.goToPos(20,-5,0,0);
 
 
             //turn and move to backdrop
-            robot.goToPos(29,-20,Math.toRadians(90),0);
+            robot.goToPos(24,-20,Math.toRadians(90),0);
 
             robot.changeAccuracy(0.5,1);
-            x = 26;
+            x = 24;
             y = -30;
             finalAngle = Math.toRadians(90);
             slideEncoder = 1800;
@@ -282,19 +299,34 @@ public class redBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 750) {
+            while(driveF.milliseconds() < 1500) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
 
             }
+            slideEncoder = 1500;
 
-            robot.wait(750, robot.odometers);
+            //move slides down
+            while(robot.slidesL.getCurrentPosition() > 1500){
+
+                robot.slidesR.setTargetPosition(slideEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(slideEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.refresh(robot.odometers);
+            }
+
+            robot.wait(1000, robot.odometers);
 
             robot.clawL.setPosition(.1);
             robot.clawR.setPosition(.7);
 
-            robot.wait(750, robot.odometers);
+            robot.wait(1000, robot.odometers);
 
 
             //back away
@@ -360,15 +392,16 @@ public class redBoardSide extends LinearOpMode{
         else if(startingPos == 3){
             //starting right
             camera.stopStreaming();
+            robot.changeSpeed(.4,.4);
             //first drive forward
             robot.goToPos(16,0,0,0);
 
             //nudging pixel mess
             robot.changeSpeed(.25,.25);
-            robot.goToPos(12,0,0,0);
-            robot.goToPos(17,3,Math.toRadians(-30),Math.toRadians(-30));
+            robot.goToPos(9,0,0,0);
+            robot.goToPos(17,2,Math.toRadians(-30),Math.toRadians(-30));
             robot.goToPos(17,1,0,Math.toRadians(90));
-            robot.changeSpeed(.5,.5);
+            robot.changeSpeed(.4,.4);
 
             //move back
             robot.goToPos(10,1,0,0);
@@ -376,7 +409,7 @@ public class redBoardSide extends LinearOpMode{
             //turn and move to backdrop
             robot.goToPos(10,-25,Math.toRadians(90),Math.toRadians(-90));
 
-            x = 19;
+            x = 18;
             y = -30;
             finalAngle = Math.toRadians(90);
             slideEncoder = 2000;

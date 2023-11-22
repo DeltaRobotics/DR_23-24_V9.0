@@ -132,6 +132,7 @@ public class blueBoardSide extends LinearOpMode{
         }
         camera.stopStreaming();
         if(startingPos == 1){
+            camera.stopStreaming();
             //starting left
             //first drive forward
             robot.changeSpeed(.3,.3);
@@ -139,7 +140,7 @@ public class blueBoardSide extends LinearOpMode{
 
             //nudging pixel mess
             robot.changeSpeed(.25,.25);
-            robot.goToPos(13,0,0,0);
+            robot.goToPos(10,0,0,0);
             robot.goToPos(16,-3,Math.toRadians(30),Math.toRadians(30));
             robot.goToPos(16,0,0,Math.toRadians(-90));
 
@@ -152,7 +153,7 @@ public class blueBoardSide extends LinearOpMode{
             //turn and move to backdrop
             robot.goToPos(10,20,Math.toRadians(-90),0);
 
-            x = 17;
+            x = 16;
             y = 35;
             finalAngle = Math.toRadians(-90);
             slideEncoder = 2000;
@@ -174,7 +175,7 @@ public class blueBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 750) {
+            while(driveF.milliseconds() < 1250) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -309,15 +310,17 @@ public class blueBoardSide extends LinearOpMode{
             robot.mecanumDrive(0,0,0,0);
         }
         else if(startingPos == 2){
+            camera.stopStreaming();
             //starting middle
             //first drive forward
+            robot.changeSpeed(.4,.4);
             robot.goToPos(26,0,Math.toRadians(10),0);
 
             //back up
             robot.goToPos(22,6,0,0);
 
-            x = 20;
-            y = 30;
+            x = 24;
+            y = 35;
             finalAngle = Math.toRadians(-90);
             slideEncoder = 2000;
 
@@ -339,17 +342,35 @@ public class blueBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 500) {
+            while(driveF.milliseconds() < 1250) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
 
             }
 
+            slideEncoder = 1500;
+
+            //move slides down
+            while(robot.slidesL.getCurrentPosition() > 1500){
+
+                robot.slidesR.setTargetPosition(slideEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(slideEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.refresh(robot.odometers);
+            }
+
+            robot.wait(1000, robot.odometers);
+
             robot.clawL.setPosition(.1);
             robot.clawR.setPosition(.7);
 
-            robot.wait(2000, robot.odometers);
+            robot.wait(1000, robot.odometers);
 
             //back away
             robot.goToPos(20,30,Math.toRadians(-90),0);
@@ -411,20 +432,21 @@ public class blueBoardSide extends LinearOpMode{
             robot.mecanumDrive(0,0,0,0);
         }
         else if(startingPos == 3){
+            camera.stopStreaming();
             //starting right
-
+            robot.changeSpeed(.4,.4);
             //place purple pixel
             robot.goToPos(18,0,0,0);
             //todo speed up and reduce the accuracy for the parts the robot is not touching the pixel
-            robot.goToPos(12,0,0,0);
-            robot.goToPos(12,20,0,Math.toRadians(90));
+            robot.goToPos(6,0,0,Math.toRadians(180));
+            robot.goToPos(6,20,0,0);
             robot.goToPos(24,20,0,0);
             robot.goToPos(24,-4,0,Math.toRadians(-90));
 
             robot.goToPos(25,5,0,0);
 
             x = 29;
-            y = 30;
+            y = 35;
             finalAngle = Math.toRadians(-90);
             slideEncoder = 2000;
 
@@ -445,7 +467,7 @@ public class blueBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 500) {
+            while(driveF.milliseconds() < 1000) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
