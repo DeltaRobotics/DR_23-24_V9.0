@@ -9,23 +9,38 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Camera.PoleDetectionPipeline;
 import org.opencv.core.Scalar;
+import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name="redBoardSide")
+import java.util.ArrayList;
+
+@Autonomous(name="blueBoardSideV2")
 //@Disabled
 
-public class redBoardSide extends LinearOpMode{
+public class blueBoardSideV2 extends LinearOpMode{
 
     private OpenCvCamera camera;//find webcam statement
+    AprilTagDetectionPipeline aprilTagDetectionPipeline;
+    static final double Inches_PER_METER = 39.37;
+    // Lens intrinsics
+    // UNITS ARE PIXELS
+    // NOTE: this calibration is for the C920 webcam at 800x448.
+    // You will need to do your own calibration for other configurations!
+    double fx = 578.272;
+    double fy = 578.272;
+    double cx = 402.145;
+    double cy = 221.506;
+    // UNITS ARE METERS
+    double tagsize = 0.0508;
 
     private static final int CAMERA_WIDTH  = 640; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
     // Yellow Range                                      Y      Cr     Cb
-    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 230.0, 50.0);
-    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 180.0);
+    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 105.0, 150.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 200.0, 255.0);
 
     double poleOffset = 0;
     double poleOffsetPower = 0;
@@ -40,6 +55,8 @@ public class redBoardSide extends LinearOpMode{
     int x;
     int y;
     double finalAngle;
+
+    AprilTagDetection tagOfInterest = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -56,6 +73,8 @@ public class redBoardSide extends LinearOpMode{
         // OpenCV lift webcam
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        //april tag detection pipline
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
         //OpenCV PoleDetectionPipeline
         PoleDetectionPipeline myPipeline;
         camera.setPipeline(myPipeline = new PoleDetectionPipeline());
@@ -64,8 +83,7 @@ public class redBoardSide extends LinearOpMode{
         myPipeline.ConfigureScalarLower(scalarLowerYCrCb.val[0],scalarLowerYCrCb.val[1],scalarLowerYCrCb.val[2]);
         myPipeline.ConfigureScalarUpper(scalarUpperYCrCb.val[0],scalarUpperYCrCb.val[1],scalarUpperYCrCb.val[2]);
 
-
-        telemetry.addData("Pipeline status", "ready");
+        telemetry.addData("Pipeline Ready", 0);
 
         telemetry.update();
 
@@ -85,19 +103,22 @@ public class redBoardSide extends LinearOpMode{
         });
         //FtcDashboard.getInstance().startCameraStream(camera, 10);
 
+        //!isStarted() && !isStopRequested()
+        //this replaces waitForStart()
+
         while(!isStarted() && !isStopRequested()){
-            if(myPipeline.getRectMidpointX() >= 220 && myPipeline.getRectMidpointX() <= 420){
+            if(myPipeline.getRectMidpointX() >= 240 && myPipeline.getRectMidpointX() <= 370){
                 telemetry.addData("location", 2);
-                startingPos = 5;
-            } else if(myPipeline.getRectMidpointX() >= 440 && myPipeline.getRectMidpointX() <= 600){
+                startingPos = 2;
+            } else if(myPipeline.getRectMidpointX() >= 430 && myPipeline.getRectMidpointX() <= 525){
                 telemetry.addData("location", 1);
-                startingPos = 4;
-            } else if(myPipeline.getRectMidpointX() >= 80 && myPipeline.getRectMidpointX() <= 200){
+                startingPos = 1;
+            } else if(myPipeline.getRectMidpointX() >= 75 && myPipeline.getRectMidpointX() <= 160){
                 telemetry.addData("location", 3);
-                startingPos = 6;
+                startingPos = 3;
             } else{
                 telemetry.addData("location", "no head seen");
-                startingPos = 4;
+                startingPos = 1;
             }
 
             robot.slidesR.setTargetPosition(slideEncoder);
@@ -128,28 +149,74 @@ public class redBoardSide extends LinearOpMode{
             //telemetry.addData("y", myPipeline.getRectMidpointY());
             telemetry.update();
         }
-        camera.stopStreaming();
-        if(startingPos == 4){
-            camera.stopStreaming();
-            robot.changeSpeed(.4,.4);
+
+        camera.setPipeline(aprilTagDetectionPipeline);
+
+        if(startingPos == 1){
             //starting left
+            //first drive forward
+            robot.changeSpeed(.3,.3);
+            robot.goToPos(16,0,0,0);
 
-            //place purple pixel
-            robot.goToPos(18,0,0,0);
-            robot.goToPos(6,0,0,Math.toRadians(180));
-            robot.goToPos(6,-20,0,0);
-            robot.goToPos(24,-20,0,0);
-            robot.goToPos(24,5,0,Math.toRadians(90));
+            //nudging pixel mess
+            robot.changeSpeed(.25,.25);
+            robot.goToPos(10,0,0,0);
+            robot.goToPos(16,-3,Math.toRadians(30),Math.toRadians(30));
+            robot.goToPos(16,0,0,Math.toRadians(-90));
 
-            robot.goToPos(24,-5,0,0);
+            robot.changeSpeed(.3,.3);
+
+            //move back
+            robot.goToPos(10,0,0,0);
+
 
             //turn and move to backdrop
-            robot.goToPos(30,-25,Math.toRadians(90),0);
+            robot.goToPos(10,20,Math.toRadians(-90),0);
 
-            x = 32;
-            y = -30;
-            finalAngle = Math.toRadians(90);
+            x = 16;
+            y = 35;
+            finalAngle = Math.toRadians(-90);
             slideEncoder = 2000;
+
+            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
+
+                robot.goToPosSingle(x, y, finalAngle, 0);
+
+                robot.slidesR.setTargetPosition(slideEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(slideEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            }
+
+            ElapsedTime driveF = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveF.milliseconds() < 1250) {
+
+                robot.mecanumDrive(-0.5,0,0,0.5);
+                robot.refresh(robot.odometers);
+
+            }
+
+            robot.wait(250, robot.odometers);
+
+            robot.clawL.setPosition(.1);
+            robot.clawR.setPosition(.7);
+
+            robot.wait(500, robot.odometers);
+
+            //back away
+            robot.goToPos(13,30,Math.toRadians(-90),0);
+
+            //move to wall
+            x = 1;
+            y = 30;
+            finalAngle = Math.toRadians(-90);
+            slideEncoder = 200;
 
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
@@ -165,71 +232,73 @@ public class redBoardSide extends LinearOpMode{
 
             }
 
+            /* placing
+            robot.changeAccuracy(0.25,Math.toRadians(0.5));
 
-            ElapsedTime driveF = new ElapsedTime();
+            //back up to bar
+            robot.goToPos(3,5,0,Math.toRadians(180));
 
-            //drive to the backdrop
-            while(driveF.milliseconds() < 1500) {
+            ElapsedTime driveR = new ElapsedTime();
 
-                robot.mecanumDrive(-0.5,0,0,0.5);
+            while(driveR.milliseconds() < 400) {
+
+                robot.mecanumDrive(0.5,0,0,0.75);
                 robot.refresh(robot.odometers);
 
             }
 
-            slideEncoder = 1500;
+            robot.goToPos(3,-5,0,Math.toRadians(-90));
 
-            //move slides down
-            while(robot.slidesL.getCurrentPosition() > 1500){
+            //back up under bar
+            robot.changeSpeed(0.35,0.35);
+            robot.goToPos(3,-26.75,0,Math.toRadians(-90));
+            robot.changeSpeed(0.5,0.5);
 
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //drive through bar
+            robot.goToPos(23,-26.75,0,0);
+            robot.goToPos(47,-26.75,0,0);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //turn under bar
+            robot.goToPos(50,-26.75,Math.toRadians(90),0);
 
-                robot.refresh(robot.odometers);
-            }
-
-            robot.wait(1000, robot.odometers);
-
-            robot.clawL.setPosition(.1);
-            robot.clawR.setPosition(.7);
-
-            robot.wait(1000, robot.odometers);
-
-
-            //back away
-            robot.goToPos(33,-30,Math.toRadians(90), Math.toRadians(180));
-
-
-            //move to wall
-            x = 3;
-            y = -30;
+            //move towards pile
+            x = 48;
+            y = -80;
             finalAngle = Math.toRadians(90);
-            slideEncoder = 200;
+            sildeEncoder = 600;
 
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
-                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(-90));
+                robot.goToPosSingle(x, y, finalAngle, 0);
 
-                robot.slidesR.setTargetPosition(slideEncoder);
+                robot.slidesR.setTargetPosition(sildeEncoder);
                 robot.slidesR.setPower(.5);
                 robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
+                robot.slidesL.setTargetPosition(sildeEncoder);
                 robot.slidesL.setPower(.5);
                 robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+                robot.wrist.setPosition(.55);
             }
+
+            robot.clawR.setPosition(1);
+            robot.clawL.setPosition(0);
+
+            robot.wait(250,robot.odometers);
+
+            robot.wrist.setPosition(.4);
+            */
+
+
+
 
             ElapsedTime driveR = new ElapsedTime();
 
             //drive to wall
-            while(driveR.milliseconds() < 500) {
+            while(driveR.milliseconds() < 1000) {
 
-                robot.mecanumDrive(0,-0.75,0,0.75);
+                robot.mecanumDrive(0,0.75,0,0.75);
                 robot.refresh(robot.odometers);
 
             }
@@ -237,7 +306,7 @@ public class redBoardSide extends LinearOpMode{
             ElapsedTime driveF2 = new ElapsedTime();
 
             //drive to park
-            while(driveF2.milliseconds() < 1500) {
+            while(driveF2.milliseconds() < 1000) {
 
                 robot.mecanumDrive(-0.75,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -260,26 +329,21 @@ public class redBoardSide extends LinearOpMode{
 
             robot.mecanumDrive(0,0,0,0);
         }
-        else if(startingPos == 5){
+        else if(startingPos == 2){
             //starting middle
-            camera.stopStreaming();
-            robot.changeSpeed(.4,.4);
             //first drive forward
-            robot.goToPos(24,0,Math.toRadians(-25),0);
+            robot.changeSpeed(.4,.4);
+            robot.goToPos(26,0,Math.toRadians(10),0);
 
             //back up
-            robot.goToPos(20,-5,0,0);
+            robot.goToPos(22,6,0,0);
 
-
-            //turn and move to backdrop
-            robot.goToPos(24,-20,Math.toRadians(90),0);
-
-            robot.changeAccuracy(0.5,1);
             x = 24;
-            y = -30;
-            finalAngle = Math.toRadians(90);
-            slideEncoder = 1800;
+            y = 35;
+            finalAngle = Math.toRadians(-90);
+            slideEncoder = 2000;
 
+            //drive to the backdrop
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
                 robot.goToPosSingle(x, y, finalAngle, 0);
@@ -294,17 +358,16 @@ public class redBoardSide extends LinearOpMode{
 
             }
 
-            robot.changeAccuracy(1,1);
-
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 1500) {
+            while(driveF.milliseconds() < 1250) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
 
             }
+
             slideEncoder = 1500;
 
             //move slides down
@@ -328,20 +391,18 @@ public class redBoardSide extends LinearOpMode{
 
             robot.wait(1000, robot.odometers);
 
-
             //back away
-            robot.goToPos(27,-30,Math.toRadians(90),Math.toRadians(180));
-
+            robot.goToPos(20,30,Math.toRadians(-90),0);
 
             //move to wall
-            x = 3;
-            y = -30;
-            finalAngle = Math.toRadians(90);
+            x = 1;
+            y = 30;
+            finalAngle = Math.toRadians(-90);
             slideEncoder = 200;
 
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
-                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(-90));
+                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(90));
 
                 robot.slidesR.setTargetPosition(slideEncoder);
                 robot.slidesR.setPower(.5);
@@ -358,7 +419,7 @@ public class redBoardSide extends LinearOpMode{
             //drive to wall
             while(driveR.milliseconds() < 1000) {
 
-                robot.mecanumDrive(0,-0.75,0,0.75);
+                robot.mecanumDrive(0,0.75,0,0.75);
                 robot.refresh(robot.odometers);
 
             }
@@ -366,7 +427,7 @@ public class redBoardSide extends LinearOpMode{
             ElapsedTime driveF2 = new ElapsedTime();
 
             //drive to park
-            while(driveF2.milliseconds() < 1500) {
+            while(driveF2.milliseconds() < 1000) {
 
                 robot.mecanumDrive(-0.75,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -389,29 +450,22 @@ public class redBoardSide extends LinearOpMode{
 
             robot.mecanumDrive(0,0,0,0);
         }
-        else if(startingPos == 6){
+        else if(startingPos == 3){
             //starting right
-            camera.stopStreaming();
             robot.changeSpeed(.4,.4);
-            //first drive forward
-            robot.goToPos(16,0,0,0);
+            //place purple pixel
+            robot.goToPos(18,0,0,0);
+            //todo speed up and reduce the accuracy for the parts the robot is not touching the pixel
+            robot.goToPos(6,0,0,Math.toRadians(180));
+            robot.goToPos(6,20,0,0);
+            robot.goToPos(24,20,0,0);
+            robot.goToPos(24,-4,0,Math.toRadians(-90));
 
-            //nudging pixel mess
-            robot.changeSpeed(.25,.25);
-            robot.goToPos(9,0,0,0);
-            robot.goToPos(17,2,Math.toRadians(-30),Math.toRadians(-30));
-            robot.goToPos(17,1,0,Math.toRadians(90));
-            robot.changeSpeed(.4,.4);
+            robot.goToPos(25,5,0,0);
 
-            //move back
-            robot.goToPos(10,1,0,0);
-
-            //turn and move to backdrop
-            robot.goToPos(10,-25,Math.toRadians(90),Math.toRadians(-90));
-
-            x = 20;
-            y = -30;
-            finalAngle = Math.toRadians(90);
+            x = 29;
+            y = 35;
+            finalAngle = Math.toRadians(-90);
             slideEncoder = 2000;
 
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
@@ -431,28 +485,11 @@ public class redBoardSide extends LinearOpMode{
             ElapsedTime driveF = new ElapsedTime();
 
             //drive to the backdrop
-            while(driveF.milliseconds() < 1500) {
+            while(driveF.milliseconds() < 1000) {
 
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
 
-            }
-
-            robot.wait(500, robot.odometers);
-
-            slideEncoder = 1500;
-
-            while(robot.slidesL.getCurrentPosition() > 1500){
-
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                robot.refresh(robot.odometers);
             }
 
             robot.wait(500, robot.odometers);
@@ -462,20 +499,18 @@ public class redBoardSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-
             //back away
-            robot.goToPos(18,-30,Math.toRadians(90),0);
-
+            robot.goToPos(13,30,Math.toRadians(-90),0);
 
             //move to wall
-            x = 3;
-            y = -30;
-            finalAngle = Math.toRadians(90);
+            x = 1;
+            y = 30;
+            finalAngle = Math.toRadians(-90);
             slideEncoder = 200;
 
             while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
 
-                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(-90));
+                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(90));
 
                 robot.slidesR.setTargetPosition(slideEncoder);
                 robot.slidesR.setPower(.5);
@@ -492,7 +527,7 @@ public class redBoardSide extends LinearOpMode{
             //drive to wall
             while(driveR.milliseconds() < 1000) {
 
-                robot.mecanumDrive(0,-0.75,0,0.75);
+                robot.mecanumDrive(0,0.75,0,0.75);
                 robot.refresh(robot.odometers);
 
             }
@@ -500,7 +535,7 @@ public class redBoardSide extends LinearOpMode{
             ElapsedTime driveF2 = new ElapsedTime();
 
             //drive to park
-            while(driveF2.milliseconds() < 1500) {
+            while(driveF2.milliseconds() < 1000) {
 
                 robot.mecanumDrive(-0.75,0,0,0.5);
                 robot.refresh(robot.odometers);
@@ -525,5 +560,22 @@ public class redBoardSide extends LinearOpMode{
 
 
         }
+
+    }
+    public double findTagLocation(int interest){
+        ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+        if(currentDetections.size() != 0)
+        {
+
+            for(AprilTagDetection tag : currentDetections)
+            {
+                if(tag.id == interest)
+                {
+                    tagOfInterest = tag;
+                    break;
+                }
+            }
+        }
+        return tagOfInterest.pose.x*Inches_PER_METER;
     }
 }
