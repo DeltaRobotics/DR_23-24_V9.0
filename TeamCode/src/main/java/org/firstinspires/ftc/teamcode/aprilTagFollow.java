@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -26,9 +27,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(name="aprilTagDetectionTestV2")
+@Autonomous(name="aprilTagFollow")
 
-public class aprilTagDetectionTestV2 extends LinearOpMode
+public class aprilTagFollow extends LinearOpMode
 {
     //IMU object
     BNO055IMU imu;
@@ -49,10 +50,10 @@ public class aprilTagDetectionTestV2 extends LinearOpMode
     // UNITS ARE PIXELS
     // NOTE: this calibration is for the C920 webcam at 800x448.
     // You will need to do your own calibration for other configurations!
-    double fx = 1430;
-    double fy = 1430;
-    double cx = 480;
-    double cy = 620;
+    double fx = 578.272;
+    double fy = 578.272;
+    double cx = 402.145;
+    double cy = 221.506;
     // UNITS ARE METERS
     double tagsize = 0.166;
     // Tag ID 1,2,3 from the 36h11 family
@@ -61,8 +62,8 @@ public class aprilTagDetectionTestV2 extends LinearOpMode
     int RIGHT = 3;
     AprilTagDetection tagOfInterest = null;
 
-    private static final int CAMERA_WIDTH  = 1280; // width  of wanted camera resolution
-    private static final int CAMERA_HEIGHT = 720; // height of wanted camera resolution
+    private static final int CAMERA_WIDTH  = 640; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
     // Yellow Range                                      Y      Cr     Cb
     public static Scalar YellowScalarLowerYCrCb = new Scalar(  0.0, 100, 0);
     public static Scalar YellowScalarUpperYCrCb = new Scalar(255.0, 250.0, 100);
@@ -80,11 +81,15 @@ public class aprilTagDetectionTestV2 extends LinearOpMode
     //todo add distance sensors
 
 
+    double strafe = 0;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
 
+        robotHardware robot = new robotHardware(hardwareMap);
 
+        robot.resetDriveEncoders();
 
         // OpenCV lift webcam init
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -117,7 +122,9 @@ public class aprilTagDetectionTestV2 extends LinearOpMode
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
-        while (!isStarted() && !isStopRequested())
+        waitForStart();
+
+        while (opModeIsActive())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
@@ -140,6 +147,7 @@ public class aprilTagDetectionTestV2 extends LinearOpMode
                     telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
                     tagToTelemetry(tagOfInterest);
                     telemetry.addData("Robot Power",tagOfInterest.pose.x*2);
+                    strafe = tagOfInterest.pose.x*Inches_PER_METER*.5;
                 }
                 else
                 {
@@ -191,7 +199,8 @@ public class aprilTagDetectionTestV2 extends LinearOpMode
             {
                 telemetry.addLine("Tag snapshot:\n");
                 tagToTelemetry(tagOfInterest);
-                telemetry.addData("Robot Power",tagOfInterest.pose.x*2);
+                telemetry.addData("Robot Power",tagOfInterest.pose.x*Inches_PER_METER*.5);
+                //strafe = 0;
                 telemetry.update();
             }
             else
@@ -210,11 +219,22 @@ public class aprilTagDetectionTestV2 extends LinearOpMode
             else if(tagOfInterest.id == 3){
                 //trajectory 3 dots
             }
+
+            robot.changeSpeed(.3,.3);
+
+            double x = 5;
+            double y = 0;
+            double finalAngle = 0;
+
+            //Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy
+
+
+            robot.goToPosSingle(x, y-strafe, finalAngle, 0);
+
+
+
         }
-
-        camera.stopStreaming();
-
-
+        //camera.stopStreaming();
     }
     void tagToTelemetry(AprilTagDetection detection)
     {

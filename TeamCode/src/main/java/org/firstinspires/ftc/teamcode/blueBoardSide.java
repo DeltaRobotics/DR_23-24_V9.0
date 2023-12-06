@@ -182,7 +182,25 @@ public class blueBoardSide extends LinearOpMode{
 
             }
 
-            robot.wait(250, robot.odometers);
+            robot.wait(500, robot.odometers);
+
+            slideEncoder = 1500;
+
+            //move slides down
+            while(robot.slidesL.getCurrentPosition() > 1500){
+
+                robot.slidesR.setTargetPosition(slideEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(slideEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.refresh(robot.odometers);
+            }
+
+            robot.wait(500, robot.odometers);
 
             robot.clawL.setPosition(.1);
             robot.clawR.setPosition(.7);
@@ -472,6 +490,24 @@ public class blueBoardSide extends LinearOpMode{
                 robot.mecanumDrive(-0.5,0,0,0.5);
                 robot.refresh(robot.odometers);
 
+            }
+
+            robot.wait(500, robot.odometers);
+
+            slideEncoder = 1500;
+
+            //move slides down
+            while(robot.slidesL.getCurrentPosition() > 1500){
+
+                robot.slidesR.setTargetPosition(slideEncoder);
+                robot.slidesR.setPower(.5);
+                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.slidesL.setTargetPosition(slideEncoder);
+                robot.slidesL.setPower(.5);
+                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.refresh(robot.odometers);
             }
 
             robot.wait(500, robot.odometers);

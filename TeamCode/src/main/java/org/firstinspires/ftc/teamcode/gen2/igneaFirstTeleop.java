@@ -37,12 +37,9 @@ public class igneaFirstTeleop extends LinearOpMode{
                 Finger.setPosition(1);
             }
 
-            if(gamepad1.right_bumper){
-                intake.setPower(0.5);
-            }
-            if(gamepad1.left_bumper){
-                intake.setPower(0);
-            }
+            intake.setPower(-gamepad1.right_trigger);
+            telemetry.addData("power",intake.getPower());
+            telemetry.update();
 
         }
     }
