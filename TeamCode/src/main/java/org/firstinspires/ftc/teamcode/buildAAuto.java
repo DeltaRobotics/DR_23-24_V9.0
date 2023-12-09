@@ -4,15 +4,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Camera.PoleDetectionPipeline;
 import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name="buildAAuto")
 @Disabled
@@ -56,13 +51,23 @@ public class buildAAuto extends LinearOpMode{
     boolean upPressed = false;
     boolean downPressed = false;
 
-    String[] arrow = {">","-"};
+    String[] arrow = {">","-","-","-","-"};
+
+    Boolean[] cursorB = {false, false, false, false};
+    int[] cursorI = {0};
+
+    int[] boolItems = {0,1,2,4};
+    int[] intItems = {3};
+
 
     @Override
     public void runOpMode() throws InterruptedException {
-        telemetry.addData(arrow[0] + " )Item 0 ", false);
-        telemetry.addData(arrow[1] + ")Item 1 ", false);
-        telemetry.addData(arrow[1] + ")Item 1 ", arrow.length);
+        telemetry.addData(arrow[0] + " )Item 0 ", cursorB[0]);
+        telemetry.addData(arrow[1] + " )Item 1 ", cursorB[1]);
+        telemetry.addData(arrow[2] + " )Item 2 ", cursorB[2]);
+        telemetry.addData(arrow[3] + " )Item 3 ", cursorI[0]);
+        telemetry.addData(arrow[4] + " )Item 4 ", cursorB[3]);
+        telemetry.update();
 
         ElapsedTime servoTime = new ElapsedTime();
 
@@ -72,55 +77,62 @@ public class buildAAuto extends LinearOpMode{
         //robotHardware robot = new robotHardware(hardwareMap);
         //robot.resetDriveEncoders();
 
-        while(!gamepad1.start){
+        while(!isStarted() && !isStopRequested()){
             telemetry.update();
 
             //select number
-            if(gamepad1.dpad_up && !upPressed && cursor < arrow.length-1){
+            if(gamepad1.dpad_down && !upPressed && cursor < arrow.length-1){
                 arrow[cursor] = "-";
                 cursor++;
                 arrow[cursor] = ">";
                 upPressed = true;
             }
-            if(gamepad1.dpad_down && !downPressed && cursor > 0){
+            if(gamepad1.dpad_up && !downPressed && cursor > 0){
                 arrow[cursor] = "-";
                 cursor--;
                 arrow[cursor] = ">";
                 downPressed = true;
             }
-            if(!gamepad1.dpad_up && upPressed){
+            if(!gamepad1.dpad_down && upPressed){
                 upPressed = false;
             }
-            if(!gamepad1.dpad_down && downPressed){
+            if(!gamepad1.dpad_up && downPressed){
                 downPressed = false;
             }
 
 
-            if(gamepad1.a){
-                if(cursor == 0){
-                    telemetry.addData(arrow[0] + " )Item 0 ", true);
-                }
-                if(cursor == 1){
-                    telemetry.addData(arrow[1] + ")Item 1 ", true);
+            if(gamepad1.a && !aPressed){
+                //set true
+                for(int i = 0; i == cursorB.length -1; i++){
+                    int check = boolItems[i];
+                    if(check == cursor){
+                        cursorB[cursor] = true;
+                    }
                 }
 
+                aPressed = true;
             }
-            if(gamepad1.b){
+            if(gamepad1.b && !bPressed){
                 //set false
-                if(cursor == 0){
-                    telemetry.addData(arrow[0] + " )Item 0 ", false);
-                }
-                if(cursor == 1){
-                    telemetry.addData(arrow[1] + ")Item 1 ", false);
-                }
-            }
+                cursorB[cursor] = false;
 
-            if(!gamepad1.a && aPressed){
+                bPressed = true;
+            }
+            //single button
+            if (!gamepad1.a && aPressed){
                 aPressed = false;
             }
             if(!gamepad1.b && bPressed){
                 bPressed = false;
             }
+
+
+            telemetry.addData(arrow[0] + " )Item 0 ", cursorB[0]);
+            telemetry.addData(arrow[1] + " )Item 1 ", cursorB[1]);
+            telemetry.addData(arrow[2] + " )Item 2 ", cursorB[2]);
+            telemetry.addData(arrow[3] + " )Item 3 ", cursorI[0]);
+            telemetry.addData(arrow[4] + " )Item 4 ", cursorB[3]);
+            telemetry.update();
         }
     }
 }

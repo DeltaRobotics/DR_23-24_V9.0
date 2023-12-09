@@ -4,6 +4,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -41,6 +43,14 @@ public class redBoardSide extends LinearOpMode{
     int y;
     double finalAngle;
 
+    //non-wheels
+    public Servo launcher = null;
+    public DcMotor slidesL = null;
+    public DcMotor slidesR = null;
+    public Servo clawL = null;
+    public Servo clawR = null;
+    public Servo wrist = null;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -50,6 +60,21 @@ public class redBoardSide extends LinearOpMode{
         //telemetry = dashboard.getTelemetry();
 
         robotHardware robot = new robotHardware(hardwareMap);
+
+        launcher = hardwareMap.servo.get("launcher");
+        slidesR = hardwareMap.dcMotor.get("slidesR");
+        slidesL = hardwareMap.dcMotor.get("slidesL");
+        clawL = hardwareMap.servo.get("clawL");
+        clawR = hardwareMap.servo.get("clawR");
+        wrist = hardwareMap.servo.get("wrist");
+
+        slidesR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slidesL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        slidesR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slidesL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         robot.resetDriveEncoders();
 
@@ -100,25 +125,25 @@ public class redBoardSide extends LinearOpMode{
                 startingPos = 4;
             }
 
-            robot.slidesR.setTargetPosition(slideEncoder);
-            robot.slidesR.setPower(.5);
-            robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slidesR.setTargetPosition(slideEncoder);
+            slidesR.setPower(.5);
+            slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            robot.slidesL.setTargetPosition(slideEncoder);
-            robot.slidesL.setPower(.5);
-            robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slidesL.setTargetPosition(slideEncoder);
+            slidesL.setPower(.5);
+            slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            if (robot.slidesL.getCurrentPosition() > 300 && !pixelGrab){
-                robot.wrist.setPosition(.4);
+            if (slidesL.getCurrentPosition() > 300 && !pixelGrab){
+                wrist.setPosition(.4);
                 doubleLoop = servoTime.seconds();
                 pixelGrab = true;
             }
             if (doubleLoop + .75 < servoTime.seconds()){
-                robot.clawR.setPosition(1);
-                robot.clawL.setPosition(0);
+                clawR.setPosition(1);
+                clawL.setPosition(0);
             }
             if (doubleLoop + 2 < servoTime.seconds()){
-                robot.wrist.setPosition(.55);
+                wrist.setPosition(.55);
             }
             if (doubleLoop + 3 < servoTime.seconds()){
                 slideEncoder = 50;
@@ -155,13 +180,13 @@ public class redBoardSide extends LinearOpMode{
 
                 robot.goToPosSingle(x, y, finalAngle, Math.toRadians(90));
 
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
 
@@ -179,23 +204,23 @@ public class redBoardSide extends LinearOpMode{
             slideEncoder = 1500;
 
             //move slides down
-            while(robot.slidesL.getCurrentPosition() > 1500){
+            while(slidesL.getCurrentPosition() > 1500){
 
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 robot.refresh(robot.odometers);
             }
 
             robot.wait(1000, robot.odometers);
 
-            robot.clawL.setPosition(.1);
-            robot.clawR.setPosition(.7);
+            clawL.setPosition(.1);
+            clawR.setPosition(.7);
 
             robot.wait(1000, robot.odometers);
 
@@ -214,13 +239,13 @@ public class redBoardSide extends LinearOpMode{
 
                 robot.goToPosSingle(x, y, finalAngle, Math.toRadians(-90));
 
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
 
@@ -245,14 +270,14 @@ public class redBoardSide extends LinearOpMode{
             }
 
             slideEncoder = 0;
-            while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            while(slidesL.getCurrentPosition() > 10 && slidesR.getCurrentPosition() > 10){
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
             //While loop for goToPosSingle:
@@ -284,13 +309,13 @@ public class redBoardSide extends LinearOpMode{
 
                 robot.goToPosSingle(x, y, finalAngle, 0);
 
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
 
@@ -308,23 +333,23 @@ public class redBoardSide extends LinearOpMode{
             slideEncoder = 1500;
 
             //move slides down
-            while(robot.slidesL.getCurrentPosition() > 1500){
+            while(slidesL.getCurrentPosition() > 1500){
 
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 robot.refresh(robot.odometers);
             }
 
             robot.wait(1000, robot.odometers);
 
-            robot.clawL.setPosition(.1);
-            robot.clawR.setPosition(.7);
+            clawL.setPosition(.1);
+            clawR.setPosition(.7);
 
             robot.wait(1000, robot.odometers);
 
@@ -343,13 +368,13 @@ public class redBoardSide extends LinearOpMode{
 
                 robot.goToPosSingle(x, y, finalAngle, Math.toRadians(-90));
 
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
 
@@ -374,14 +399,14 @@ public class redBoardSide extends LinearOpMode{
             }
 
             slideEncoder = 0;
-            while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            while(slidesL.getCurrentPosition() > 10 && slidesR.getCurrentPosition() > 10){
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
             //While loop for goToPosSingle:
@@ -418,13 +443,13 @@ public class redBoardSide extends LinearOpMode{
 
                 robot.goToPosSingle(x, y, finalAngle, 0);
 
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
 
@@ -442,23 +467,23 @@ public class redBoardSide extends LinearOpMode{
 
             slideEncoder = 1500;
 
-            while(robot.slidesL.getCurrentPosition() > 1500){
+            while(slidesL.getCurrentPosition() > 1500){
 
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 robot.refresh(robot.odometers);
             }
 
             robot.wait(500, robot.odometers);
 
-            robot.clawL.setPosition(.1);
-            robot.clawR.setPosition(.7);
+            clawL.setPosition(.1);
+            clawR.setPosition(.7);
 
             robot.wait(500, robot.odometers);
 
@@ -477,13 +502,13 @@ public class redBoardSide extends LinearOpMode{
 
                 robot.goToPosSingle(x, y, finalAngle, Math.toRadians(-90));
 
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
 
@@ -508,14 +533,14 @@ public class redBoardSide extends LinearOpMode{
             }
 
             slideEncoder = 0;
-            while(robot.slidesL.getCurrentPosition() > 10 && robot.slidesR.getCurrentPosition() > 10){
-                robot.slidesR.setTargetPosition(slideEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            while(slidesL.getCurrentPosition() > 10 && slidesR.getCurrentPosition() > 10){
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(.5);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                robot.slidesL.setTargetPosition(slideEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
             //While loop for goToPosSingle:

@@ -15,7 +15,7 @@ public class driveWithOdo extends LinearOpMode{
 
         robot.resetDriveEncoders();
 
-        robot.launcher.setPosition(1);
+        //robot.launcher.setPosition(1);
 
 
         int armSetPos = 0;

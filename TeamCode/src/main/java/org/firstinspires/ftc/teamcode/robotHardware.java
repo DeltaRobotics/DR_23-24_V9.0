@@ -29,14 +29,6 @@ public class robotHardware extends LinearOpMode
     public DcMotor rightEncoder = null;
     public DcMotor perpendicularEncoder = null;
 
-    //non-wheels
-    public Servo launcher = null;
-    public DcMotor slidesL = null;
-    public DcMotor slidesR = null;
-    public Servo clawL = null;
-    public Servo clawR = null;
-    public Servo wrist = null;
-
     DcMotor[] odometers = new DcMotor[3];
     DcMotor[] drive = new DcMotor[4];
     VoltageSensor ControlHub_VoltageSensor = null;
@@ -106,13 +98,6 @@ public class robotHardware extends LinearOpMode
         motorRB = ahwMap.dcMotor.get("motorRB");
         motorLB = ahwMap.dcMotor.get("motorLB");
 
-        launcher = ahwMap.servo.get("launcher");
-        slidesR = ahwMap.dcMotor.get("slidesR");
-        slidesL = ahwMap.dcMotor.get("slidesL");
-        clawL = ahwMap.servo.get("clawL");
-        clawR = ahwMap.servo.get("clawR");
-        wrist = ahwMap.servo.get("wrist");
-
         //drive motors and odometry encoders
         motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -124,14 +109,6 @@ public class robotHardware extends LinearOpMode
         motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        slidesR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        slidesL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        slidesR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        slidesL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
-
         motorLF.setDirection(DcMotorSimple.Direction.REVERSE);
         motorLB.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -142,8 +119,8 @@ public class robotHardware extends LinearOpMode
 
 
         //odometry init (use the motors objects that the odometers are plugged into)
-        leftEncoder = motorRB;
-        rightEncoder = motorLF;
+        leftEncoder = motorLB;
+        rightEncoder = motorRB;
         perpendicularEncoder = motorRF;
 
         odometers[0] = leftEncoder;

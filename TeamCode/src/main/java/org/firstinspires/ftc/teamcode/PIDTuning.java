@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name="PIDTuning")
-//@Disabled
+@Disabled
 
 public class PIDTuning extends LinearOpMode
 {

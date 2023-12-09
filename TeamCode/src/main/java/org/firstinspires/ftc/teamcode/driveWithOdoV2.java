@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="driveWithOdoV2")
 //@Disabled
@@ -23,6 +24,14 @@ public class driveWithOdoV2 extends LinearOpMode{
     boolean wristAdjustA = true;
     boolean wristAdjustB = true;
 
+    //non-wheels
+    public Servo launcher = null;
+    public DcMotor slidesL = null;
+    public DcMotor slidesR = null;
+    public Servo clawL = null;
+    public Servo clawR = null;
+    public Servo wrist = null;
+
 
     public void runOpMode() throws InterruptedException {
 
@@ -30,9 +39,9 @@ public class driveWithOdoV2 extends LinearOpMode{
 
         robot.resetDriveEncoders();
 
-        robot.launcher.setPosition(0.75);
-        robot.clawL.setPosition(0.1);
-        robot.clawR.setPosition(0.7);
+        launcher.setPosition(0.75);
+        clawL.setPosition(0.1);
+        clawR.setPosition(0.7);
 
         waitForStart();
 
@@ -47,8 +56,8 @@ public class driveWithOdoV2 extends LinearOpMode{
             if(gamepad1.right_trigger > .5 && gamepad1.left_trigger > .5){
                 //launch drone
                 slideEncoder = 0;
-                if(robot.slidesL.getCurrentPosition() < 100) {
-                    robot.launcher.setPosition(0.6);
+                if(slidesL.getCurrentPosition() < 100) {
+                    launcher.setPosition(0.6);
                 }
             }
             //if(gamepad1.dpad_right){
@@ -59,15 +68,15 @@ public class driveWithOdoV2 extends LinearOpMode{
             //claw
             if(gamepad1.right_bumper){
                 //open
-                robot.clawL.setPosition(.1);
-                robot.clawR.setPosition(.7);
+                clawL.setPosition(.1);
+                clawR.setPosition(.7);
                 clawOpen = true;
                 oldLoop = loopNumber;
             }
             if(gamepad1.left_bumper){
                 //close
-                robot.clawL.setPosition(0);
-                robot.clawR.setPosition(1);
+                clawL.setPosition(0);
+                clawR.setPosition(1);
                 clawOpen = false;
                 oldLoop = loopNumber;
             }
@@ -98,7 +107,7 @@ public class driveWithOdoV2 extends LinearOpMode{
             }
             else if(gamepad1.b){
                 //slides low
-                slideEncoder = 2000;
+                slideEncoder = 1900;
                 wristPower = .55;
             }
             else if(gamepad1.x){
@@ -113,7 +122,7 @@ public class driveWithOdoV2 extends LinearOpMode{
             }
 
             //changes the power if going up or down
-            if(slideEncoder > robot.slidesL.getCurrentPosition()){
+            if(slideEncoder > slidesL.getCurrentPosition()){
                 slidePower = 1;
             }
             else{
@@ -138,15 +147,15 @@ public class driveWithOdoV2 extends LinearOpMode{
                 wristAdjustB = true;
             }
             //.5 and .47 for wrist set pos
-            robot.wrist.setPosition(wristPower);
+            wrist.setPosition(wristPower);
 
-            robot.slidesR.setTargetPosition(slideEncoder);
-            robot.slidesR.setPower(slidePower);
-            robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slidesR.setTargetPosition(slideEncoder);
+            slidesR.setPower(slidePower);
+            slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            robot.slidesL.setTargetPosition(slideEncoder);
-            robot.slidesL.setPower(slidePower);
-            robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slidesL.setTargetPosition(slideEncoder);
+            slidesL.setPower(slidePower);
+            slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
             loopNumber++;
@@ -156,7 +165,7 @@ public class driveWithOdoV2 extends LinearOpMode{
             telemetry.addData("y",robot.GlobalY);
             telemetry.addData("heading",Math.toDegrees(robot.GlobalHeading));
             telemetry.addData("slide encoder",slideEncoder);
-            telemetry.addData("servo", robot.wrist.getPosition());
+            telemetry.addData("servo", wrist.getPosition());
             telemetry.update();
         }
     }
