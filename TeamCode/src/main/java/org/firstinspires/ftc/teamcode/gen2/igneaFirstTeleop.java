@@ -43,13 +43,20 @@ public class igneaFirstTeleop extends LinearOpMode{
     public boolean servoAdjust = true;
 
     public double servoVariable = 0;
-    public double ShoulderPos = 0.8;
+    public double ShoulderPos = 0.5;
 
     public boolean stickDropping = false;
+
+    public boolean unoPixo = false;
+
+    public boolean rightBumper = true;
+    public boolean leftBumper = true;
 
     public void runOpMode() throws InterruptedException {
 
         robotHardware robot = new robotHardware(hardwareMap);
+
+        robot.resetDriveEncoders();
 
         ElapsedTime servoTime = new ElapsedTime();
 
@@ -70,6 +77,7 @@ public class igneaFirstTeleop extends LinearOpMode{
         slidesL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         slidesR.setDirection(DcMotorSimple.Direction.REVERSE);
+        slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
@@ -77,11 +85,14 @@ public class igneaFirstTeleop extends LinearOpMode{
 
         while(!isStarted() && !isStopRequested()){
 
-            shoulder.setPosition(0.8);
-            wrist.setPosition(.75);
-            elbow.setPosition(.51);
+            shoulder.setPosition(.1);
+            wrist.setPosition(.82);
+            elbow.setPosition(.48);
+            finger.setPosition(.75);
+            intakeServo.setPosition(0.78);
 
-            intakeServo.setPosition(0);
+            //intakeServo intake pos = .55
+            //max slide distance = 730
 
             //servoVariable = servoTime.seconds();
             //if (servoTime.seconds() == servoVariable + 1){
@@ -91,100 +102,141 @@ public class igneaFirstTeleop extends LinearOpMode{
 
         while (opModeIsActive()) {
 
-            //robot.mecanumDrive(gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, 0.75);
+            robot.refresh(robot.odometers);
 
+            robot.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, 0.75);
+
+            intakeServo.setPosition(.58);
+            if(gamepad2.a){
+                shoulder.setPosition(shoulder.getPosition()+.01);
+            }
+            if(gamepad2.b){
+                shoulder.setPosition(shoulder.getPosition()-.01);
+            }
+            if(gamepad2.x){
+                wrist.setPosition(wrist.getPosition()+.01);
+            }
+            if(gamepad2.y){
+                wrist.setPosition(wrist.getPosition()-.01);
+            }
+
+            //servo stick set positions
             if(gamepad1.a){
-                //Finger.setPosition(0.15);
+                //placing
+                wrist.setPosition(.35);
+                elbow.setPosition(.68);
+                shoulder.setPosition(.55);
             }
             if(gamepad1.b){
-                //Finger.setPosition(.49);
+                //collecting
+                wrist.setPosition(.21);
+                elbow.setPosition(.68);
+                shoulder.setPosition(.7);
             }
             if(gamepad1.x){
-                //Finger.setPosition(1);
+                shoulder.setPosition(.65);
             }
+            telemetry.addData("shoulder",shoulder.getPosition());
+            telemetry.addData("wrist",wrist.getPosition());
+            telemetry.addData("elbow",elbow.getPosition());
+            telemetry.addData("finger",finger.getPosition());
+
+            if(gamepad1.left_bumper && leftBumper){
+                finger.setPosition(finger.getPosition()+.01);
+                unoPixo = false;
+                leftBumper = false;
+            }
+            if(gamepad1.right_bumper && rightBumper){
+                //2 pixel code .5
+                finger.setPosition(finger.getPosition()-.01);
+
+                unoPixo = true;
+                rightBumper = false;
+            }
+            if(gamepad1.right_bumper && unoPixo && rightBumper){
+                //1 pixel code = .3
+                finger.setPosition(finger.getPosition()-.01);
+
+                rightBumper = false;
+            }
+
+            if (!gamepad1.right_bumper && !rightBumper){
+                rightBumper = true;
+            }
+            if(!gamepad1.left_bumper && !leftBumper){
+                leftBumper = true;
+            }
+
 
             //intake
             if(gamepad1.right_trigger > 0.5){
-                intake.setPower(0.7);
+                intake.setPower(0.65);
             }
-            if(gamepad1.left_trigger > 0.5){
+            else if(gamepad1.left_trigger > 0.5){
                 intake.setPower(-0.55);
             }
-            if(intake.getPower() != 0 && (gamepad1.left_trigger > 0.5 || gamepad1.right_trigger > 0.5)){
+            else {
                 intake.setPower(0);
             }
-
-            //slides fine adjust
-            if(gamepad1.right_bumper && slidesUp){
-                //adjust up small amount
-                slideEncoder += 10;
-                slidesUp = false;
-            }
-            else if(!gamepad1.right_bumper && !slidesUp){
-                slidesUp = true;
-            }
-            if(gamepad1.left_bumper && slidesDown){
-                //adjust down small amount
-                slideEncoder -= 10;
-                slidesDown = false;
-            }
-            else if(!gamepad1.left_bumper && !slidesDown){
-                slidesDown = true;
-            }
+            //if(intake.getPower() != 0 && (gamepad1.left_trigger > 0.5 || gamepad1.right_trigger > 0.5)){
+            //    intake.setPower(0);
+            //}
 
             //servo fine adjust
-            if (gamepad1.back && servoAdjust || servoVariable > 0){
-
-                if(!stickDropping) {
-                    servoVariable = servoTime.milliseconds();
-                    stickDropping = true;
-                }
-
-                ShoulderPos = .9;
-                if (servoVariable <= servoTime.milliseconds() + 200){
-                    ShoulderPos = .91;
-                }
-                if (servoVariable <= servoTime.milliseconds() + 400){
-                    ShoulderPos = .92;
-                }
-                if (servoVariable <= servoTime.milliseconds() + 600){
-                    ShoulderPos = .93;
-                }
-                if (servoVariable <= servoTime.milliseconds() + 800){
-                    ShoulderPos = .94;
-                }
-                if (servoVariable <= servoTime.milliseconds() + 1000){
-                    ShoulderPos = .95;
-                    servoVariable = 0;
-                    stickDropping = false;
-                }
-
-                shoulder.setPosition(ShoulderPos);
-                servoAdjust = false;
-            }
-            else if (!gamepad1.back && !servoAdjust){
-                servoAdjust = true;
-            }
+            //if (gamepad1.back && servoAdjust || servoVariable > 0){
+//
+            //    if(!stickDropping) {
+            //        servoVariable = servoTime.milliseconds();
+            //        stickDropping = true;
+            //    }
+//
+            //    ShoulderPos = .9;
+            //    if (servoVariable + 200 < servoTime.milliseconds()){
+            //        ShoulderPos = .91;
+            //    }
+            //    if (servoVariable + 400 < servoTime.milliseconds()){
+            //        ShoulderPos = .92;
+            //    }
+            //    if (servoVariable + 600 < servoTime.milliseconds()){
+            //        ShoulderPos = .93;
+            //    }
+            //    if (servoVariable + 800 < servoTime.milliseconds()){
+            //        ShoulderPos = .94;
+            //    }
+            //    if (servoVariable + 1000 < servoTime.milliseconds()){
+            //        ShoulderPos = .95;
+            //        servoVariable = 0;
+            //        stickDropping = false;
+            //    }
+//
+            //    shoulder.setPosition(ShoulderPos);
+            //    servoAdjust = false;
+            //}
+            //else if (!gamepad1.back && !servoAdjust){
+            //    servoAdjust = true;
+            //}
 
 
 
             //slides
             if(gamepad1.dpad_up){
                 slidesRasied = true;
-                //slides high
+                //stacks high
+                slideEncoder = 650;
 
                 stick_mid();
             }
             if(gamepad1.dpad_right){
                 slidesRasied = true;
                 //slides mid
+                slideEncoder = 400;
 
                 stick_mid();
             }
             if(gamepad1.dpad_down){
                 slidesRasied = true;
                 //slides low
-                slideEncoder = 100;
+                slideEncoder = 150;
 
                 stick_mid();
             }
@@ -197,6 +249,7 @@ public class igneaFirstTeleop extends LinearOpMode{
 
             }
 
+            /**
             //manipulator controls
             if(slidesRasied){
                 if(stickPosition == 0){
@@ -251,7 +304,6 @@ public class igneaFirstTeleop extends LinearOpMode{
             if(gamepad2.b && stickPosition >= 0){
                 stickPosition -= 1;
             }
-            telemetry.update();
 
             //larger stick adjust
             if(gamepad2.dpad_up){
@@ -263,15 +315,31 @@ public class igneaFirstTeleop extends LinearOpMode{
             if(gamepad2.dpad_down){
                 stick_bottom();
             }
+             **/
 
-            slidesL.setTargetPosition(slideEncoder);
-            slidesL.setPower(.5);
-            slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if(slidesR.getCurrentPosition() < 20 && slideEncoder < 20){
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(0);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            slidesR.setTargetPosition(slideEncoder);
-            slidesR.setPower(.5);
-            slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(0);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            else {
+                slidesL.setTargetPosition(slideEncoder);
+                slidesL.setPower(1);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+                slidesR.setTargetPosition(slideEncoder);
+                slidesR.setPower(1);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+
+
+            telemetry.addData("x",robot.GlobalX);
+            telemetry.addData("y",robot.GlobalY);
+            telemetry.addData("heading",Math.toDegrees(robot.GlobalHeading));
             telemetry.addData("slide Encoder value", slideEncoder);
             telemetry.update();
         }

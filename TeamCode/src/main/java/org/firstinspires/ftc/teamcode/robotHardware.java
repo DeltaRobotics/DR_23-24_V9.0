@@ -29,15 +29,15 @@ public class robotHardware extends LinearOpMode
     public DcMotor rightEncoder = null;
     public DcMotor perpendicularEncoder = null;
 
-    DcMotor[] odometers = new DcMotor[3];
-    DcMotor[] drive = new DcMotor[4];
+    public DcMotor[] odometers = new DcMotor[3];
+    public DcMotor[] drive = new DcMotor[4];
     VoltageSensor ControlHub_VoltageSensor = null;
 
-    double moveSpeed = 0.5;
-    double turnSpeed = 0.5;
+    public double moveSpeed = 0.5;
+    public double turnSpeed = 0.5;
 
-    double moveAccuracy  = 1;
-    double angleAccuracy = Math.toRadians(1);
+    public double moveAccuracy  = 1;
+    public double angleAccuracy = Math.toRadians(1);
 
     //PID Drive Variables
 
@@ -109,8 +109,8 @@ public class robotHardware extends LinearOpMode
         motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorLF.setDirection(DcMotorSimple.Direction.REVERSE);
         motorLB.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorRF.setDirection(DcMotorSimple.Direction.REVERSE);
 
         motorRF.setPower(0);
         motorLF.setPower(0);
@@ -119,9 +119,9 @@ public class robotHardware extends LinearOpMode
 
 
         //odometry init (use the motors objects that the odometers are plugged into)
-        leftEncoder = motorLB;
-        rightEncoder = motorRB;
-        perpendicularEncoder = motorRF;
+        leftEncoder = motorRF;
+        rightEncoder = motorLF;
+        perpendicularEncoder = motorRB;
 
         odometers[0] = leftEncoder;
         odometers[1] = rightEncoder;
@@ -265,8 +265,8 @@ public class robotHardware extends LinearOpMode
      */
 
     //odometry constants (tune these)
-    double L = 10.36;   //distance between left and right odometers (in inches)
-    double B = 5.25;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
+    double L = 16.2;   //distance between left and right odometers (in inches)
+    double B = 4.875;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
     double R = .7514;   //wheel radius (in inches)
     double N = 8192;  //encoder ticks per revoluton
     double inPerTick = 2.0 * Math.PI * R / N;
@@ -330,8 +330,8 @@ public class robotHardware extends LinearOpMode
         //add the robots movement this loop to the global location
         double theta = (dtheta / 2.0);
         GlobalHeading += dtheta;
-        GlobalX += dx * Math.cos(GlobalHeading) + dy * Math.sin(GlobalHeading);
-        GlobalY -= dx * Math.sin(GlobalHeading) - dy * Math.cos(GlobalHeading);
+        GlobalX -= dx * Math.cos(GlobalHeading) + dy * Math.sin(GlobalHeading);
+        GlobalY += dx * Math.sin(GlobalHeading) - dy * Math.cos(GlobalHeading);
 
 
         //makes heading 180 to -180
@@ -419,8 +419,8 @@ public class robotHardware extends LinearOpMode
             double slowDown = Range.clip(odoDrivePID(distanceToTarget,0), 0, moveSpeed);
 
             //calculate the vector powers for the mecanum math
-            double movementXpower = (-reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
-            double movementYpower = (-reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
+            double movementXpower = (reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
+            double movementYpower = (reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
 
             //when far away from the target the robot will point at the target to get there faster.
             //at the end of the movement the robot will begin moving toward the desired final angle
@@ -435,7 +435,7 @@ public class robotHardware extends LinearOpMode
             }
 
             //set the motors to the correct powers to move toward the target
-            mecanumDrive(movementXpower, movementYpower, movementTurnPower, voltComp);
+            mecanumDrive(movementXpower, movementYpower, -movementTurnPower, voltComp);
         }
 
         //at the end of the movement stop the motors
@@ -470,8 +470,8 @@ public class robotHardware extends LinearOpMode
             double slowDown = Range.clip(odoDrivePID(distanceToTarget,0), 0, moveSpeed);
 
             //calculate the vector powers for the mecanum math
-            double movementXpower = (-reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
-            double movementYpower = (-reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
+            double movementXpower = (reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
+            double movementYpower = (reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
             if (Double.isNaN(movementYpower)){
                 movementYpower = 0;
             }
@@ -493,7 +493,7 @@ public class robotHardware extends LinearOpMode
             }
 
             //set the motors to the correct powers to move toward the target
-            mecanumDrive(movementXpower, movementYpower, movementTurnPower, voltComp);
+            mecanumDrive(movementXpower, movementYpower, -movementTurnPower, voltComp);
 
     }
 

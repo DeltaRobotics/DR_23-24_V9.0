@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.gen2;
 
 //import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -11,15 +11,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Camera.PoleDetectionPipeline;
+import org.firstinspires.ftc.teamcode.robotHardware;
 import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name="blueDepotSide")
+@Autonomous(name="blueWingSide")
 @Disabled
 
-public class blueDepotSide extends LinearOpMode{
+public class blueWingSide extends LinearOpMode{
 
     private OpenCvCamera camera;//find webcam statement
 
@@ -45,12 +46,9 @@ public class blueDepotSide extends LinearOpMode{
     double finalAngle;
 
     //non-wheels
-    public Servo launcher = null;
     public DcMotor slidesL = null;
     public DcMotor slidesR = null;
-    public Servo clawL = null;
-    public Servo clawR = null;
-    public Servo wrist = null;
+    public DcMotor intake = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -62,20 +60,10 @@ public class blueDepotSide extends LinearOpMode{
 
         robotHardware robot = new robotHardware(hardwareMap);
 
-        launcher = hardwareMap.servo.get("launcher");
+        intake = hardwareMap.dcMotor.get("intake");
+
         slidesR = hardwareMap.dcMotor.get("slidesR");
         slidesL = hardwareMap.dcMotor.get("slidesL");
-        clawL = hardwareMap.servo.get("clawL");
-        clawR = hardwareMap.servo.get("clawR");
-        wrist = hardwareMap.servo.get("wrist");
-
-        slidesR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        slidesL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        slidesR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        slidesL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         robot.resetDriveEncoders();
 
@@ -86,7 +74,7 @@ public class blueDepotSide extends LinearOpMode{
         PoleDetectionPipeline myPipeline;
         camera.setPipeline(myPipeline = new PoleDetectionPipeline());
         // Configuration of PoleDetectionPipeline
-        myPipeline.ConfigurePipeline(75, 75,50,125,  CAMERA_WIDTH, CAMERA_HEIGHT);
+        myPipeline.ConfigurePipeline(0, 0,50,50,  CAMERA_WIDTH, CAMERA_HEIGHT);
         myPipeline.ConfigureScalarLower(scalarLowerYCrCb.val[0],scalarLowerYCrCb.val[1],scalarLowerYCrCb.val[2]);
         myPipeline.ConfigureScalarUpper(scalarUpperYCrCb.val[0],scalarUpperYCrCb.val[1],scalarUpperYCrCb.val[2]);
 
@@ -114,13 +102,13 @@ public class blueDepotSide extends LinearOpMode{
         //this replaces waitForStart()
 
         while(!isStarted() && !isStopRequested()){
-            if(myPipeline.getRectMidpointX() >= 220 && myPipeline.getRectMidpointX() <= 400){
+            if(myPipeline.getRectMidpointX() >= 240 && myPipeline.getRectMidpointX() <= 370){
                 telemetry.addData("location", 2);
                 startingPos = 2;
-            } else if(myPipeline.getRectMidpointX() >= 420 && myPipeline.getRectMidpointX() <= 600){
+            } else if(myPipeline.getRectMidpointX() >= 430 && myPipeline.getRectMidpointX() <= 525){
                 telemetry.addData("location", 1);
                 startingPos = 1;
-            } else if(myPipeline.getRectMidpointX() >= 80 && myPipeline.getRectMidpointX() <= 210){
+            } else if(myPipeline.getRectMidpointX() >= 75 && myPipeline.getRectMidpointX() <= 160){
                 telemetry.addData("location", 3);
                 startingPos = 3;
             } else{
@@ -128,103 +116,28 @@ public class blueDepotSide extends LinearOpMode{
                 startingPos = 1;
             }
 
-            slidesR.setTargetPosition(slideEncoder);
-            slidesR.setPower(.5);
-            slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            slidesL.setTargetPosition(slideEncoder);
-            slidesL.setPower(.5);
-            slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            if (slidesL.getCurrentPosition() > 300 && !pixelGrab){
-                wrist.setPosition(.4);
-                doubleLoop = servoTime.seconds();
-                pixelGrab = true;
-            }
-            if (doubleLoop + .75 < servoTime.seconds()){
-                clawR.setPosition(1);
-                clawL.setPosition(0);
-            }
-            if (doubleLoop + 2 < servoTime.seconds()){
-                wrist.setPosition(.55);
-            }
-            if (doubleLoop + 3 < servoTime.seconds()){
-                slideEncoder = 50;
-            }
 
             //telemetry.addData("x", myPipeline.getRectMidpointX());
             //telemetry.addData("y", myPipeline.getRectMidpointY());
             telemetry.update();
         }
+        camera.stopStreaming();
         if(startingPos == 1){
-            //starting left
             camera.stopStreaming();
-            //place purple pixel
-            robot.goToPos(18,0,0,0);
-            robot.goToPos(12,0,0,0);
-            robot.goToPos(12,-18,0,Math.toRadians(-90));
-            robot.goToPos(24,-18,0,0);
-            robot.goToPos(24,4,0,Math.toRadians(90));
+            //starting left
+            //first drive forward
 
-            robot.goToPos(25,2,0,0);
-
-            slideEncoder = 0;
-            while(slidesL.getCurrentPosition() > 10 && slidesR.getCurrentPosition() > 10){
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
         }
         else if(startingPos == 2){
-            //starting middle
             camera.stopStreaming();
+            //starting middle
             //first drive forward
-            robot.goToPos(24,0,Math.toRadians(-25),0);
 
-            //back up
-            robot.goToPos(22,0,0,0);
-
-            slideEncoder = 0;
-            while(slidesL.getCurrentPosition() > 10 && slidesR.getCurrentPosition() > 10){
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
         }
         else if(startingPos == 3){
-            //starting right
             camera.stopStreaming();
-            //first drive forward
-            robot.goToPos(16,0,0,0);
+            //starting right
 
-            //nudging pixel mess
-            robot.changeSpeed(.25,.25);
-            robot.goToPos(13,0,0,0);
-            robot.goToPos(16,3,Math.toRadians(-30),Math.toRadians(-30));
-            robot.goToPos(16,0,0,Math.toRadians(90));
-            robot.changeSpeed(.5,.5);
-
-            //move back
-            robot.goToPos(10,0,0,0);
-
-            slideEncoder = 0;
-            while(slidesL.getCurrentPosition() > 10 && slidesR.getCurrentPosition() > 10){
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
         }
 
     }
