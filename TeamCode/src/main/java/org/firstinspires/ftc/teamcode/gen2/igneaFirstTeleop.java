@@ -19,7 +19,7 @@ public class igneaFirstTeleop extends LinearOpMode{
     public Servo wrist = null;
     public Servo shoulder = null;
     public Servo intakeServo = null;
-
+    public Servo shooter = null;
 
     public DcMotor intake = null;
     public DcMotor slidesL = null;
@@ -43,7 +43,8 @@ public class igneaFirstTeleop extends LinearOpMode{
     public boolean servoAdjust = true;
 
     public double servoVariable = 0;
-    public double ShoulderPos = 0.5;
+    public double servoVariable2 = 0;
+    public double shoulderPos = 0.5;
 
     public boolean stickDropping = false;
 
@@ -51,6 +52,10 @@ public class igneaFirstTeleop extends LinearOpMode{
 
     public boolean rightBumper = true;
     public boolean leftBumper = true;
+
+    public double speed = .75;
+
+    public double wristPos = .79;
 
     public void runOpMode() throws InterruptedException {
 
@@ -65,6 +70,7 @@ public class igneaFirstTeleop extends LinearOpMode{
         wrist = hardwareMap.servo.get("wrist");
         shoulder = hardwareMap.servo.get("shoulder");
         intakeServo = hardwareMap.servo.get("intakeServo");
+        shooter = hardwareMap.servo.get("shooter");
 
         intake = hardwareMap.dcMotor.get("intake");
         slidesL = hardwareMap.dcMotor.get("slidesL");
@@ -78,18 +84,21 @@ public class igneaFirstTeleop extends LinearOpMode{
 
         slidesR.setDirection(DcMotorSimple.Direction.REVERSE);
         slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
-        intake.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        shooter.setPosition(0.75);
 
 
         //0.95 for grabbing from intake
 
         while(!isStarted() && !isStopRequested()){
 
-            shoulder.setPosition(.1);
-            wrist.setPosition(.82);
-            elbow.setPosition(.48);
+            shoulder.setPosition(.08);
+            wrist.setPosition(.96);
+            elbow.setPosition(.77);
             finger.setPosition(.75);
             intakeServo.setPosition(0.78);
+            // shoulder = .57
+            // wrist = .52 for yellow pixel
 
             //intakeServo intake pos = .55
             //max slide distance = 730
@@ -104,9 +113,10 @@ public class igneaFirstTeleop extends LinearOpMode{
 
             robot.refresh(robot.odometers);
 
-            robot.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, 0.75);
+            robot.mecanumDrive(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x, speed);
 
-            intakeServo.setPosition(.58);
+            intakeServo.setPosition(.56);
+
             if(gamepad2.a){
                 shoulder.setPosition(shoulder.getPosition()+.01);
             }
@@ -119,22 +129,57 @@ public class igneaFirstTeleop extends LinearOpMode{
             if(gamepad2.y){
                 wrist.setPosition(wrist.getPosition()-.01);
             }
+            if(gamepad2.dpad_left){
+                elbow.setPosition(elbow.getPosition()+.01);
+            }
+            if(gamepad2.dpad_right){
+                elbow.setPosition(elbow.getPosition()-.01);
+            }
 
             //servo stick set positions
-            if(gamepad1.a){
-                //placing
-                wrist.setPosition(.35);
-                elbow.setPosition(.68);
-                shoulder.setPosition(.55);
-            }
             if(gamepad1.b){
-                //collecting
-                wrist.setPosition(.21);
-                elbow.setPosition(.68);
-                shoulder.setPosition(.7);
+                //placing
+                wrist.setPosition(.47);
+                elbow.setPosition(.77);
+                shoulder.setPosition(.55);
+                speed = .75;
             }
-            if(gamepad1.x){
-                shoulder.setPosition(.65);
+            if(gamepad1.x || servoVariable > 0){
+                //collecting
+                speed = .4;
+                wrist.setPosition(.41);
+                elbow.setPosition(.77);
+                shoulderPos = .50;
+
+                if(!stickDropping) {
+                    servoVariable = servoTime.milliseconds();
+                    stickDropping = true;
+                }
+
+                if (servoVariable + 200 < servoTime.milliseconds()){
+                    shoulderPos = .62;
+                }
+                if (servoVariable + 400 < servoTime.milliseconds()){
+                    shoulderPos = .66;
+                }
+                if (servoVariable + 600 < servoTime.milliseconds()){
+                    shoulderPos = .68;
+                    servoVariable = 0;
+                    stickDropping = false;
+                }
+
+                shoulder.setPosition(shoulderPos);
+            }
+            if(gamepad1.y){
+                //.72
+                // on ground
+                shoulder.setPosition(.72);
+            }
+            if(gamepad1.a){
+                //in robot
+                shoulder.setPosition(.15);
+                wrist.setPosition(.81);
+                elbow.setPosition(.77);
             }
             telemetry.addData("shoulder",shoulder.getPosition());
             telemetry.addData("wrist",wrist.getPosition());
@@ -142,20 +187,21 @@ public class igneaFirstTeleop extends LinearOpMode{
             telemetry.addData("finger",finger.getPosition());
 
             if(gamepad1.left_bumper && leftBumper){
-                finger.setPosition(finger.getPosition()+.01);
+                finger.setPosition(.75);
+                //change this to finger .75
                 unoPixo = false;
                 leftBumper = false;
             }
-            if(gamepad1.right_bumper && rightBumper){
+            if(gamepad1.right_bumper && !unoPixo && rightBumper){
                 //2 pixel code .5
-                finger.setPosition(finger.getPosition()-.01);
+                finger.setPosition(.5);
 
                 unoPixo = true;
                 rightBumper = false;
             }
             if(gamepad1.right_bumper && unoPixo && rightBumper){
                 //1 pixel code = .3
-                finger.setPosition(finger.getPosition()-.01);
+                finger.setPosition(.3);
 
                 rightBumper = false;
             }
@@ -167,54 +213,53 @@ public class igneaFirstTeleop extends LinearOpMode{
                 leftBumper = true;
             }
 
-
             //intake
             if(gamepad1.right_trigger > 0.5){
-                intake.setPower(0.65);
+                intake.setPower(0.85);
             }
             else if(gamepad1.left_trigger > 0.5){
-                intake.setPower(-0.55);
+                intake.setPower(-0.5);
             }
             else {
                 intake.setPower(0);
             }
-            //if(intake.getPower() != 0 && (gamepad1.left_trigger > 0.5 || gamepad1.right_trigger > 0.5)){
-            //    intake.setPower(0);
-            //}
 
             //servo fine adjust
-            //if (gamepad1.back && servoAdjust || servoVariable > 0){
-//
-            //    if(!stickDropping) {
-            //        servoVariable = servoTime.milliseconds();
-            //        stickDropping = true;
-            //    }
-//
-            //    ShoulderPos = .9;
-            //    if (servoVariable + 200 < servoTime.milliseconds()){
-            //        ShoulderPos = .91;
-            //    }
-            //    if (servoVariable + 400 < servoTime.milliseconds()){
-            //        ShoulderPos = .92;
-            //    }
-            //    if (servoVariable + 600 < servoTime.milliseconds()){
-            //        ShoulderPos = .93;
-            //    }
-            //    if (servoVariable + 800 < servoTime.milliseconds()){
-            //        ShoulderPos = .94;
-            //    }
-            //    if (servoVariable + 1000 < servoTime.milliseconds()){
-            //        ShoulderPos = .95;
-            //        servoVariable = 0;
-            //        stickDropping = false;
-            //    }
-//
-            //    shoulder.setPosition(ShoulderPos);
-            //    servoAdjust = false;
-            //}
-            //else if (!gamepad1.back && !servoAdjust){
-            //    servoAdjust = true;
-            //}
+            //.01 shoulder and .77 for wrist
+
+            if (gamepad1.back || servoVariable2 > 0){
+                elbow.setPosition(.81);
+                shoulderPos = .09;
+
+
+                if(!stickDropping) {
+                    servoVariable2 = servoTime.milliseconds();
+                    stickDropping = true;
+                    wrist.setPosition(.85);
+                }
+
+
+                //if (servoVariable2 + 100 < servoTime.milliseconds()){
+                //    shoulderPos = .06;
+                //}
+                //if (servoVariable2 + 200 < servoTime.milliseconds()){
+                    //shoulderPos = .03;
+                    //wrist.setPosition(.76);
+                //}
+
+                if (servoVariable2 + 300 < servoTime.milliseconds()){
+                    //shoulderPos = .01;
+                    servoVariable2 = 0;
+                    stickDropping = false;
+                    wrist.setPosition(.76);
+                }
+                shoulderPos = shoulderPos - ((servoTime.milliseconds() - servoVariable2)*.00026);
+
+                shoulder.setPosition(shoulderPos);
+            }
+            else if (!gamepad1.back && !servoAdjust){
+                servoAdjust = true;
+            }
 
 
 
@@ -222,21 +267,21 @@ public class igneaFirstTeleop extends LinearOpMode{
             if(gamepad1.dpad_up){
                 slidesRasied = true;
                 //stacks high
-                slideEncoder = 650;
+                slideEncoder = 300;
 
                 stick_mid();
             }
             if(gamepad1.dpad_right){
                 slidesRasied = true;
                 //slides mid
-                slideEncoder = 400;
+                slideEncoder = 100;
 
                 stick_mid();
             }
             if(gamepad1.dpad_down){
                 slidesRasied = true;
                 //slides low
-                slideEncoder = 150;
+                slideEncoder = 0;
 
                 stick_mid();
             }
@@ -244,8 +289,8 @@ public class igneaFirstTeleop extends LinearOpMode{
                 slidesRasied = false;
                 //slides retracted
 
-                stickPosition = 0;
-                stick_hopper();
+                slideEncoder = 200;
+                //stick_hopper();
 
             }
 
@@ -317,6 +362,10 @@ public class igneaFirstTeleop extends LinearOpMode{
             }
              **/
 
+            if(gamepad2.right_bumper && gamepad2.left_bumper){
+                shooter.setPosition(0.5);
+            }
+
             if(slidesR.getCurrentPosition() < 20 && slideEncoder < 20){
                 slidesL.setTargetPosition(slideEncoder);
                 slidesL.setPower(0);
@@ -328,11 +377,11 @@ public class igneaFirstTeleop extends LinearOpMode{
             }
             else {
                 slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(1);
+                slidesL.setPower(.8);
                 slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(1);
+                slidesR.setPower(.8);
                 slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 

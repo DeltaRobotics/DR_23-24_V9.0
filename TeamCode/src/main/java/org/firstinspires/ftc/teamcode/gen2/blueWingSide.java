@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name="blueWingSide")
-@Disabled
+//@Disabled
 
 public class blueWingSide extends LinearOpMode{
 
@@ -124,19 +124,50 @@ public class blueWingSide extends LinearOpMode{
         camera.stopStreaming();
         if(startingPos == 1){
             camera.stopStreaming();
+            robot.changeSpeed(.4,.4);
             //starting left
             //first drive forward
+
+            robot.goToPos(28,0,Math.toRadians(90),0);
+
+            robot.goToPos(28,3,Math.toRadians(90),0);
+
+            intake.setPower(-0.05);
+            robot.wait(500,robot.odometers);
+            intake.setPower(0);
+
+            robot.goToPos(28,-10,Math.toRadians(90),0);
 
         }
         else if(startingPos == 2){
             camera.stopStreaming();
+            robot.changeSpeed(.2,.4);
+            robot.changeAccuracy(0.1,1);
             //starting middle
             //first drive forward
+
+            robot.goToPos(46,0,0,0);
+
+            intake.setPower(-0.05);
+            robot.wait(500,robot.odometers);
+            intake.setPower(0);
+
+            robot.goToPos(49,0,0,0);
 
         }
         else if(startingPos == 3){
             camera.stopStreaming();
+            robot.changeSpeed(.2,.4);
+            robot.changeAccuracy(0.1,1);
             //starting right
+
+            robot.goToPos(42,-8,0,0);
+
+            intake.setPower(-0.05);
+            robot.wait(500,robot.odometers);
+            intake.setPower(0);
+
+            robot.goToPos(45,-8,0,0);
 
         }
 

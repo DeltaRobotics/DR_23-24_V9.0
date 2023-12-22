@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name="redWingSide")
-@Disabled
+//@Disabled
 
 public class redWingSide extends LinearOpMode{
 
@@ -94,18 +94,18 @@ public class redWingSide extends LinearOpMode{
         //FtcDashboard.getInstance().startCameraStream(camera, 10);
 
         while(!isStarted() && !isStopRequested()){
-            if(myPipeline.getRectMidpointX() >= 220 && myPipeline.getRectMidpointX() <= 420){
+            if(myPipeline.getRectMidpointX() >= 170 && myPipeline.getRectMidpointX() <= 390){
                 telemetry.addData("location", 2);
                 startingPos = 2;
-            } else if(myPipeline.getRectMidpointX() >= 440 && myPipeline.getRectMidpointX() <= 600){
+            } else if(myPipeline.getRectMidpointX() >= 400 && myPipeline.getRectMidpointX() <= 625){
                 telemetry.addData("location", 1);
                 startingPos = 1;
-            } else if(myPipeline.getRectMidpointX() >= 80 && myPipeline.getRectMidpointX() <= 200){
+            } else if(myPipeline.getRectMidpointX() >= 0 && myPipeline.getRectMidpointX() <= 110){
                 telemetry.addData("location", 3);
                 startingPos = 3;
             } else{
                 telemetry.addData("location", "no head seen");
-                startingPos = 1;
+                startingPos = 3;
             }
 
             //telemetry.addData("x", myPipeline.getRectMidpointX());
@@ -117,6 +117,17 @@ public class redWingSide extends LinearOpMode{
             //starting left
             camera.stopStreaming();
             //first drive forward
+            robot.changeSpeed(.2,.4);
+            robot.changeAccuracy(0.1,1);
+
+            robot.goToPos(43,8,0,0);
+
+            intake.setPower(-0.05);
+            robot.wait(500,robot.odometers);
+            intake.setPower(0);
+
+            robot.goToPos(47,8,0,0);
+
             /**robot.goToPos(16,0,0,0);
 
             //nudging pixel mess
@@ -144,7 +155,17 @@ public class redWingSide extends LinearOpMode{
         else if(startingPos == 2){
             //starting middle
             camera.stopStreaming();
-            //first drive forward
+            robot.changeSpeed(.2,.4);
+            robot.changeAccuracy(0.1,1);
+
+            robot.goToPos(45,0,0,0);
+
+            intake.setPower(-0.05);
+            robot.wait(500,robot.odometers);
+            intake.setPower(0);
+
+            robot.goToPos(49,0,0,0);
+
             /**robot.goToPos(24,0,Math.toRadians(10),0);
 
             //back up
@@ -166,6 +187,18 @@ public class redWingSide extends LinearOpMode{
             //starting right
             camera.stopStreaming();
             //place purple pixel
+            robot.changeSpeed(.4,.4);
+
+            robot.goToPos(28,0,Math.toRadians(-90),0);
+
+            robot.goToPos(28,-3,Math.toRadians(-90),0);
+
+            intake.setPower(-0.05);
+            robot.wait(500,robot.odometers);
+            intake.setPower(0);
+
+            robot.goToPos(28,10,Math.toRadians(-90),0);
+
             /**robot.goToPos(18,0,0,0);
             robot.goToPos(12,0,0,0);
             robot.goToPos(12,18,0,Math.toRadians(90));

@@ -267,7 +267,7 @@ public class robotHardware extends LinearOpMode
     //odometry constants (tune these)
     double L = 16.2;   //distance between left and right odometers (in inches)
     double B = 4.875;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
-    double R = .7514;   //wheel radius (in inches)
+    double R = .7476;   //wheel radius (in inches)
     double N = 8192;  //encoder ticks per revoluton
     double inPerTick = 2.0 * Math.PI * R / N;
 
