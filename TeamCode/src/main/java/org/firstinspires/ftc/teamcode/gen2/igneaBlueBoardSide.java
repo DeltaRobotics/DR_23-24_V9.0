@@ -53,6 +53,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
     public Servo elbow = null;
     public Servo wrist = null;
     public Servo shoulder = null;
+    public Servo intakeServo = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -73,6 +74,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
         elbow = hardwareMap.servo.get("elbow");
         wrist = hardwareMap.servo.get("wrist");
         shoulder = hardwareMap.servo.get("shoulder");
+        intakeServo = hardwareMap.servo.get("intakeServo");
 
         robot.resetDriveEncoders();
 
@@ -128,13 +130,16 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //shoulder.setPosition(.08);
             //wrist.setPosition(.96);
             //elbow.setPosition(.77);
-            finger.setPosition(.3);
+            finger.setPosition(.26);
+            intakeServo.setPosition(0.78);
 
             //telemetry.addData("x", myPipeline.getRectMidpointX());
             //telemetry.addData("y", myPipeline.getRectMidpointY());
             telemetry.update();
         }
         camera.stopStreaming();
+
+        //TODO adjust speeds in 2 and 3 like in 1
         if(startingPos == 1){
             camera.stopStreaming();
             //starting left
@@ -147,6 +152,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.goToPos(28,17,Math.toRadians(-90),0);
 
+            intakeServo.setPosition(.56);
+            robot.wait(1000,robot.odometers);
             intake.setPower(-0.1);
             robot.wait(500,robot.odometers);
             intake.setPower(0);
@@ -155,9 +162,9 @@ public class igneaBlueBoardSide extends LinearOpMode{
             robot.goToPos(28,20,Math.toRadians(-90),0);
 
             shoulder.setPosition(.57);
+            intakeServo.setPosition(0.78);
 
-            robot.changeAccuracy(.1,.5);
-            robot.changeSpeed(.2,.4);
+            robot.changeSpeed(.6,.6);
 
             //find pixel pos
             robot.goToPos(18,20,Math.toRadians(-90),Math.toRadians(90));
@@ -165,7 +172,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
             wrist.setPosition(.52);
 
             //move to place
-            robot.goToPos(18, 32, Math.toRadians(-90), 0);
+            robot.changeSpeed(.4,.4);
+            robot.goToPos(18, 33, Math.toRadians(-90), 0);
 
             robot.wait(500, robot.odometers);
 
@@ -183,196 +191,9 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.wait(1000, robot.odometers);
 
-            robot.changeSpeed(.4,.4);
-            robot.changeAccuracy(1,1);
+            robot.changeSpeed(.6,.6);
 
             robot.goToPos(5, 30, Math.toRadians(-90), Math.toRadians(90));
-
-            /**
-            //move back
-            robot.goToPos(10,0,0,0);
-
-
-            //turn and move to backdrop
-            robot.goToPos(10,20,Math.toRadians(-90),0);
-
-            x = 16;
-            y = 35;
-            finalAngle = Math.toRadians(-90);
-            slideEncoder = 2000;
-
-            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
-
-                robot.goToPosSingle(x, y, finalAngle, 0);
-
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            }
-
-            ElapsedTime driveF = new ElapsedTime();
-
-            //drive to the backdrop
-            while(driveF.milliseconds() < 1250) {
-
-                robot.mecanumDrive(-0.5,0,0,0.5);
-                robot.refresh(robot.odometers);
-
-            }
-
-            robot.wait(500, robot.odometers);
-
-            slideEncoder = 1500;
-
-            //move slides down
-            while(slidesL.getCurrentPosition() > 1500){
-
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                robot.refresh(robot.odometers);
-            }
-
-            robot.wait(500, robot.odometers);
-
-            clawL.setPosition(.1);
-            clawR.setPosition(.7);
-
-            robot.wait(500, robot.odometers);
-
-            //back away
-            robot.goToPos(13,30,Math.toRadians(-90),0);
-
-            //move to wall
-            x = 1;
-            y = 30;
-            finalAngle = Math.toRadians(-90);
-            slideEncoder = 200;
-
-            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
-
-                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(90));
-
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            }
-
-            /* placing
-            robot.changeAccuracy(0.25,Math.toRadians(0.5));
-
-            //back up to bar
-            robot.goToPos(3,5,0,Math.toRadians(180));
-
-            ElapsedTime driveR = new ElapsedTime();
-
-            while(driveR.milliseconds() < 400) {
-
-                robot.mecanumDrive(0.5,0,0,0.75);
-                robot.refresh(robot.odometers);
-
-            }
-
-            robot.goToPos(3,-5,0,Math.toRadians(-90));
-
-            //back up under bar
-            robot.changeSpeed(0.35,0.35);
-            robot.goToPos(3,-26.75,0,Math.toRadians(-90));
-            robot.changeSpeed(0.5,0.5);
-
-            //drive through bar
-            robot.goToPos(23,-26.75,0,0);
-            robot.goToPos(47,-26.75,0,0);
-
-            //turn under bar
-            robot.goToPos(50,-26.75,Math.toRadians(90),0);
-
-            //move towards pile
-            x = 48;
-            y = -80;
-            finalAngle = Math.toRadians(90);
-            sildeEncoder = 600;
-
-            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
-
-                robot.goToPosSingle(x, y, finalAngle, 0);
-
-                robot.slidesR.setTargetPosition(sildeEncoder);
-                robot.slidesR.setPower(.5);
-                robot.slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                robot.slidesL.setTargetPosition(sildeEncoder);
-                robot.slidesL.setPower(.5);
-                robot.slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                robot.wrist.setPosition(.55);
-            }
-
-            robot.clawR.setPosition(1);
-            robot.clawL.setPosition(0);
-
-            robot.wait(250,robot.odometers);
-
-            robot.wrist.setPosition(.4);
-            */
-
-            /**
-
-
-            ElapsedTime driveR = new ElapsedTime();
-
-            //drive to wall
-            while(driveR.milliseconds() < 1000) {
-
-                robot.mecanumDrive(0,0.75,0,0.75);
-                robot.refresh(robot.odometers);
-
-            }
-
-            ElapsedTime driveF2 = new ElapsedTime();
-
-            //drive to park
-            while(driveF2.milliseconds() < 1000) {
-
-                robot.mecanumDrive(-0.75,0,0,0.5);
-                robot.refresh(robot.odometers);
-
-            }
-
-            slideEncoder = 0;
-            while(slidesL.getCurrentPosition() > 10 && slidesR.getCurrentPosition() > 10){
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-
-            //While loop for goToPosSingle:
-            //Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy
-
-            **/
-            //park
-            //robot.goToPos(1,25,Math.toRadians(-90),Math.toRadians(90));
-
-            //robot.goToPos(1, 35,Math.toRadians(-90),0);
 
             robot.mecanumDrive(0,0,0,0);
         }
@@ -388,17 +209,17 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.goToPos(38,5,Math.toRadians(-90),0);
 
-            intake.setPower(-0.1);
-            robot.wait(200,robot.odometers);
+            intakeServo.setPosition(.56);
+            robot.wait(1000,robot.odometers);
+            intake.setPower(-0.05);
+            robot.wait(500,robot.odometers);
             intake.setPower(0);
 
             //move to board
             robot.goToPos(38,20,Math.toRadians(-90),0);
 
             shoulder.setPosition(.57);
-
-            //robot.changeAccuracy(.1,.5);
-            //robot.changeSpeed(.2,.4);
+            intakeServo.setPosition(0.78);
 
             //find pixel pos
             robot.goToPos(25,20,Math.toRadians(-90),Math.toRadians(90));
@@ -425,131 +246,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            robot.changeSpeed(.4,.4);
-            robot.changeAccuracy(1,1);
-
             robot.goToPos(5, 30, Math.toRadians(-90), Math.toRadians(90));
-
-            /**
-
-            //back up
-            robot.goToPos(22,6,0,0);
-
-            x = 24;
-            y = 35;
-            finalAngle = Math.toRadians(-90);
-            slideEncoder = 2000;
-
-            //drive to the backdrop
-            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
-
-                robot.goToPosSingle(x, y, finalAngle, 0);
-
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            }
-
-            ElapsedTime driveF = new ElapsedTime();
-
-            //drive to the backdrop
-            while(driveF.milliseconds() < 1250) {
-
-                robot.mecanumDrive(-0.5,0,0,0.5);
-                robot.refresh(robot.odometers);
-
-            }
-
-            slideEncoder = 1500;
-
-            //move slides down
-            while(slidesL.getCurrentPosition() > 1500){
-
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                robot.refresh(robot.odometers);
-            }
-
-            robot.wait(1000, robot.odometers);
-
-            clawL.setPosition(.1);
-            clawR.setPosition(.7);
-
-            robot.wait(1000, robot.odometers);
-
-            //back away
-            robot.goToPos(20,30,Math.toRadians(-90),0);
-
-            //move to wall
-            x = 1;
-            y = 30;
-            finalAngle = Math.toRadians(-90);
-            slideEncoder = 200;
-
-            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
-
-                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(90));
-
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            }
-
-            ElapsedTime driveR = new ElapsedTime();
-
-            //drive to wall
-            while(driveR.milliseconds() < 1000) {
-
-                robot.mecanumDrive(0,0.75,0,0.75);
-                robot.refresh(robot.odometers);
-
-            }
-
-            ElapsedTime driveF2 = new ElapsedTime();
-
-            //drive to park
-            while(driveF2.milliseconds() < 1000) {
-
-                robot.mecanumDrive(-0.75,0,0,0.5);
-                robot.refresh(robot.odometers);
-
-            }
-
-            slideEncoder = 0;
-            while(slidesL.getCurrentPosition() > 10 && slidesR.getCurrentPosition() > 10){
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-
-            //While loop for goToPosSingle:
-            //Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy
-
-             **/
-            //park
-            //robot.goToPos(1,25,Math.toRadians(-90),Math.toRadians(90));
-
-            //robot.goToPos(1, 35,Math.toRadians(-90),0);
 
             robot.mecanumDrive(0,0,0,0);
         }
@@ -567,7 +264,9 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.goToPos(28,-5,Math.toRadians(-90),0);
 
-            intake.setPower(-.1);
+            intakeServo.setPosition(.56);
+            robot.wait(1000,robot.odometers);
+            intake.setPower(-0.05);
             robot.wait(500,robot.odometers);
             intake.setPower(0);
 
@@ -575,9 +274,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
             robot.goToPos(28,10,Math.toRadians(-90),0);
 
             shoulder.setPosition(.57);
-
-            robot.changeAccuracy(.1,.5);
-            robot.changeSpeed(.2,.4);
+            intakeServo.setPosition(0.78);
 
             //find pixel pos
             robot.goToPos(30,20,Math.toRadians(-90),Math.toRadians(90));
@@ -585,7 +282,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
             wrist.setPosition(.52);
 
             //move to place
-            robot.goToPos(30, 32, Math.toRadians(-90), 0);
+            robot.goToPos(30, 33, Math.toRadians(-90), 0);
 
             robot.wait(500, robot.odometers);
 
@@ -603,132 +300,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.wait(1000, robot.odometers);
 
-            robot.changeSpeed(.4,.4);
-            robot.changeAccuracy(1,1);
-
             robot.goToPos(5, 30, Math.toRadians(-90), Math.toRadians(90));
-
-            //park
-            //robot.goToPos(1,25,Math.toRadians(-90),Math.toRadians(90));
-
-            //robot.goToPos(1, 35,Math.toRadians(-90),0);
-
-            /**
-
-            robot.goToPos(25,5,0,0);
-
-            x = 29;
-            y = 35;
-            finalAngle = Math.toRadians(-90);
-            slideEncoder = 2000;
-
-            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
-
-                robot.goToPosSingle(x, y, finalAngle, 0);
-
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            }
-
-            ElapsedTime driveF = new ElapsedTime();
-
-            //drive to the backdrop
-            while(driveF.milliseconds() < 1000) {
-
-                robot.mecanumDrive(-0.5,0,0,0.5);
-                robot.refresh(robot.odometers);
-
-            }
-
-            robot.wait(500, robot.odometers);
-
-            slideEncoder = 1500;
-
-            //move slides down
-            while(slidesL.getCurrentPosition() > 1500){
-
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                robot.refresh(robot.odometers);
-            }
-
-            robot.wait(500, robot.odometers);
-
-            clawL.setPosition(.1);
-            clawR.setPosition(.7);
-
-            robot.wait(500, robot.odometers);
-
-            //back away
-            robot.goToPos(29,30,Math.toRadians(-90),0);
-
-            //move to wall
-            x = 1;
-            y = 30;
-            finalAngle = Math.toRadians(-90);
-            slideEncoder = 200;
-
-            while(Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy) {
-
-                robot.goToPosSingle(x, y, finalAngle, Math.toRadians(90));
-
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            }
-
-            ElapsedTime driveR = new ElapsedTime();
-
-            //drive to wall
-            while(driveR.milliseconds() < 1000) {
-
-                robot.mecanumDrive(0,0.75,0,0.75);
-                robot.refresh(robot.odometers);
-
-            }
-
-            ElapsedTime driveF2 = new ElapsedTime();
-
-            //drive to park
-            while(driveF2.milliseconds() < 1000) {
-
-                robot.mecanumDrive(-0.75,0,0,0.5);
-                robot.refresh(robot.odometers);
-
-            }
-
-            slideEncoder = 0;
-            while(slidesL.getCurrentPosition() > 10 && slidesR.getCurrentPosition() > 10){
-                slidesR.setTargetPosition(slideEncoder);
-                slidesR.setPower(.5);
-                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                slidesL.setTargetPosition(slideEncoder);
-                slidesL.setPower(.5);
-                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-
-            //While loop for goToPosSingle:
-            //Math.abs(x-robot.GlobalX) > robot.moveAccuracy || Math.abs(y-robot.GlobalY) > robot.moveAccuracy || Math.abs(robot.angleWrapRad(finalAngle - robot.GlobalHeading)) > robot.angleAccuracy
-
-             **/
 
             robot.mecanumDrive(0,0,0,0);
 

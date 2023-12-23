@@ -42,8 +42,8 @@ public class robotHardware extends LinearOpMode
     //PID Drive Variables
 
     public static double DriveF = .175; // = 32767 / maxV      (do not edit from this number)
-    public static double DriveP = 0.1; // = 0.1 * F           (raise till real's apex touches Var apex)
-    public static double DriveI = 0;// = 0.1 * P           (fine ajustment of P)
+    public static double DriveP = 0.0045; // = 0.1 * F           (raise till real's apex touches Var apex)
+    public static double DriveI = 0.001;// = 0.1 * P           (fine ajustment of P)
     public static double DriveD = 0; // = 0                     (raise to reduce ocolation)
 
     double DrivePIDCurrentTime = 0;
@@ -265,7 +265,7 @@ public class robotHardware extends LinearOpMode
      */
 
     //odometry constants (tune these)
-    double L = 16.2;   //distance between left and right odometers (in inches)
+    double L = 16.13;   //distance between left and right odometers (in inches)
     double B = 4.875;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
     double R = .7476;   //wheel radius (in inches)
     double N = 8192;  //encoder ticks per revoluton
