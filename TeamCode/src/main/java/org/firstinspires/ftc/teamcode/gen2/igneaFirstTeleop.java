@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.gen2;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,7 +16,7 @@ import org.firstinspires.ftc.teamcode.robotHardware;
 
 public class igneaFirstTeleop extends LinearOpMode{
 
-    public Servo finger = null;
+    public CRServo finger = null;
     public Servo elbow = null;
     public Servo wrist = null;
     public Servo shoulder = null;
@@ -57,6 +59,8 @@ public class igneaFirstTeleop extends LinearOpMode{
 
     public double wristPos = .79;
 
+    RevBlinkinLedDriver blinkinLedDriver;
+
     public void runOpMode() throws InterruptedException {
 
         robotHardware robot = new robotHardware(hardwareMap);
@@ -65,7 +69,7 @@ public class igneaFirstTeleop extends LinearOpMode{
 
         ElapsedTime servoTime = new ElapsedTime();
 
-        finger = hardwareMap.servo.get("finger");
+        finger = hardwareMap.crservo.get("finger");
         elbow = hardwareMap.servo.get("elbow");
         wrist = hardwareMap.servo.get("wrist");
         shoulder = hardwareMap.servo.get("shoulder");
@@ -85,6 +89,10 @@ public class igneaFirstTeleop extends LinearOpMode{
         slidesR.setDirection(DcMotorSimple.Direction.REVERSE);
         slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
 
+
+
+        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+
         shooter.setPosition(0.75);
 
 
@@ -92,10 +100,12 @@ public class igneaFirstTeleop extends LinearOpMode{
 
         while(!isStarted() && !isStopRequested()){
 
+            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
+
             shoulder.setPosition(.08);
             wrist.setPosition(.96);
-            elbow.setPosition(.77);
-            finger.setPosition(.75);
+            //elbow.setPosition(.77);
+            finger.setPower(0.5);
             intakeServo.setPosition(0.78);
             // shoulder = .57
             // wrist = .52 for yellow pixel
@@ -184,24 +194,23 @@ public class igneaFirstTeleop extends LinearOpMode{
             telemetry.addData("shoulder",shoulder.getPosition());
             telemetry.addData("wrist",wrist.getPosition());
             telemetry.addData("elbow",elbow.getPosition());
-            telemetry.addData("finger",finger.getPosition());
 
             if(gamepad1.left_bumper && leftBumper){
-                finger.setPosition(.75);
+                //finger.setPosition(.75);
                 //change this to finger .75
                 unoPixo = false;
                 leftBumper = false;
             }
             if(gamepad1.right_bumper && !unoPixo && rightBumper){
                 //2 pixel code .5
-                finger.setPosition(.5);
+                //finger.setPosition(.5);
 
                 unoPixo = true;
                 rightBumper = false;
             }
             if(gamepad1.right_bumper && unoPixo && rightBumper){
                 //1 pixel code = .3
-                finger.setPosition(.3);
+                //finger.setPosition(.3);
 
                 rightBumper = false;
             }
