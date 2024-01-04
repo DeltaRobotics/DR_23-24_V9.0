@@ -47,6 +47,8 @@ public class igneaSecondTeleop extends LinearOpMode{
     public double servoVariable = 0;
     public double servoVariable2 = 0;
     public double shoulderPos = 0.5;
+    public double shoulderTime = 0;
+    public double shoulderGo = 0;
 
     public boolean stickDropping = false;
 
@@ -59,8 +61,10 @@ public class igneaSecondTeleop extends LinearOpMode{
 
     public double wristPos = .79;
 
-    public boolean buttonB = false;
-    public boolean buttonA = false;
+    public boolean buttonB = true;
+    public boolean buttonA = true;
+    public boolean buttonX = true;
+    public boolean buttonY = true;
 
     RevBlinkinLedDriver blinkinLedDriver;
 
@@ -106,7 +110,7 @@ public class igneaSecondTeleop extends LinearOpMode{
             shooterAngle.setPosition(0.5);
             shooter.setPosition(.54);
 
-            shoulder.setPosition(.6);
+            shoulder.setPosition(.4);
             wrist.setPosition(.4);
             finger.setPower(0);//positive = out
             intakeServo.setPosition(0.78);
@@ -121,46 +125,58 @@ public class igneaSecondTeleop extends LinearOpMode{
             intakeServo.setPosition(.56);
 
             //shooterAngle adjust
-            if (gamepad1.a && buttonA){
+            if (gamepad1.a && buttonA || stickDropping){
                 //intake
-                shoulder.setPosition(.77);
+                shoulder.setPosition(.59);
                 wrist.setPosition(.4);
                 buttonA = false;
             }
             else if (gamepad1.b && buttonB){
                 //placement
-                shoulder.setPosition(.305);
-                wrist.setPosition(1);
+                shoulder.setPosition(.1);
+                wrist.setPosition(.9);
                 buttonB = false;
             }
-            /*
-            else if (gamepad1.x && buttonXY){
-                wrist.setPosition(wrist.getPosition() + .005);
-                buttonXY = false;
+
+            else if (gamepad1.x && buttonX){
+                shoulder.setPosition(shoulder.getPosition() + .005);
+                buttonX = false;
             }
-            else if (gamepad1.y && buttonXY){
-                wrist.setPosition(wrist.getPosition() - .005);
-                buttonXY = false;
+            else if (gamepad1.y && buttonY){
+                shoulder.setPosition(shoulder.getPosition() - .005);
+                buttonY = false;
             }
 
-             */
-            else if (!gamepad1.a && !buttonA){
+
+            if (!gamepad1.a && !buttonA){
                 buttonA = true;
             }
             else if (!gamepad1.b && !buttonB){
                 buttonB = true;
             }
-            /*
-            else if (!gamepad1.x && !buttonXY){
-                buttonXY  = true;
+
+            else if (!gamepad1.x && !buttonX){
+                buttonX  = true;
             }
-            else if (!gamepad1.y && !buttonXY){
-                buttonXY  = true;
+            else if (!gamepad1.y && !buttonY){
+                buttonY  = true;
             }
 
-             */
+
             telemetry.addData("shoulder", shoulder.getPosition());
             telemetry.addData("wrist", wrist.getPosition());
+
+            if(gamepad1.right_trigger > 0.5){
+                intake.setPower(0.85);
+                finger.setPower(-1);
+            }
+            else if(gamepad1.left_trigger > 0.5){
+                intake.setPower(-0.5);
+                finger.setPower(1);
+            }
+            else {
+                intake.setPower(0);
+            }
 
             //slides
             if(gamepad1.dpad_up){
