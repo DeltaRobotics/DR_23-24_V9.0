@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.gen2;
 //import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -49,8 +50,7 @@ public class igneaRedBoardSide extends LinearOpMode{
     public DcMotor slidesR = null;
     public DcMotor intake = null;
 
-    public Servo finger = null;
-    public Servo elbow = null;
+    public CRServo finger = null;
     public Servo wrist = null;
     public Servo shoulder = null;
     public Servo intakeServo = null;
@@ -70,8 +70,7 @@ public class igneaRedBoardSide extends LinearOpMode{
         slidesR = hardwareMap.dcMotor.get("slidesR");
         slidesL = hardwareMap.dcMotor.get("slidesL");
 
-        finger = hardwareMap.servo.get("finger");
-        elbow = hardwareMap.servo.get("elbow");
+        finger = hardwareMap.crservo.get("finger");
         wrist = hardwareMap.servo.get("wrist");
         shoulder = hardwareMap.servo.get("shoulder");
         intakeServo = hardwareMap.servo.get("intakeServo");
@@ -138,52 +137,79 @@ public class igneaRedBoardSide extends LinearOpMode{
             //first drive forward
             robot.changeSpeed(.4,.4);
 
-            shoulder.setPosition(.08);
-            wrist.setPosition(.96);
-            elbow.setPosition(.77);
+            shoulder.setPosition(.6);
+            wrist.setPosition(.4);
 
             robot.goToPos(28,0,Math.toRadians(90),0);
 
             robot.goToPos(28,4,Math.toRadians(90),0);
 
-            intakeServo.setPosition(.56);
-            robot.wait(1000,robot.odometers);
+            robot.wait(150,robot.odometers);
             intake.setPower(-0.1);
-            robot.wait(500,robot.odometers);
+            robot.wait(150,robot.odometers);
             intake.setPower(0);
+
+            intakeServo.setPosition(.56);
+            robot.wait(500,robot.odometers);
 
             robot.goToPos(28,-10,Math.toRadians(90),0);
 
-            shoulder.setPosition(.57);
-            intakeServo.setPosition(0.78);
+            shoulder.setPosition(.16);
 
             //find pixel pos
             robot.goToPos(30,-20,Math.toRadians(90),Math.toRadians(-90));
 
-            wrist.setPosition(.52);
+            wrist.setPosition(.8);
 
             robot.changeSpeed(.6,.6);
 
             //move to place
-            robot.goToPos(30, -32, Math.toRadians(90), 0);
+            robot.goToPos(34, -35, Math.toRadians(90), 0);
+
+            ElapsedTime driveF = new ElapsedTime();
+            //drive to the backdrop
+            while(driveF.milliseconds() < 1250) {
+
+                robot.mecanumDrive(0.5,0,0,0.3);
+                robot.refresh(robot.odometers);
+
+            }
 
             robot.wait(500, robot.odometers);
 
             //open
-            finger.setPosition(.5);
-
-            robot.wait(500, robot.odometers);
-
-            wrist.setPosition(.46);
-            shoulder.setPosition(.08);
-
-            robot.wait(200, robot.odometers);
-
-            wrist.setPosition(.96);
+            finger.setPower(1);
 
             robot.wait(1000, robot.odometers);
 
-            robot.goToPos(1, -30, Math.toRadians(90), Math.toRadians(-90));
+            finger.setPower(0);
+
+            wrist.setPosition(.4);
+            shoulder.setPosition(.6);
+
+            robot.wait(1000, robot.odometers);
+
+            robot.goToPos(34, -30, Math.toRadians(90), Math.toRadians(180));
+
+            ElapsedTime driveL = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveL.milliseconds() < 2250) {
+
+                robot.mecanumDrive(0,.5,0,1);
+                robot.refresh(robot.odometers);
+
+            }
+
+            ElapsedTime driveB = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveB.milliseconds() < 500) {
+
+                robot.mecanumDrive(.5,0,0,1);
+                robot.refresh(robot.odometers);
+
+            }
 
             robot.mecanumDrive(0,0,0,0);
         }
@@ -193,45 +219,75 @@ public class igneaRedBoardSide extends LinearOpMode{
             //first drive forward
             robot.changeSpeed(.4,.4);
 
-            shoulder.setPosition(.08);
-            wrist.setPosition(.96);
-            elbow.setPosition(.77);
+            shoulder.setPosition(.6);
+            wrist.setPosition(.4);
 
-            robot.goToPos(38,-5,Math.toRadians(90),0);
+            robot.goToPos(37,-5,Math.toRadians(90),0);
 
+            robot.wait(150,robot.odometers);
             intake.setPower(-0.1);
-            robot.wait(500,robot.odometers);
+            robot.wait(150,robot.odometers);
             intake.setPower(0);
+
+            intakeServo.setPosition(.56);
+            robot.wait(500,robot.odometers);
 
             robot.goToPos(38,-20,Math.toRadians(90),0);
 
-            shoulder.setPosition(.57);
+            shoulder.setPosition(.16);
 
             //find pixel pos
-            robot.goToPos(25,-20,Math.toRadians(90),Math.toRadians(-90));
+            robot.goToPos(25,-20,Math.toRadians(90),0);
 
-            wrist.setPosition(.52);
+            wrist.setPosition(.85);
 
             //move to place
-            robot.goToPos(25, -32, Math.toRadians(90), 0);
+            robot.goToPos(25, -35, Math.toRadians(90), 0);
 
             robot.wait(500, robot.odometers);
+
+            ElapsedTime driveF = new ElapsedTime();
+            //drive to the backdrop
+            while(driveF.milliseconds() < 1400) {
+
+                robot.mecanumDrive(0.5,0,0,0.3);
+                robot.refresh(robot.odometers);
+
+            }
 
             //open
-            finger.setPosition(.5);
-
-            robot.wait(500, robot.odometers);
-
-            wrist.setPosition(.46);
-            shoulder.setPosition(.08);
-
-            robot.wait(200, robot.odometers);
-
-            wrist.setPosition(.96);
+            finger.setPower(1);
 
             robot.wait(1000, robot.odometers);
 
-            robot.goToPos(1, -30, Math.toRadians(90), Math.toRadians(-90));
+            finger.setPower(0);
+
+            wrist.setPosition(.4);
+            shoulder.setPosition(.6);
+
+            robot.wait(1000, robot.odometers);
+
+            robot.goToPos(25, -28, Math.toRadians(90), 0);
+
+            ElapsedTime driveL = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveL.milliseconds() < 2000) {
+
+                robot.mecanumDrive(0,.5,0,1);
+                robot.refresh(robot.odometers);
+
+            }
+
+            ElapsedTime driveB = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveB.milliseconds() < 500) {
+
+                robot.mecanumDrive(.5,0,0,1);
+                robot.refresh(robot.odometers);
+
+            }
 
             robot.mecanumDrive(0,0,0,0);
         }
@@ -241,45 +297,79 @@ public class igneaRedBoardSide extends LinearOpMode{
             robot.changeSpeed(.4,.4);
             //place purple pixel
 
-            shoulder.setPosition(.08);
-            wrist.setPosition(.96);
-            elbow.setPosition(.77);
+            shoulder.setPosition(.6);
+            wrist.setPosition(.4);
 
             robot.goToPos(28,-18,Math.toRadians(90),0);
 
+            robot.wait(150,robot.odometers);
             intake.setPower(-0.1);
-            robot.wait(500,robot.odometers);
+            robot.wait(150,robot.odometers);
             intake.setPower(0);
+
+            intakeServo.setPosition(.56);
+            robot.wait(500,robot.odometers);
+
 
             robot.goToPos(28,-25,Math.toRadians(90),0);
 
-            shoulder.setPosition(.57);
+            shoulder.setPosition(.16);
 
             //find pixel pos
-            robot.goToPos(18,-20,Math.toRadians(90),Math.toRadians(-90));
+            robot.goToPos(18,-20,Math.toRadians(90),0);
 
-            wrist.setPosition(.52);
+            wrist.setPosition(.8);
+
+            robot.changeAccuracy(.25,1);
 
             //move to place
-            robot.goToPos(18, -32, Math.toRadians(90), 0);
+            robot.goToPos(19, -35, Math.toRadians(90), 0);
 
             robot.wait(500, robot.odometers);
+
+            ElapsedTime driveF = new ElapsedTime();
+            //drive to the backdrop
+            while(driveF.milliseconds() < 1250) {
+
+                robot.mecanumDrive(0.5,0,0,0.3);
+                robot.refresh(robot.odometers);
+
+            }
+            robot.changeAccuracy(1,1);
 
             //open
-            finger.setPosition(.5);
-
-            robot.wait(500, robot.odometers);
-
-            wrist.setPosition(.46);
-            shoulder.setPosition(.08);
-
-            robot.wait(200, robot.odometers);
-
-            wrist.setPosition(.96);
+            finger.setPower(1);
 
             robot.wait(1000, robot.odometers);
 
-            robot.goToPos(1, -30, Math.toRadians(90), Math.toRadians(-90));
+            finger.setPower(0);
+
+            wrist.setPosition(.4);
+            shoulder.setPosition(.6);
+
+            robot.wait(1000, robot.odometers);
+
+            robot.goToPos(19, -28, Math.toRadians(90), Math.toRadians(180));
+
+            ElapsedTime driveL = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveL.milliseconds() < 2000) {
+
+                robot.mecanumDrive(0,.5,0,1);
+                robot.refresh(robot.odometers);
+
+            }
+
+            ElapsedTime driveB = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveB.milliseconds() < 500) {
+
+                robot.mecanumDrive(.5,0,0,1);
+                robot.refresh(robot.odometers);
+
+            }
 
             robot.mecanumDrive(0,0,0,0);
 

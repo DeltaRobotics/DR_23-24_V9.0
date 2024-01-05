@@ -113,9 +113,6 @@ public class redWingSide extends LinearOpMode{
                 startingPos = 3;
             }
 
-            shoulder.setPosition(.15);
-            intakeServo.setPosition(.78);
-
             //telemetry.addData("x", myPipeline.getRectMidpointX());
             //telemetry.addData("y", myPipeline.getRectMidpointY());
             telemetry.update();
@@ -127,17 +124,19 @@ public class redWingSide extends LinearOpMode{
             //first drive forward
             robot.changeSpeed(.4,.4);
 
-            robot.goToPos(43,8,0,0);
+            robot.goToPos(43,9,0,0);
 
-            intakeServo.setPosition(.56);
-            robot.wait(1000,robot.odometers);
-            intake.setPower(-0.05);
-            robot.wait(500,robot.odometers);
+            robot.wait(150,robot.odometers);
+            intake.setPower(-0.1);
+            robot.wait(150,robot.odometers);
             intake.setPower(0);
 
+            intakeServo.setPosition(.56);
+            robot.wait(500,robot.odometers);
+
             robot.goToPos(49,8,0,0);
-            intakeServo.setPosition(0.78);
-            robot.wait(5000,robot.odometers);
+
+            robot.wait(1000,robot.odometers);
 
         }
         else if(startingPos == 2){
@@ -145,17 +144,19 @@ public class redWingSide extends LinearOpMode{
             camera.stopStreaming();
             robot.changeSpeed(.4,.4);
 
-            robot.goToPos(45,0,0,0);
+            robot.goToPos(47,0,0,0);
 
-            intakeServo.setPosition(.56);
-            robot.wait(1000,robot.odometers);
-            intake.setPower(-0.05);
-            robot.wait(500,robot.odometers);
+            robot.wait(150,robot.odometers);
+            intake.setPower(-0.1);
+            robot.wait(150,robot.odometers);
             intake.setPower(0);
 
+            intakeServo.setPosition(.56);
+            robot.wait(500,robot.odometers);
+
             robot.goToPos(52,0,0,0);
-            intakeServo.setPosition(0.78);
-            robot.wait(5000,robot.odometers);
+
+            robot.wait(1000,robot.odometers);
 
         }
         else if(startingPos == 3){
@@ -166,17 +167,19 @@ public class redWingSide extends LinearOpMode{
 
             robot.goToPos(28,0,Math.toRadians(-90),0);
 
-            robot.goToPos(28,-5,Math.toRadians(-90),0);
+            robot.goToPos(28,-4,Math.toRadians(-90),0);
 
-            intakeServo.setPosition(.56);
-            robot.wait(1000,robot.odometers);
-            intake.setPower(-0.05);
-            robot.wait(500,robot.odometers);
+            robot.wait(150,robot.odometers);
+            intake.setPower(-0.1);
+            robot.wait(150,robot.odometers);
             intake.setPower(0);
 
+            intakeServo.setPosition(.56);
+            robot.wait(500,robot.odometers);
+
             robot.goToPos(28,10,Math.toRadians(-90),0);
-            intakeServo.setPosition(0.78);
-            robot.wait(5000,robot.odometers);
+
+            robot.wait(1000,robot.odometers);
 
         }
     }

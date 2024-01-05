@@ -147,30 +147,43 @@ public class igneaBlueBoardSide extends LinearOpMode{
             shoulder.setPosition(.6);
             wrist.setPosition(.4);
 
-            robot.goToPos(28,17,Math.toRadians(-90),0);
+            robot.goToPos(28,18,Math.toRadians(-90),0);
 
-            intakeServo.setPosition(.56);
-            robot.wait(1000,robot.odometers);
-            intake.setPower(-0.15);
-            robot.wait(1000,robot.odometers);
+            robot.wait(100,robot.odometers);
+            intake.setPower(-0.1);
+            robot.wait(100,robot.odometers);
             intake.setPower(0);
 
-            //move to board
-            robot.goToPos(28,20,Math.toRadians(-90),0);
 
-            shoulder.setPosition(.2);
+            intakeServo.setPosition(.56);
+            robot.wait(500,robot.odometers);
+
+            //move to board
+            robot.goToPos(28,24,Math.toRadians(-90),0);
+
+            shoulder.setPosition(.16);
             //intakeServo.setPosition(0.78);
 
             robot.changeSpeed(.6,.6);
 
             //find pixel pos
-            robot.goToPos(18,20,Math.toRadians(-90),Math.toRadians(90));
+            robot.goToPos(18,24,Math.toRadians(-90),Math.toRadians(90));
 
-            wrist.setPosition(.78);
+            wrist.setPosition(.8);
 
             //move to place
             robot.changeSpeed(.4,.4);
-            robot.goToPos(18, 38, Math.toRadians(-90), 0);
+            robot.goToPos(18, 35, Math.toRadians(-90), 0);
+
+            ElapsedTime driveF = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveF.milliseconds() < 1250) {
+
+                robot.mecanumDrive(0.5,0,0,0.3);
+                robot.refresh(robot.odometers);
+
+            }
 
             robot.wait(500, robot.odometers);
 
@@ -183,11 +196,20 @@ public class igneaBlueBoardSide extends LinearOpMode{
             wrist.setPosition(.4);
             shoulder.setPosition(.6);
 
+
             robot.wait(1000, robot.odometers);
 
-            robot.changeSpeed(.6,.6);
+            robot.goToPos(18, 30, Math.toRadians(-90), 0);
 
-            robot.goToPos(5, 30, Math.toRadians(-90), Math.toRadians(90));
+            ElapsedTime driveL = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveL.milliseconds() < 1500) {
+
+                robot.mecanumDrive(0,-.5,0,1);
+                robot.refresh(robot.odometers);
+
+            }
 
             robot.mecanumDrive(0,0,0,0);
         }
@@ -202,28 +224,42 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.goToPos(38,5,Math.toRadians(-90),0);
 
-            intakeServo.setPosition(.56);
-            robot.wait(1000,robot.odometers);
-            intake.setPower(-0.05);
-            robot.wait(500,robot.odometers);
+            robot.wait(150,robot.odometers);
+            intake.setPower(-0.1);
+            robot.wait(150,robot.odometers);
             intake.setPower(0);
+
+            intakeServo.setPosition(.56);
+            robot.wait(500,robot.odometers);
 
             //move to board
             robot.goToPos(38,20,Math.toRadians(-90),0);
 
-            shoulder.setPosition(.1);
+            shoulder.setPosition(.16);
             //intakeServo.setPosition(0.78);
 
             //find pixel pos
-            robot.goToPos(25,20,Math.toRadians(-90),Math.toRadians(90));
+            robot.goToPos(24,20,Math.toRadians(-90),0);
 
-            wrist.setPosition(.78);
+            wrist.setPosition(.8);
 
             //move to place
+            robot.changeAccuracy(.25,1);
 
-            robot.goToPos(25, 33, Math.toRadians(-90), 0);
+            robot.goToPos(24, 35, Math.toRadians(-90), 0);
 
             robot.wait(500, robot.odometers);
+
+            ElapsedTime driveF = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveF.milliseconds() < 1250) {
+
+                robot.mecanumDrive(0.5,0,0,0.3);
+                robot.refresh(robot.odometers);
+
+            }
+            robot.changeAccuracy(1,1);
 
             //open
             finger.setPower(1);
@@ -241,7 +277,15 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            robot.goToPos(5, 30, Math.toRadians(-90), Math.toRadians(90));
+            ElapsedTime driveL = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveL.milliseconds() < 1500) {
+
+                robot.mecanumDrive(0,-.5,0,1);
+                robot.refresh(robot.odometers);
+
+            }
 
             robot.mecanumDrive(0,0,0,0);
         }
@@ -258,27 +302,41 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.goToPos(28,-5,Math.toRadians(-90),0);
 
-            intakeServo.setPosition(.56);
-            robot.wait(1000,robot.odometers);
-            intake.setPower(-0.05);
-            robot.wait(500,robot.odometers);
+            robot.wait(150,robot.odometers);
+            intake.setPower(-0.1);
+            robot.wait(150,robot.odometers);
             intake.setPower(0);
+
+            intakeServo.setPosition(.56);
+            robot.wait(500,robot.odometers);
 
             //go to board
             robot.goToPos(28,10,Math.toRadians(-90),0);
 
-            shoulder.setPosition(.1);
+            shoulder.setPosition(.16);
             //intakeServo.setPosition(0.78);
 
             //find pixel pos
             robot.goToPos(30,20,Math.toRadians(-90),Math.toRadians(90));
 
-            wrist.setPosition(.78);
+            wrist.setPosition(.8);
+
+            robot.changeAccuracy(.25,1);
 
             //move to place
-            robot.goToPos(30, 33, Math.toRadians(-90), 0);
+            robot.goToPos(32, 35, Math.toRadians(-90), 0);
 
             robot.wait(500, robot.odometers);
+
+            ElapsedTime driveF = new ElapsedTime();
+            //drive to the backdrop
+            while(driveF.milliseconds() < 1250) {
+
+                robot.mecanumDrive(0.5,0,0,0.3);
+                robot.refresh(robot.odometers);
+
+            }
+            robot.changeAccuracy(1,1);
 
             //open
             finger.setPower(1);
@@ -292,10 +350,19 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.wait(1000, robot.odometers);
 
-            robot.goToPos(5, 30, Math.toRadians(-90), Math.toRadians(90));
+            robot.goToPos(30, 28, Math.toRadians(-90), 0);
+
+            ElapsedTime driveL = new ElapsedTime();
+
+            //drive to the backdrop
+            while(driveL.milliseconds() < 2000) {
+
+                robot.mecanumDrive(0,-.5,0,1);
+                robot.refresh(robot.odometers);
+
+            }
 
             robot.mecanumDrive(0,0,0,0);
-
 
         }
 
