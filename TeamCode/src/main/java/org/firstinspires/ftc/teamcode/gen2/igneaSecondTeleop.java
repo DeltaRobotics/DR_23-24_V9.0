@@ -52,7 +52,8 @@ public class igneaSecondTeleop extends LinearOpMode{
 
     public boolean stickDropping = false;
 
-    public boolean unoPixo = false;
+    public boolean intakePos = false;
+    public boolean outputPos = false;
 
     public boolean rightBumper = true;
     public boolean leftBumper = true;
@@ -65,8 +66,10 @@ public class igneaSecondTeleop extends LinearOpMode{
     public boolean buttonA = true;
     public boolean buttonX = true;
     public boolean buttonY = true;
+    public boolean buttonRight = true;
+    public boolean buttonLeft = true;
 
-    RevBlinkinLedDriver blinkinLedDriver;
+    //RevBlinkinLedDriver blinkinLedDriver;
 
     public void runOpMode() throws InterruptedException {
 
@@ -96,7 +99,7 @@ public class igneaSecondTeleop extends LinearOpMode{
         slidesR.setDirection(DcMotorSimple.Direction.REVERSE);
         slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+        //blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
         shooter.setPosition(0.75);
 
@@ -105,14 +108,14 @@ public class igneaSecondTeleop extends LinearOpMode{
 
         while(!isStarted() && !isStopRequested()){
 
-            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
+            //blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
 
             shooterAngle.setPosition(0.5);
             shooter.setPosition(.54);
 
             shoulder.setPosition(.4);
-            wrist.setPosition(.4);
-            finger.setPower(0);//positive = out
+            wrist.setPosition(.6);
+            //finger.setPower(0);//positive = out
             intakeServo.setPosition(0.78);
         }
 
@@ -122,19 +125,22 @@ public class igneaSecondTeleop extends LinearOpMode{
 
             robot.mecanumDrive(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x, speed);
 
-            intakeServo.setPosition(.56);
+            intakeServo.setPosition(.54);
 
-            //shooterAngle adjust
             if (gamepad1.a && buttonA || stickDropping){
                 //intake
+                intakePos = true;
+                outputPos = false;
                 shoulder.setPosition(.59);
-                wrist.setPosition(.4);
+                wrist.setPosition(.34);
                 buttonA = false;
             }
             else if (gamepad1.b && buttonB){
                 //placement
+                intakePos = false;
+                outputPos = true;
                 shoulder.setPosition(.1);
-                wrist.setPosition(.9);
+                wrist.setPosition(.78);
                 buttonB = false;
             }
 
@@ -166,17 +172,39 @@ public class igneaSecondTeleop extends LinearOpMode{
             telemetry.addData("shoulder", shoulder.getPosition());
             telemetry.addData("wrist", wrist.getPosition());
 
+            if (gamepad1.right_bumper && buttonRight){
+                wrist.setPosition(wrist.getPosition() + .01);
+                buttonRight = false;
+            }
+            else if (gamepad1.left_bumper && buttonLeft){
+                wrist.setPosition(wrist.getPosition() - .01);
+                buttonLeft = false;
+            }
+            else if (!gamepad1.right_bumper && !buttonRight){
+                buttonRight = true;
+            }
+            else if (!gamepad1.left_bumper && !buttonLeft){
+                buttonLeft = true;
+            }
+
+            //intake
             if(gamepad1.right_trigger > 0.5){
                 intake.setPower(0.85);
                 finger.setPower(-1);
             }
             else if(gamepad1.left_trigger > 0.5){
-                intake.setPower(-0.5);
-                finger.setPower(1);
+                if(intakePos){
+                    intake.setPower(-0.5);
+                } else if(outputPos) {
+                    finger.setPower(1);
+                }
             }
             else {
                 intake.setPower(0);
+                finger.setPower(0);
             }
+
+
 
             //slides
             if(gamepad1.dpad_up){
