@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.gen2;
 //import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -49,8 +50,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
     public DcMotor slidesR = null;
     public DcMotor intake = null;
 
-    public Servo finger = null;
-    public Servo elbow = null;
+    public CRServo finger = null;
     public Servo wrist = null;
     public Servo shoulder = null;
     public Servo intakeServo = null;
@@ -70,8 +70,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
         slidesR = hardwareMap.dcMotor.get("slidesR");
         slidesL = hardwareMap.dcMotor.get("slidesL");
 
-        finger = hardwareMap.servo.get("finger");
-        elbow = hardwareMap.servo.get("elbow");
+        finger = hardwareMap.crservo.get("finger");
         wrist = hardwareMap.servo.get("wrist");
         shoulder = hardwareMap.servo.get("shoulder");
         intakeServo = hardwareMap.servo.get("intakeServo");
@@ -130,7 +129,6 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //shoulder.setPosition(.08);
             //wrist.setPosition(.96);
             //elbow.setPosition(.77);
-            finger.setPosition(.26);
             intakeServo.setPosition(0.78);
 
             //telemetry.addData("x", myPipeline.getRectMidpointX());
@@ -146,48 +144,44 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //first drive forward
             robot.changeSpeed(.4,.4);
 
-            shoulder.setPosition(.08);
-            wrist.setPosition(.96);
-            elbow.setPosition(.77);
+            shoulder.setPosition(.6);
+            wrist.setPosition(.4);
 
             robot.goToPos(28,17,Math.toRadians(-90),0);
 
             intakeServo.setPosition(.56);
             robot.wait(1000,robot.odometers);
-            intake.setPower(-0.1);
-            robot.wait(500,robot.odometers);
+            intake.setPower(-0.15);
+            robot.wait(1000,robot.odometers);
             intake.setPower(0);
 
             //move to board
             robot.goToPos(28,20,Math.toRadians(-90),0);
 
-            shoulder.setPosition(.57);
-            intakeServo.setPosition(0.78);
+            shoulder.setPosition(.2);
+            //intakeServo.setPosition(0.78);
 
             robot.changeSpeed(.6,.6);
 
             //find pixel pos
             robot.goToPos(18,20,Math.toRadians(-90),Math.toRadians(90));
 
-            wrist.setPosition(.52);
+            wrist.setPosition(.78);
 
             //move to place
             robot.changeSpeed(.4,.4);
-            robot.goToPos(18, 33, Math.toRadians(-90), 0);
+            robot.goToPos(18, 38, Math.toRadians(-90), 0);
 
             robot.wait(500, robot.odometers);
 
             //open
-            finger.setPosition(.5);
+            finger.setPower(1);
 
-            robot.wait(500, robot.odometers);
+            robot.wait(1000, robot.odometers);
 
-            wrist.setPosition(.46);
-            shoulder.setPosition(.08);
-
-            robot.wait(200, robot.odometers);
-
-            wrist.setPosition(.96);
+            finger.setPower(0);
+            wrist.setPosition(.4);
+            shoulder.setPosition(.6);
 
             robot.wait(1000, robot.odometers);
 
@@ -203,9 +197,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //first drive forward
             robot.changeSpeed(.4,.4);
 
-            shoulder.setPosition(.08);
-            wrist.setPosition(.96);
-            elbow.setPosition(.77);
+            shoulder.setPosition(.6);
+            wrist.setPosition(.4);
 
             robot.goToPos(38,5,Math.toRadians(-90),0);
 
@@ -218,13 +211,13 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //move to board
             robot.goToPos(38,20,Math.toRadians(-90),0);
 
-            shoulder.setPosition(.57);
-            intakeServo.setPosition(0.78);
+            shoulder.setPosition(.1);
+            //intakeServo.setPosition(0.78);
 
             //find pixel pos
             robot.goToPos(25,20,Math.toRadians(-90),Math.toRadians(90));
 
-            wrist.setPosition(.52);
+            wrist.setPosition(.78);
 
             //move to place
 
@@ -233,16 +226,18 @@ public class igneaBlueBoardSide extends LinearOpMode{
             robot.wait(500, robot.odometers);
 
             //open
-            finger.setPosition(.5);
+            finger.setPower(1);
 
-            robot.wait(500, robot.odometers);
+            robot.wait(1000, robot.odometers);
+
+            finger.setPower(0);
 
             robot.goToPos(25, 28, Math.toRadians(-90), 0);
 
             robot.wait(500, robot.odometers);
 
-            shoulder.setPosition(.08);
-            wrist.setPosition(.96);
+            shoulder.setPosition(.6);
+            wrist.setPosition(.4);
 
             robot.wait(500, robot.odometers);
 
@@ -256,9 +251,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
             robot.changeSpeed(.4,.4);
             //place purple pixel
 
-            shoulder.setPosition(.08);
-            wrist.setPosition(.96);
-            elbow.setPosition(.77);
+            shoulder.setPosition(.6);
+            wrist.setPosition(.4);
 
             robot.goToPos(28,0,Math.toRadians(-90),0);
 
@@ -273,13 +267,13 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //go to board
             robot.goToPos(28,10,Math.toRadians(-90),0);
 
-            shoulder.setPosition(.57);
-            intakeServo.setPosition(0.78);
+            shoulder.setPosition(.1);
+            //intakeServo.setPosition(0.78);
 
             //find pixel pos
             robot.goToPos(30,20,Math.toRadians(-90),Math.toRadians(90));
 
-            wrist.setPosition(.52);
+            wrist.setPosition(.78);
 
             //move to place
             robot.goToPos(30, 33, Math.toRadians(-90), 0);
@@ -287,16 +281,14 @@ public class igneaBlueBoardSide extends LinearOpMode{
             robot.wait(500, robot.odometers);
 
             //open
-            finger.setPosition(.5);
+            finger.setPower(1);
 
-            robot.wait(500, robot.odometers);
+            robot.wait(1000, robot.odometers);
 
-            wrist.setPosition(.46);
-            shoulder.setPosition(.08);
+            finger.setPower(0);
 
-            robot.wait(200, robot.odometers);
-
-            wrist.setPosition(.96);
+            wrist.setPosition(.4);
+            shoulder.setPosition(.6);
 
             robot.wait(1000, robot.odometers);
 

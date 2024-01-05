@@ -258,7 +258,7 @@ public class blueBoardSideV2 extends LinearOpMode{
 
             }
 
-            /* placing
+            /** placing
             robot.changeAccuracy(0.25,Math.toRadians(0.5));
 
             //back up to bar
