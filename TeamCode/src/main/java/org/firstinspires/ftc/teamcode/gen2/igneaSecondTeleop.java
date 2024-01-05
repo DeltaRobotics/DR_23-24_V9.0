@@ -138,7 +138,7 @@ public class igneaSecondTeleop extends LinearOpMode{
                 //intake
                 intakePos = true;
                 outputPos = false;
-                shoulder.setPosition(.59);
+                shoulder.setPosition(.58);
                 wrist.setPosition(.34);
                 buttonA = false;
             }
@@ -147,22 +147,22 @@ public class igneaSecondTeleop extends LinearOpMode{
                 intakePos = false;
                 outputPos = true;
                 shoulder.setPosition(.18);
-                wrist.setPosition(.78);
+                wrist.setPosition(.8);
                 buttonB = false;
             }
 
-            /**
-             *
-             * fine adjust for the arm
-             *
-            else if (gamepad1.x && buttonX){
-                shoulder.setPosition(shoulder.getPosition() + .005);
-                buttonX = false;
-            }
-            else if (gamepad1.y && buttonY){
-                shoulder.setPosition(shoulder.getPosition() - .005);
-                buttonY = false;
-            }
+
+
+            //fine adjust for the arm
+
+            //else if (gamepad1.x && buttonX){
+            //    shoulder.setPosition(shoulder.getPosition() + .005);
+            //    buttonX = false;
+            //}
+            //else if (gamepad1.y && buttonY){
+            //    shoulder.setPosition(shoulder.getPosition() - .005);
+            //    buttonY = false;
+            //}
 
 
             if (!gamepad1.a && !buttonA){
@@ -172,7 +172,7 @@ public class igneaSecondTeleop extends LinearOpMode{
                 buttonB = true;
             }
 
-            else if (!gamepad1.x && !buttonX){
+           /* else if (!gamepad1.x && !buttonX){
                 buttonX  = true;
             }
             else if (!gamepad1.y && !buttonY){
@@ -207,24 +207,25 @@ public class igneaSecondTeleop extends LinearOpMode{
             else if(gamepad1.left_trigger > 0.5){
                 if(intakePos){
                     intake.setPower(-0.5);
-                } else if(outputPos /*&& !leftTrigger*/) {
+                } else if(outputPos && !leftTrigger) {
                     finger.setPower(1);
-                    //oldOutTime = outputTime.milliseconds();
-                    //leftTrigger = true;
-                }/* else if(outputPos && leftTrigger && (oldOutTime + 1000 < outputTime.milliseconds())){
-                    finger.setPower(0);
-                    leftTrigger = false;
-                }*/
+                    oldOutTime = outputTime.milliseconds();
+                    leftTrigger = true;
+                }
             }
-            /*else if(gamepad1.right_trigger < 0.5 && !leftTrigger){
-                intake.setPower(0);
-                finger.setPower(0);
-            }
-             */
             else {
                 intake.setPower(0);
+                //finger.setPower(0);
+            }
+            if(outputPos && leftTrigger && (oldOutTime + 800 < outputTime.milliseconds())){
+                finger.setPower(0);
+                leftTrigger = false;
+            }
+            else if(gamepad1.right_trigger < 0.5 && !leftTrigger){
+                intake.setPower(0);
                 finger.setPower(0);
             }
+
 
 
 
@@ -232,14 +233,14 @@ public class igneaSecondTeleop extends LinearOpMode{
             if(gamepad1.dpad_up){
                 slidesRasied = true;
                 //stacks high
-                slideEncoder = 600;
+                slideEncoder = 400;
 
                 stick_mid();
             }
             if(gamepad1.dpad_right){
                 slidesRasied = true;
                 //slides mid
-                slideEncoder = 400;
+                slideEncoder = 250;
 
                 stick_mid();
             }
@@ -254,14 +255,14 @@ public class igneaSecondTeleop extends LinearOpMode{
                 slidesRasied = false;
                 //slides retracted
 
-                slideEncoder = 200;
+                slideEncoder = 150;
                 //stick_hopper();
 
             }
 
             //shooter
             if(gamepad2.right_bumper){
-                shooterAngle.setPosition(0.6);
+                shooterAngle.setPosition(0.58);
             }
             if(gamepad2.right_bumper && gamepad2.left_bumper){
                 shooter.setPosition(0.5);
