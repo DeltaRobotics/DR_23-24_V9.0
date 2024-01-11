@@ -52,6 +52,7 @@ public class blueWingSide extends LinearOpMode{
 
     public Servo intakeServo = null;
     public Servo shoulder = null;
+    public Servo shooterAngle = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -70,6 +71,8 @@ public class blueWingSide extends LinearOpMode{
 
         slidesR = hardwareMap.dcMotor.get("slidesR");
         slidesL = hardwareMap.dcMotor.get("slidesL");
+        shooterAngle = hardwareMap.servo.get("shooterAngle");
+
 
         robot.resetDriveEncoders();
         intakeServo.setPosition(0.78);
@@ -125,6 +128,7 @@ public class blueWingSide extends LinearOpMode{
 
             //telemetry.addData("x", myPipeline.getRectMidpointX());
             //telemetry.addData("y", myPipeline.getRectMidpointY());
+            shooterAngle.setPosition(0);
             telemetry.update();
         }
         camera.stopStreaming();

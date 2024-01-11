@@ -49,6 +49,7 @@ public class redWingSide extends LinearOpMode{
     public DcMotor intake = null;
     public Servo intakeServo = null;
     public Servo shoulder = null;
+    public Servo shooterAngle = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -63,6 +64,7 @@ public class redWingSide extends LinearOpMode{
         intake = hardwareMap.dcMotor.get("intake");
         intakeServo = hardwareMap.servo.get("intakeServo");
         shoulder = hardwareMap.servo.get("shoulder");
+        shooterAngle = hardwareMap.servo.get("shooterAngle");
 
         robot.resetDriveEncoders();
         intakeServo.setPosition(0.78);
@@ -115,6 +117,7 @@ public class redWingSide extends LinearOpMode{
 
             //telemetry.addData("x", myPipeline.getRectMidpointX());
             //telemetry.addData("y", myPipeline.getRectMidpointY());
+            shooterAngle.setPosition(0);
             telemetry.update();
         }
 
