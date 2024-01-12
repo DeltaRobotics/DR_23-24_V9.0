@@ -142,9 +142,9 @@ public class blueWingSide extends LinearOpMode{
 
             robot.goToPos(28,3,Math.toRadians(90),0);
 
-            robot.wait(150,robot.odometers);
+            robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
-            robot.wait(150,robot.odometers);
+            robot.wait(100,robot.odometers);
             intake.setPower(0);
 
             intakeServo.setPosition(.56);
@@ -152,7 +152,15 @@ public class blueWingSide extends LinearOpMode{
 
             robot.goToPos(28,-10,Math.toRadians(90),0);
 
-            robot.wait(1000,robot.odometers);
+            robot.wait(500,robot.odometers);
+
+            robot.goToPos(50,-10,Math.toRadians(-90),0);
+
+            robot.wait(500,robot.odometers);
+
+            shooterAngle.setPosition(0.33);
+
+            robot.goToPos(50,80,Math.toRadians(-90),0);
 
         }
         else if(startingPos == 2){
@@ -167,17 +175,21 @@ public class blueWingSide extends LinearOpMode{
 
             robot.changeAccuracy(1,1);
 
-            robot.wait(150,robot.odometers);
+            robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
-            robot.wait(150,robot.odometers);
+            robot.wait(100,robot.odometers);
             intake.setPower(0);
 
             intakeServo.setPosition(.56);
             robot.wait(500,robot.odometers);
 
-            robot.goToPos(53,0,0,0);
+            robot.goToPos(50,0,0,0);
 
-            robot.wait(1000,robot.odometers);
+            robot.wait(500,robot.odometers);
+
+            shooterAngle.setPosition(0.33);
+
+            robot.goToPos(50,80,Math.toRadians(-90),0);
 
         }
         else if(startingPos == 3){
@@ -187,9 +199,9 @@ public class blueWingSide extends LinearOpMode{
 
             robot.goToPos(42,-10,0,0);
 
-            robot.wait(150,robot.odometers);
+            robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
-            robot.wait(150,robot.odometers);
+            robot.wait(100,robot.odometers);
             intake.setPower(0);
 
             intakeServo.setPosition(.56);
@@ -198,6 +210,14 @@ public class blueWingSide extends LinearOpMode{
             robot.goToPos(47,-10,0,0);
 
             robot.wait(1000,robot.odometers);
+
+            robot.goToPos(50,-10,Math.toRadians(-90),0);
+
+            robot.wait(500,robot.odometers);
+
+            shooterAngle.setPosition(0.33);
+
+            robot.goToPos(50,80,Math.toRadians(-90),0);
 
         }
 

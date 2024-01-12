@@ -75,6 +75,9 @@ public class igneaSecondTeleop extends LinearOpMode{
     public boolean buttonA2 = true;
     public boolean buttonX2 = true;
     public boolean buttonY2 = true;
+    public boolean dpadleft = true;
+
+    public boolean slideToggle = true;
 
     public double oldOutTime = 0;
     public int newOutTime = 0;
@@ -147,7 +150,6 @@ public class igneaSecondTeleop extends LinearOpMode{
                 buttonA = false;
                 slideEncoder = 0;
 
-                speed = .4;
             }
             else if (gamepad1.b && buttonB){
                 //placement
@@ -156,9 +158,8 @@ public class igneaSecondTeleop extends LinearOpMode{
                 shoulder.setPosition(.069);
                 wrist.setPosition(.8);
                 buttonB = false;
-                slideEncoder = 150;
+                slideEncoder = 200;
 
-                speed = .75;
             }
 
 
@@ -175,8 +176,15 @@ public class igneaSecondTeleop extends LinearOpMode{
             }
             //Move to hang
             else if (gamepad2.y && buttonY2){
-                slideEncoder = 725;
+                slideEncoder = 2800;
                 buttonY2 = false;
+            }
+            else if (gamepad2.a && buttonA2){
+                slideEncoder = 1000;
+                buttonA2 = false;
+            }
+            else if (!gamepad2.a && !buttonA2){
+                buttonA2  = true;
             }
             else if (!gamepad2.x && !buttonX2){
                 buttonX2  = true;
@@ -204,22 +212,28 @@ public class igneaSecondTeleop extends LinearOpMode{
 
 
 
-            //slides
+
+
+            //speed
             if (gamepad1.right_bumper && buttonRight){
-                speed = 1;
+                if (speed == 0.6){
+                    speed = 1;
+                    break;
+                }
+                speed = 0.6;
                 buttonRight = false;
             }
             else if (gamepad1.left_bumper && buttonLeft){
-                speed = .4;
+                speed = .3;
                 buttonLeft = false;
             }
             //wrist
             if (gamepad1.x && buttonX){
-                wrist.setPosition(wrist.getPosition() + .005);
+                slideEncoder += 200;
                 buttonX = false;
             }
             else if (gamepad1.y && buttonY){
-                wrist.setPosition(wrist.getPosition() - .005);
+                slideEncoder -= 200;
                 buttonY = false;
             }
 
@@ -293,34 +307,44 @@ public class igneaSecondTeleop extends LinearOpMode{
 
 
             //slides
-            if(gamepad1.dpad_up){
-                //stacks high
-                slidesRasied = true;
-                slideEncoder = 400;
-
-                stick_mid();
-            }
-            if(gamepad1.dpad_right){
-                //slides mid
-                slidesRasied = true;
-                slideEncoder = 250;
-
-                stick_mid();
-            }
             if(gamepad1.dpad_down){
                 //slides retracted
                 slidesRasied = false;
                 slideEncoder = 0;
-
-                stick_mid();
             }
-            if(gamepad1.dpad_left){
-                //slides low
-                slidesRasied = true;
-                slideEncoder = 150;
-                //stick_hopper();
-
+            if(gamepad1.dpad_left && dpadleft){
+                //slides toggle
+                slideToggle = !slideToggle;
+                dpadleft = false;
             }
+            if(!gamepad1.dpad_left && !dpadleft){
+                dpadleft = true;
+            }
+
+            if(gamepad1.dpad_up){
+                if (slideToggle) {
+                    //high mid
+                    slidesRasied = true;
+                    slideEncoder = 600;
+                }
+                else{
+                    //stacks high
+                    slideEncoder = 1400;
+                }
+            }
+            if(gamepad1.dpad_right){
+                if (slideToggle) {
+                    //low
+                    slidesRasied = true;
+                    slideEncoder = 200;
+                }
+                else{
+                    //low mid
+                    slideEncoder = 1000;
+                }
+            }
+
+
 
             //shooter
             if(gamepad2.right_bumper){
@@ -359,6 +383,7 @@ public class igneaSecondTeleop extends LinearOpMode{
             telemetry.addData("shoulder", shoulder.getPosition());
             telemetry.addData("wrist", wrist.getPosition());
             telemetry.addData("shooterAngle", shooterAngle.getPosition());
+            telemetry.addData("speed", speed);
             telemetry.update();
         }
     }
