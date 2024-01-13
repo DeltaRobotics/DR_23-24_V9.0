@@ -77,6 +77,10 @@ public class igneaRedBoardSide extends LinearOpMode{
         intakeServo = hardwareMap.servo.get("intakeServo");
         shooterAngle = hardwareMap.servo.get("shooterAngle");
 
+
+        slidesR.setDirection(DcMotorSimple.Direction.REVERSE);
+        slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
+
         robot.resetDriveEncoders();
 
         // OpenCV lift webcam
@@ -143,9 +147,17 @@ public class igneaRedBoardSide extends LinearOpMode{
             shoulder.setPosition(.6);
             wrist.setPosition(.4);
 
-            robot.goToPos(28,0,Math.toRadians(90),0);
+            robot.goToPos(28,0, 0,0);
 
-            robot.goToPos(28,4,Math.toRadians(90),0);
+            telemetry.addData("aa",1);
+            telemetry.update();
+
+            robot.turnToAngle(28,0,Math.toRadians(90));
+
+            telemetry.addData("aa",2);
+            telemetry.update();
+
+            robot.goToPos(28,4, Math.toRadians(90),0);
 
             robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
@@ -157,12 +169,16 @@ public class igneaRedBoardSide extends LinearOpMode{
 
             robot.goToPos(28,-10,Math.toRadians(90),0);
 
-            shoulder.setPosition(.12);
+            while(slidesR.getCurrentPosition() < 380) {
+                raiseSlides(400);
+            }
+
+            shoulder.setPosition(.08);
 
             //find pixel pos
             robot.goToPos(30,-20,Math.toRadians(90),Math.toRadians(-90));
 
-            wrist.setPosition(.8);
+            wrist.setPosition(.75);
 
             robot.changeSpeed(.6,.6);
 
@@ -215,6 +231,9 @@ public class igneaRedBoardSide extends LinearOpMode{
             }
 
             robot.mecanumDrive(0,0,0,0);
+            while(slidesR.getCurrentPosition() > 20) {
+                raiseSlides(0);
+            }
         }
         else if(startingPos == 5){
             camera.stopStreaming();
@@ -237,12 +256,16 @@ public class igneaRedBoardSide extends LinearOpMode{
 
             robot.goToPos(38,-20,Math.toRadians(90),0);
 
-            shoulder.setPosition(.12);
+            while(slidesR.getCurrentPosition() < 380) {
+                raiseSlides(400);
+            }
+
+            shoulder.setPosition(.08);
 
             //find pixel pos
             robot.goToPos(25,-20,Math.toRadians(90),0);
 
-            wrist.setPosition(.85);
+            wrist.setPosition(.75);
 
             //move to place
             robot.goToPos(25, -35, Math.toRadians(90), 0);
@@ -293,6 +316,9 @@ public class igneaRedBoardSide extends LinearOpMode{
             }
 
             robot.mecanumDrive(0,0,0,0);
+            while(slidesR.getCurrentPosition() > 20) {
+                raiseSlides(0);
+            }
         }
         else if(startingPos == 6){
             camera.stopStreaming();
@@ -316,12 +342,16 @@ public class igneaRedBoardSide extends LinearOpMode{
 
             robot.goToPos(28,-25,Math.toRadians(90),0);
 
-            shoulder.setPosition(.12);
+            while(slidesR.getCurrentPosition() < 380) {
+                raiseSlides(400);
+            }
+
+            shoulder.setPosition(.08);
 
             //find pixel pos
             robot.goToPos(18,-20,Math.toRadians(90),0);
 
-            wrist.setPosition(.8);
+            wrist.setPosition(.75);
 
             robot.changeAccuracy(.25,1);
 
@@ -375,9 +405,31 @@ public class igneaRedBoardSide extends LinearOpMode{
             }
 
             robot.mecanumDrive(0,0,0,0);
-
+            while(slidesR.getCurrentPosition() > 20) {
+                raiseSlides(0);
+            }
 
         }
 
+    }
+    public void raiseSlides(int destination){
+        if(slidesR.getCurrentPosition() < 20 && destination < 20){
+            slidesL.setTargetPosition(destination);
+            slidesL.setPower(0);
+            slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            slidesR.setTargetPosition(destination);
+            slidesR.setPower(0);
+            slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        else {
+            slidesL.setTargetPosition(destination);
+            slidesL.setPower(1);
+            slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            slidesR.setTargetPosition(destination);
+            slidesR.setPower(1);
+            slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
     }
 }

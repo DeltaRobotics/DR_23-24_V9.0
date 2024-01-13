@@ -218,9 +218,10 @@ public class igneaSecondTeleop extends LinearOpMode{
             if (gamepad1.right_bumper && buttonRight){
                 if (speed == 0.6){
                     speed = 1;
-                    break;
                 }
-                speed = 0.6;
+                else{
+                    speed = .6;
+                }
                 buttonRight = false;
             }
             else if (gamepad1.left_bumper && buttonLeft){
