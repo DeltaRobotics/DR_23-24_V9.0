@@ -147,15 +147,7 @@ public class igneaRedBoardSide extends LinearOpMode{
             shoulder.setPosition(.6);
             wrist.setPosition(.4);
 
-            robot.goToPos(28,0, 0,0);
-
-            telemetry.addData("aa",1);
-            telemetry.update();
-
-            robot.turnToAngle(28,0,Math.toRadians(90));
-
-            telemetry.addData("aa",2);
-            telemetry.update();
+            robot.goToPos(28,0, Math.toRadians(90),0);
 
             robot.goToPos(28,4, Math.toRadians(90),0);
 
