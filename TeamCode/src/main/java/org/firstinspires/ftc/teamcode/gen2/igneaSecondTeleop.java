@@ -158,7 +158,7 @@ public class igneaSecondTeleop extends LinearOpMode{
                 shoulder.setPosition(.069);
                 wrist.setPosition(.8);
                 buttonB = false;
-                slideEncoder = 200;
+                slideEncoder = 400;
 
             }
 
@@ -230,11 +230,11 @@ public class igneaSecondTeleop extends LinearOpMode{
             }
             //wrist
             if (gamepad1.x && buttonX){
-                slideEncoder += 200;
+                slideEncoder += 400;
                 buttonX = false;
             }
             else if (gamepad1.y && buttonY){
-                slideEncoder -= 200;
+                slideEncoder -= 400;
                 buttonY = false;
             }
 
@@ -326,22 +326,22 @@ public class igneaSecondTeleop extends LinearOpMode{
                 if (slideToggle) {
                     //high mid
                     slidesRasied = true;
-                    slideEncoder = 600;
+                    slideEncoder = 800;
                 }
                 else{
                     //stacks high
-                    slideEncoder = 1400;
+                    slideEncoder = 1600;
                 }
             }
             if(gamepad1.dpad_right){
                 if (slideToggle) {
                     //low
                     slidesRasied = true;
-                    slideEncoder = 200;
+                    slideEncoder = 400;
                 }
                 else{
                     //low mid
-                    slideEncoder = 1000;
+                    slideEncoder = 1200;
                 }
             }
 
