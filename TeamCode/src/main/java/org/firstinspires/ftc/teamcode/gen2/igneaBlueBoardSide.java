@@ -131,14 +131,13 @@ public class igneaBlueBoardSide extends LinearOpMode{
                 startingPos = 3;
             }
 
-            //shoulder.setPosition(.08);
-            //wrist.setPosition(.96);
-            //elbow.setPosition(.77);
+
             intakeServo.setPosition(0.78);
             shooterAngle.setPosition(0);
 
-            //telemetry.addData("x", myPipeline.getRectMidpointX());
-            //telemetry.addData("y", myPipeline.getRectMidpointY());
+            shoulder.setPosition(.5);
+            wrist.setPosition(.34);
+
             telemetry.update();
         }
         camera.stopStreaming();

@@ -137,6 +137,10 @@ public class blueWingSide extends LinearOpMode{
             //telemetry.addData("x", myPipeline.getRectMidpointX());
             //telemetry.addData("y", myPipeline.getRectMidpointY());
             shooterAngle.setPosition(0);
+
+            shoulder.setPosition(.5);
+            wrist.setPosition(.34);
+
             telemetry.update();
         }
         camera.stopStreaming();
@@ -151,7 +155,7 @@ public class blueWingSide extends LinearOpMode{
 
             robot.goToPos(28,0,Math.toRadians(90),0);
 
-            robot.goToPos(28,3,Math.toRadians(90),0);
+            robot.goToPos(28,4,Math.toRadians(90),0);
 
             robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
@@ -165,19 +169,33 @@ public class blueWingSide extends LinearOpMode{
 
             robot.wait(500,robot.odometers);
 
-            robot.goToPos(50,-10,Math.toRadians(-90),0);
+            robot.goToPos(50,-10,Math.toRadians(90),0);
 
             robot.wait(500,robot.odometers);
 
             shooterAngle.setPosition(0.33);
 
+            robot.wait(500,robot.odometers);
+
+            robot.changeAccuracy(.25,.1);
+
+            robot.changeSpeed(.25,.25);
+
+            //past bar
+            robot.goToPos(50,50,Math.toRadians(90),Math.toRadians(180));
+
+            robot.wait(500,robot.odometers);
+
+            robot.changeSpeed(.4,.4);
+
+            //spin
             robot.goToPos(50,80,Math.toRadians(-90),0);
 
             shoulder.setPosition(.069);
 
             robot.changeAccuracy(.25,.25);
 
-            robot.goToPos(22,80,Math.toRadians(-90),0);
+            robot.goToPos(20,80,Math.toRadians(-90),0);
 
             robot.wait(500,robot.odometers);
 
@@ -188,11 +206,11 @@ public class blueWingSide extends LinearOpMode{
             //drive to the backdrop
             while(driveF.milliseconds() < 3000) {
 
-                slidesL.setTargetPosition(500);
+                slidesL.setTargetPosition(600);
                 slidesL.setPower(1);
                 slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                slidesR.setTargetPosition(500);
+                slidesR.setTargetPosition(600);
                 slidesR.setPower(1);
                 slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -214,13 +232,13 @@ public class blueWingSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            shoulder.setPosition(.57);
+            shoulder.setPosition(.5);
             wrist.setPosition(.34);
 
             ElapsedTime driveG = new ElapsedTime();
 
             //drop slides
-            while(driveG.milliseconds() < 1500) {
+            while(slidesR.getCurrentPosition() > 20) {
 
                 slidesL.setTargetPosition(0);
                 slidesL.setPower(1);
@@ -233,6 +251,8 @@ public class blueWingSide extends LinearOpMode{
                 robot.refresh(robot.odometers);
 
             }
+
+            robot.wait(2000, robot.odometers);
 
         }
         else if(startingPos == 2){
@@ -255,17 +275,33 @@ public class blueWingSide extends LinearOpMode{
             intakeServo.setPosition(.56);
             robot.wait(500,robot.odometers);
 
-            robot.goToPos(50,0,0,0);
+            robot.goToPos(50,0,Math.toRadians(90),0);
 
             robot.wait(500,robot.odometers);
 
             shooterAngle.setPosition(0.33);
 
+            robot.wait(500,robot.odometers);
+
+            robot.changeAccuracy(.25,.1);
+
+            robot.changeSpeed(.25,.25);
+
+            //past bar
+            robot.goToPos(50,50,Math.toRadians(90),Math.toRadians(180));
+
+            robot.wait(500,robot.odometers);
+
+            robot.changeSpeed(.4,.4);
+
+            //spin
             robot.goToPos(50,80,Math.toRadians(-90),0);
 
             shoulder.setPosition(.069);
 
             robot.changeAccuracy(.25,.25);
+
+            robot.changeSpeed(.4,.4);
 
             robot.goToPos(25,80,Math.toRadians(-90),0);
 
@@ -276,11 +312,11 @@ public class blueWingSide extends LinearOpMode{
             //drive to the backdrop
             while(driveF.milliseconds() < 3000) {
 
-                slidesL.setTargetPosition(400);
+                slidesL.setTargetPosition(600);
                 slidesL.setPower(1);
                 slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                slidesR.setTargetPosition(400);
+                slidesR.setTargetPosition(600);
                 slidesR.setPower(1);
                 slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -300,13 +336,13 @@ public class blueWingSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            shoulder.setPosition(.57);
+            shoulder.setPosition(.5);
             wrist.setPosition(.34);
 
             ElapsedTime driveG = new ElapsedTime();
 
             //drop slides
-            while(driveG.milliseconds() < 1500) {
+            while(slidesR.getCurrentPosition() > 20) {
 
                 slidesL.setTargetPosition(0);
                 slidesL.setPower(1);
@@ -320,6 +356,8 @@ public class blueWingSide extends LinearOpMode{
 
             }
 
+            robot.wait(2000, robot.odometers);
+
         }
         else if(startingPos == 3){
             camera.stopStreaming();
@@ -328,6 +366,7 @@ public class blueWingSide extends LinearOpMode{
 
             robot.goToPos(42,-10,0,0);
 
+            //purple pixel
             robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
             robot.wait(100,robot.odometers);
@@ -340,32 +379,52 @@ public class blueWingSide extends LinearOpMode{
 
             robot.wait(1000,robot.odometers);
 
-            robot.goToPos(50,-10,Math.toRadians(-90),0);
+            //ready for long move
+            robot.goToPos(50,-10,Math.toRadians(90),0);
 
             robot.wait(500,robot.odometers);
 
             shooterAngle.setPosition(0.33);
 
+            robot.wait(500,robot.odometers);
+
+            robot.changeAccuracy(.25,.1);
+
+            robot.changeSpeed(.25,.25);
+
+            //past bar
+            robot.goToPos(50,50,Math.toRadians(90),Math.toRadians(180));
+
+            robot.wait(500,robot.odometers);
+
+            robot.changeSpeed(.4,.4);
+
+            //spin
             robot.goToPos(50,80,Math.toRadians(-90),0);
 
             shoulder.setPosition(.069);
 
             robot.changeAccuracy(.25,.25);
 
+            robot.changeSpeed(.4,.4);
+
+            //move to bord
             robot.goToPos(32,80,Math.toRadians(-90),0);
 
             wrist.setPosition(.8);
 
+            robot.wait(500,robot.odometers);
+
             ElapsedTime driveF = new ElapsedTime();
 
-            //drive to the backdrop
+            //move slides up
             while(driveF.milliseconds() < 3000) {
 
-                slidesL.setTargetPosition(400);
+                slidesL.setTargetPosition(600);
                 slidesL.setPower(1);
                 slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                slidesR.setTargetPosition(400);
+                slidesR.setTargetPosition(600);
                 slidesR.setPower(1);
                 slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -385,13 +444,12 @@ public class blueWingSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            shoulder.setPosition(.57);
+            //move shoulder down
+            shoulder.setPosition(.45);
             wrist.setPosition(.34);
 
-            ElapsedTime driveG = new ElapsedTime();
-
             //drop slides
-            while(driveG.milliseconds() < 1500) {
+            while(slidesR.getCurrentPosition() > 20) {
 
                 slidesL.setTargetPosition(0);
                 slidesL.setPower(1);
@@ -399,6 +457,25 @@ public class blueWingSide extends LinearOpMode{
 
                 slidesR.setTargetPosition(0);
                 slidesR.setPower(1);
+                slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                robot.refresh(robot.odometers);
+
+            }
+
+            robot.wait(2000,robot.odometers);
+
+            ElapsedTime driveG = new ElapsedTime();
+
+            //drop slides
+            while(driveG.milliseconds() < 250) {
+
+                slidesL.setTargetPosition(-50);
+                slidesL.setPower(.5);
+                slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                slidesR.setTargetPosition(-50);
+                slidesR.setPower(.5);
                 slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 robot.refresh(robot.odometers);

@@ -129,8 +129,8 @@ public class redWingSide extends LinearOpMode{
                 startingPos = 3;
             }
 
-            //telemetry.addData("x", myPipeline.getRectMidpointX());
-            //telemetry.addData("y", myPipeline.getRectMidpointY());
+            shoulder.setPosition(.5);
+            wrist.setPosition(.34);
             shooterAngle.setPosition(0);
             telemetry.update();
         }
@@ -324,7 +324,7 @@ public class redWingSide extends LinearOpMode{
 
             robot.wait(1000,robot.odometers);
 
-            robot.goToPos(50,10,Math.toRadians(-90),Math.toRadians(-90));
+            robot.goToPos(50,10,Math.toRadians(-90),0);
 
             robot.wait(500,robot.odometers);
 
@@ -332,7 +332,9 @@ public class redWingSide extends LinearOpMode{
 
             robot.changeSpeed(.4,.4);
 
-            robot.goToPos(50,-80,Math.toRadians(90),Math.toRadians(180));
+            robot.goToPos(50,-50,Math.toRadians(90),Math.toRadians(180));
+
+            robot.goToPos(50,-80,Math.toRadians(90),0);
 
             shoulder.setPosition(.069);
 
