@@ -149,6 +149,8 @@ public class igneaRedBoardSide extends LinearOpMode{
 
             robot.goToPos(28,0, Math.toRadians(90),0);
 
+            robot.goToPos(28,6, Math.toRadians(90),0);
+
             robot.goToPos(28,4, Math.toRadians(90),0);
 
             robot.wait(100,robot.odometers);
@@ -175,7 +177,7 @@ public class igneaRedBoardSide extends LinearOpMode{
             robot.changeSpeed(.6,.6);
 
             //move to place
-            robot.goToPos(34, -35, Math.toRadians(90), 0);
+            robot.goToPos(34, -30, Math.toRadians(90), 0);
 
             ElapsedTime driveF = new ElapsedTime();
             //drive to the backdrop
@@ -260,7 +262,7 @@ public class igneaRedBoardSide extends LinearOpMode{
             wrist.setPosition(.75);
 
             //move to place
-            robot.goToPos(25, -35, Math.toRadians(90), 0);
+            robot.goToPos(25, -30, Math.toRadians(90), 0);
 
             robot.wait(500, robot.odometers);
 
@@ -348,7 +350,7 @@ public class igneaRedBoardSide extends LinearOpMode{
             robot.changeAccuracy(.25,1);
 
             //move to place
-            robot.goToPos(19, -35, Math.toRadians(90), 0);
+            robot.goToPos(19, -30, Math.toRadians(90), 0);
 
             robot.wait(500, robot.odometers);
 

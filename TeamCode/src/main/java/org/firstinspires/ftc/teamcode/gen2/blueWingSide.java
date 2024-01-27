@@ -131,7 +131,7 @@ public class blueWingSide extends LinearOpMode{
                 startingPos = 3;
             } else{
                 telemetry.addData("location", "no head seen");
-                startingPos = 2;
+                startingPos = 1;
             }
 
             //telemetry.addData("x", myPipeline.getRectMidpointX());
@@ -154,6 +154,8 @@ public class blueWingSide extends LinearOpMode{
             wrist.setPosition(.4);
 
             robot.goToPos(28,0,Math.toRadians(90),0);
+
+            robot.goToPos(28,8,Math.toRadians(90),0);
 
             robot.goToPos(28,4,Math.toRadians(90),0);
 
@@ -195,7 +197,7 @@ public class blueWingSide extends LinearOpMode{
 
             robot.changeAccuracy(.25,.25);
 
-            robot.goToPos(20,80,Math.toRadians(-90),0);
+            robot.goToPos(17,77,Math.toRadians(-90),0);
 
             robot.wait(500,robot.odometers);
 
@@ -303,7 +305,7 @@ public class blueWingSide extends LinearOpMode{
 
             robot.changeSpeed(.4,.4);
 
-            robot.goToPos(25,80,Math.toRadians(-90),0);
+            robot.goToPos(25,77,Math.toRadians(-90),0);
 
             wrist.setPosition(.8);
 
@@ -409,7 +411,7 @@ public class blueWingSide extends LinearOpMode{
             robot.changeSpeed(.4,.4);
 
             //move to bord
-            robot.goToPos(32,80,Math.toRadians(-90),0);
+            robot.goToPos(32,77,Math.toRadians(-90),0);
 
             wrist.setPosition(.8);
 

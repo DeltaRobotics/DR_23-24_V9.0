@@ -71,6 +71,9 @@ public class igneaSecondTeleop extends LinearOpMode{
     public boolean buttonY = true;
     public boolean buttonRight = true;
     public boolean buttonLeft = true;
+    public boolean backButton = true;
+    public boolean buttonRight2 = true;
+    public boolean buttonLeft2 = true;
     public boolean buttonB2 = true;
     public boolean buttonA2 = true;
     public boolean buttonX2 = true;
@@ -162,119 +165,47 @@ public class igneaSecondTeleop extends LinearOpMode{
 
             }
 
-
-
-            //fine adjust for the arm
-
-            //gamepad2 stuff
-
-            //Hang prep
-            if (gamepad2.x && buttonX2){
-                wrist.setPosition(.34);
-                shoulder.setPosition(.125);
-                intakePos2 = .78;
-            }
-            //Move to hang
-            else if (gamepad2.y && buttonY2){
-                slideEncoder = 2800;
-                buttonY2 = false;
-            }
-            else if (gamepad2.a && buttonA2){
-                slideEncoder = 1000;
-                buttonA2 = false;
-            }
-            else if (!gamepad2.a && !buttonA2){
-                buttonA2  = true;
-            }
-            else if (!gamepad2.x && !buttonX2){
-                buttonX2  = true;
-            }
-            else if (!gamepad2.y && !buttonY2){
-                buttonY2  = true;
-            }
-
-            //shooterAngle
-            /*if (gamepad2.a && buttonA2){
-                shooterAngle.setPosition(shooterAngle.getPosition() + .005);
-                buttonA2 = false;
-            }
-            else if (gamepad2.b && buttonB2){
-                shooterAngle.setPosition(shooterAngle.getPosition() - .005);
-                buttonB2 = false;
-            }
-            else if (!gamepad2.a && !buttonA2){
-                buttonA2  = true;
-            }
-            else if (!gamepad2.b && !buttonB2){
-                buttonB2  = true;
-            }
-            */
-
-
-
-
-
-            //speed
-            if (gamepad1.right_bumper && buttonRight){
-                if (speed == 0.6){
-                    speed = 1;
-                }
-                else{
-                    speed = .6;
-                }
-                buttonRight = false;
-            }
-            else if (gamepad1.left_bumper && buttonLeft){
-                speed = .3;
-                buttonLeft = false;
-            }
-            //wrist
-            if (gamepad1.x && buttonX){
-                slideEncoder += 400;
-                buttonX = false;
-            }
-            else if (gamepad1.y && buttonY){
-                slideEncoder -= 400;
-                buttonY = false;
-            }
-
-
             if (!gamepad1.a && !buttonA){
                 buttonA = true;
             }
             else if (!gamepad1.b && !buttonB){
                 buttonB = true;
             }
+
+
+            //speed
+            if (gamepad1.back && backButton){
+                if (speed == 0.6){
+                    speed = 1;
+                }
+                else{
+                    speed = 0.6;
+                }
+                backButton = false;
+            }
+            else if (!gamepad1.back && !backButton){
+                backButton  = true;
+            }
+
+
+            //slides fine adjust
+            if (gamepad1.x && buttonX){
+                slideEncoder -= 400;
+                buttonX = false;
+            }
+            else if (gamepad1.y && buttonY){
+                slideEncoder += 400;
+                buttonY = false;
+            }
+
             else if (!gamepad1.x && !buttonX){
                 buttonX  = true;
             }
             else if (!gamepad1.y && !buttonY){
                 buttonY  = true;
             }
-            else if (!gamepad1.right_bumper && !buttonRight){
-                buttonRight  = true;
-            }
-            else if (!gamepad1.left_bumper && !buttonLeft){
-                buttonLeft  = true;
-            }
 
 
-            /*
-            if (gamepad1.right_bumper && buttonRight){
-                wrist.setPosition(wrist.getPosition() + .01);
-                buttonRight = false;
-            }
-            else if (gamepad1.left_bumper && buttonLeft){
-                wrist.setPosition(wrist.getPosition() - .01);
-                buttonLeft = false;
-            }
-            else if (!gamepad1.right_bumper && !buttonRight){
-                buttonRight = true;
-            }
-            else if (!gamepad1.left_bumper && !buttonLeft){
-                buttonLeft = true;
-            }
-            */
 
             //intake
             if(gamepad1.right_trigger > 0.5){
@@ -311,49 +242,77 @@ public class igneaSecondTeleop extends LinearOpMode{
             if(gamepad1.dpad_down){
                 //slides retracted
                 slidesRasied = false;
-                slideEncoder = 0;
+                slideEncoder = 800;
             }
-            if(gamepad1.dpad_left && dpadleft){
-                //slides toggle
-                slideToggle = !slideToggle;
-                dpadleft = false;
-            }
-            if(!gamepad1.dpad_left && !dpadleft){
-                dpadleft = true;
-            }
-
             if(gamepad1.dpad_up){
-                if (slideToggle) {
-                    //high mid
-                    slidesRasied = true;
-                    slideEncoder = 800;
-                }
-                else{
-                    //stacks high
-                    slideEncoder = 1600;
-                }
+                slidesRasied = true;
+                slideEncoder = 2800;
             }
             if(gamepad1.dpad_right){
-                if (slideToggle) {
-                    //low
-                    slidesRasied = true;
-                    slideEncoder = 400;
-                }
-                else{
-                    //low mid
-                    slideEncoder = 1200;
-                }
+                slidesRasied = true;
+                slideEncoder = 2000;
+            }
+            if(gamepad1.dpad_left){
+                slidesRasied = true;
+                slideEncoder = 1400;
             }
 
+            //-------------------------------------------------------------------------------------------------------------------------------------//
 
+            //Gamepad 2 controls
 
             //shooter
             if(gamepad2.right_bumper){
-                shooterAngle.setPosition(0.23);
+                shooterAngle.setPosition(0.21);
             }
             if(gamepad2.right_bumper && gamepad2.left_bumper){
                 shooter.setPosition(0.5);
             }
+
+            //Hang prep
+            if (gamepad2.x && buttonX2){
+                wrist.setPosition(.34);
+                shoulder.setPosition(.125);
+                //intakePos2 = .78;
+            }
+
+            //slide hanging
+            else if (gamepad2.y && buttonY2){
+                slideEncoder = 2800;
+                buttonY2 = false;
+            }
+            else if (gamepad2.a && buttonA2){
+                slideEncoder = 1000;
+                buttonA2 = false;
+            }
+            else if (!gamepad2.a && !buttonA2){
+                buttonA2  = true;
+            }
+            else if (!gamepad2.x && !buttonX2){
+                buttonX2  = true;
+            }
+            else if (!gamepad2.y && !buttonY2){
+                buttonY2  = true;
+            }
+
+            /*
+            //shooter fine adjust
+            if (gamepad2.dpad_right && buttonRight2){
+                shooterAngle.setPosition(shooterAngle.getPosition() + .01);
+                buttonRight2 = false;
+            }
+            else if (gamepad2.dpad_left && buttonLeft2){
+                shooterAngle.setPosition(shooterAngle.getPosition() - .01);
+                buttonLeft2 = false;
+            }
+            else if (!gamepad2.dpad_right && !buttonRight2){
+                buttonRight2 = true;
+            }
+            else if (!gamepad2.dpad_left && !buttonLeft2){
+                buttonLeft2 = true;
+            }
+
+             */
 
             //setting slide power
             if(slidesR.getCurrentPosition() < 20 && slideEncoder < 20){

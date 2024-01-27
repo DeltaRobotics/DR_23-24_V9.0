@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 @TeleOp(name="blinkinTesting")
-@Disabled
+//@Disabled
 
 public class blinkinTesting extends LinearOpMode{
 
@@ -24,16 +24,16 @@ public class blinkinTesting extends LinearOpMode{
         while (opModeIsActive()) {
 
             if (gamepad1.a){
-                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
+                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
             }
             if (gamepad1.b){
-                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_LAVA_PALETTE);
+                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
             }
             if (gamepad1.x){
-                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE_GREEN);
+                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
             }
             if (gamepad1.y){
-                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_RED);
+                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE);
             }
 
 

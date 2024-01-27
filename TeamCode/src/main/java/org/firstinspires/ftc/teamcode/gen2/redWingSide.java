@@ -141,7 +141,7 @@ public class redWingSide extends LinearOpMode{
             //first drive forward
             robot.changeSpeed(.4,.4);
 
-            robot.goToPos(43,9,0,0);
+            robot.goToPos(43,8,0,0);
 
             robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
@@ -151,17 +151,30 @@ public class redWingSide extends LinearOpMode{
             intakeServo.setPosition(.56);
             robot.wait(500,robot.odometers);
 
-            robot.goToPos(50,8,Math.toRadians(90),0);
+            robot.goToPos(50,8,Math.toRadians(-90),0);
 
             robot.wait(500,robot.odometers);
 
             shooterAngle.setPosition(0.33);
 
-            robot.goToPos(50,-80,Math.toRadians(90),0);
+            robot.changeAccuracy(.25,.1);
+
+            robot.changeSpeed(.25,.25);
+
+            //past bar
+            robot.goToPos(50,-50,Math.toRadians(-90),Math.toRadians(180));
 
             robot.wait(500,robot.odometers);
 
-            robot.goToPos(32,-85,Math.toRadians(90),0);
+            robot.changeSpeed(.4,.4);
+
+            robot.goToPos(50,-80,Math.toRadians(90),0);
+
+            shoulder.setPosition(.069);
+
+            robot.wait(500,robot.odometers);
+
+            robot.goToPos(32,-80,Math.toRadians(90),0);
 
             wrist.setPosition(.8);
 
@@ -236,7 +249,20 @@ public class redWingSide extends LinearOpMode{
 
             robot.wait(500,robot.odometers);
 
+            robot.goToPos(50,-10,Math.toRadians(-90),0);
+
             shooterAngle.setPosition(0.33);
+
+            robot.changeAccuracy(.25,.1);
+
+            robot.changeSpeed(.25,.25);
+
+            //past bar
+            robot.goToPos(50,-50,Math.toRadians(-90),Math.toRadians(180));
+
+            robot.wait(500,robot.odometers);
+
+            robot.changeSpeed(.4,.4);
 
             robot.goToPos(50,-80,Math.toRadians(90),0);
 
@@ -244,7 +270,7 @@ public class redWingSide extends LinearOpMode{
 
             robot.changeAccuracy(.25,.25);
 
-            robot.goToPos(29,-85,Math.toRadians(90),0);
+            robot.goToPos(25,-80,Math.toRadians(90),0);
 
             robot.wait(500,robot.odometers);
 
@@ -310,6 +336,8 @@ public class redWingSide extends LinearOpMode{
 
             robot.goToPos(28,0,Math.toRadians(-90),0);
 
+            robot.goToPos(28,-8,Math.toRadians(-90),0);
+
             robot.goToPos(28,-4,Math.toRadians(-90),0);
 
             robot.wait(100,robot.odometers);
@@ -329,6 +357,17 @@ public class redWingSide extends LinearOpMode{
             robot.wait(500,robot.odometers);
 
             shooterAngle.setPosition(0.33);
+
+            robot.changeAccuracy(.25,.1);
+
+            robot.changeSpeed(.25,.25);
+
+            //past bar
+            robot.goToPos(50,-50,Math.toRadians(-90),Math.toRadians(180));
+
+            robot.wait(500,robot.odometers);
+
+            robot.changeSpeed(.4,.4);
 
             robot.changeSpeed(.4,.4);
 
