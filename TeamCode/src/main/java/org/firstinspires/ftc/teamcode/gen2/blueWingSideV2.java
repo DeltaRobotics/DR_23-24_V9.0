@@ -18,10 +18,10 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name="blueWingSide")
+@Autonomous(name="blueWingSideV2")
 //@Disabled
 
-public class blueWingSide extends LinearOpMode{
+public class blueWingSideV2 extends LinearOpMode{
 
     private OpenCvCamera camera;//find webcam statement
 
@@ -171,28 +171,47 @@ public class blueWingSide extends LinearOpMode{
 
             robot.goToPos(28,-10,Math.toRadians(90),0);
 
-            robot.wait(500,robot.odometers);
+            robot.duelServoController(.7,shoulderL,shoulderR);
 
-            robot.goToPos(50,-10,Math.toRadians(-90),0);
+            robot.goToPos(50.5,-10,Math.toRadians(90),Math.toRadians(90));
+
+            robot.changeSpeed(.2,.2);
+
+            finger.setPower(1);
+
+            robot.goToPos(50.5,-15,Math.toRadians(90),0);
+
+            robot.wait(2000,robot.odometers);
+
+            finger.setPower(0);
+
+            robot.goToPos(50.5,-10,Math.toRadians(90),0);
+
+
+            /*
+            robot.goToPos(50,-10,Math.toRadians(90),0);
 
             robot.wait(500,robot.odometers);
 
             shooterAngle.setPosition(0.33);
 
-            robot.wait(5000,robot.odometers);
+            robot.wait(500,robot.odometers);
 
-            robot.changeAccuracy(.25,Math.toRadians(1));
+            robot.changeSpeed(.25,.25);
 
-            robot.changeSpeed(.6,.6);
+            //past bar
+            robot.goToPos(50,50,Math.toRadians(90),Math.toRadians(180));
 
-            //move past bar
+            robot.wait(500,robot.odometers);
+
+            robot.changeSpeed(.4,.4);
+
+            //spin
             robot.goToPos(50,80,Math.toRadians(-90),0);
 
             robot.duelServoController(.57,shoulderL,shoulderR);
 
-            robot.goToPos(21,80,Math.toRadians(-90),Math.toRadians(90));
-
-            robot.changeSpeed(.4,.4);
+            robot.goToPos(17,77,Math.toRadians(-90),0);
 
             robot.wait(500,robot.odometers);
 
@@ -251,6 +270,8 @@ public class blueWingSide extends LinearOpMode{
 
             robot.wait(2000, robot.odometers);
 
+             */
+
         }
         else if(startingPos == 2){
             camera.stopStreaming();
@@ -277,7 +298,7 @@ public class blueWingSide extends LinearOpMode{
 
             shooterAngle.setPosition(0.33);
 
-            robot.wait(10000,robot.odometers);
+            robot.wait(500,robot.odometers);
 
             robot.changeSpeed(.6,.6);
 
@@ -372,7 +393,7 @@ public class blueWingSide extends LinearOpMode{
             //ready for long move
             robot.goToPos(50,-10,Math.toRadians(-90),0);
 
-            robot.wait(10000,robot.odometers);
+            robot.wait(500,robot.odometers);
 
             shooterAngle.setPosition(0.33);
 

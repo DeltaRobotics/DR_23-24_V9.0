@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.gen2;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -13,15 +12,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.robotHardware;
 
-@TeleOp(name="igneaSecondTeleop")
-@Disabled
+@TeleOp(name="igneaThirdTeleop")
+//@Disabled
 
-public class igneaSecondTeleop extends LinearOpMode{
+public class igneaThirdTeleop extends LinearOpMode{
 
     public CRServo finger = null;
     public Servo shooterAngle = null;
     public Servo wrist = null;
-    public Servo shoulder = null;
+    public Servo shoulderL = null;
+    public Servo shoulderR = null;
     public Servo intakeServo = null;
     public Servo shooter = null;
 
@@ -103,7 +103,8 @@ public class igneaSecondTeleop extends LinearOpMode{
         finger = hardwareMap.crservo.get("finger");
         shooterAngle = hardwareMap.servo.get("shooterAngle");
         wrist = hardwareMap.servo.get("wrist");
-        shoulder = hardwareMap.servo.get("shoulder");
+        shoulderL = hardwareMap.servo.get("shoulderL");
+        shoulderR = hardwareMap.servo.get("shoulderR");
         intakeServo = hardwareMap.servo.get("intakeServo");
         shooter = hardwareMap.servo.get("shooter");
 
@@ -133,7 +134,10 @@ public class igneaSecondTeleop extends LinearOpMode{
             shooterAngle.setPosition(0.35);
             shooter.setPosition(.57);
 
-            shoulder.setPosition(.58);
+            robot.duelServoController(.04,shoulderL,shoulderR);
+            //shoulderL.setPosition(0);
+            //shoulderR.setPosition(1);
+
             wrist.setPosition(.34);
             //finger.setPower(0);//positive = out
             //intakeServo.setPosition(0.78);
@@ -147,31 +151,33 @@ public class igneaSecondTeleop extends LinearOpMode{
 
             intakeServo.setPosition(intakePos2);
 
-            if (gamepad1.a && buttonA || stickDropping){
+            if (gamepad1.left_bumper && buttonA || stickDropping){
                 //intake
                 intakePos = true;
                 outputPos = false;
-                shoulder.setPosition(.57);
                 wrist.setPosition(.34);
+
+                robot.duelServoController(.04,shoulderL,shoulderR);
+
                 buttonA = false;
                 slideEncoder = 0;
 
             }
-            else if (gamepad1.b && buttonB){
+            else if (gamepad1.right_bumper && buttonB){
                 //placement
                 intakePos = false;
                 outputPos = true;
-                shoulder.setPosition(.069);
-                wrist.setPosition(.8);
+                robot.duelServoController(.57,shoulderL,shoulderR);
+                wrist.setPosition(.86);
                 buttonB = false;
                 slideEncoder = 400;
 
             }
 
-            if (!gamepad1.a && !buttonA){
+            if (!gamepad1.left_bumper && !buttonA){
                 buttonA = true;
             }
-            else if (!gamepad1.b && !buttonB){
+            else if (!gamepad1.right_bumper && !buttonB){
                 buttonB = true;
             }
 
@@ -218,7 +224,7 @@ public class igneaSecondTeleop extends LinearOpMode{
             else if(gamepad1.left_trigger > 0.5){
                 if(intakePos){
                     intake.setPower(-0.5);
-                    finger.setPower(.5);
+                    finger.setPower(-1);
                 } else if(outputPos && !leftTrigger) {
                     finger.setPower(-1);
                     oldOutTime = outputTime.milliseconds();
@@ -275,17 +281,18 @@ public class igneaSecondTeleop extends LinearOpMode{
             //Hang prep
             if (gamepad2.x && buttonX2){
                 wrist.setPosition(.34);
-                shoulder.setPosition(.125);
+                robot.duelServoController(.46,shoulderL,shoulderR);
                 //intakePos2 = .78;
             }
 
             //slide hanging
             else if (gamepad2.y && buttonY2){
-                slideEncoder = 2800;
+                slideEncoder = 3500;
                 buttonY2 = false;
             }
             else if (gamepad2.a && buttonA2){
-                slideEncoder = 1000;
+                slideEncoder = 1500;
+                robot.duelServoController(.8,shoulderL,shoulderR);
                 buttonA2 = false;
             }
             else if (!gamepad2.a && !buttonA2){
@@ -298,14 +305,14 @@ public class igneaSecondTeleop extends LinearOpMode{
                 buttonY2  = true;
             }
 
-            /*
+
             //shooter fine adjust
             if (gamepad2.dpad_right && buttonRight2){
-                shooterAngle.setPosition(shooterAngle.getPosition() + .01);
+                robot.duelServoController(shoulderR.getPosition()+.01,shoulderL,shoulderR);
                 buttonRight2 = false;
             }
             else if (gamepad2.dpad_left && buttonLeft2){
-                shooterAngle.setPosition(shooterAngle.getPosition() - .01);
+                robot.duelServoController(shoulderR.getPosition()-.01,shoulderL,shoulderR);
                 buttonLeft2 = false;
             }
             else if (!gamepad2.dpad_right && !buttonRight2){
@@ -315,7 +322,7 @@ public class igneaSecondTeleop extends LinearOpMode{
                 buttonLeft2 = true;
             }
 
-             */
+
 
             //setting slide power
             if(slidesR.getCurrentPosition() < 20 && slideEncoder < 20){
@@ -343,7 +350,7 @@ public class igneaSecondTeleop extends LinearOpMode{
             telemetry.addData("heading",Math.toDegrees(robot.GlobalHeading));
             telemetry.addData("",null);
             telemetry.addData("slide Encoder value", slideEncoder);
-            telemetry.addData("shoulder", shoulder.getPosition());
+            telemetry.addData("shoulder", shoulderR.getPosition());
             telemetry.addData("wrist", wrist.getPosition());
             telemetry.addData("shooterAngle", shooterAngle.getPosition());
             telemetry.addData("speed", speed);

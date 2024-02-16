@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-//import com.acmerobotics.dashboard.FtcDashboard;
-//import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -14,10 +14,10 @@ import com.qualcomm.robotcore.util.Range;
 /**
  * Created by User on 10/1/2022.
  */
-//@Config
+@Config //We need this for Dashboard to change variables
 public class robotHardware extends LinearOpMode
 {
-    //FtcDashboard dashboard = FtcDashboard.getInstance();
+    FtcDashboard dashboard = FtcDashboard.getInstance();
     //drive motors
     public DcMotor motorRF = null; 
     public DcMotor motorLF = null;
@@ -41,10 +41,10 @@ public class robotHardware extends LinearOpMode
 
     //PID Drive Variables
 
-    public static double DriveF = .175; // = 32767 / maxV      (do not edit from this number)
-    public static double DriveP = 0.0045; // = 0.1 * F           (raise till real's apex touches Var apex)
-    public static double DriveI = 0.001;// = 0.1 * P           (fine ajustment of P)
-    public static double DriveD = 0; // = 0                     (raise to reduce ocolation)
+    public static double DriveF = .1; // = 32767 / maxV      (do not edit from this number)
+    public static double DriveP = 0.2; // = 0.1 * F           (raise till real's apex touches Var apex)
+    public static double DriveI = 0.025;// = 0.1 * P           (fine ajustment of P)
+    public static double DriveD = 0.06; // = 0                     (raise to reduce ocolation)
 
     double DrivePIDCurrentTime = 0;
     double DrivePIDTime = 0;
@@ -58,10 +58,10 @@ public class robotHardware extends LinearOpMode
 
     //PID Turning Variables
 
-    public static double TurnF = .175; // = 32767 / maxV      (do not edit from this number)
-    public static double TurnP = 0.55; // = 0.1 * F           (raise till real's apex touches Var apex)
-    public static double TurnI = 0; // = 0.1 * P           (fine ajustment of P)
-    public static double TurnD = 0; // = 0                     (raise to reduce ocolation)
+    public static double TurnF = .15; // = 32767 / maxV      (do not edit from this number)
+    public static double TurnP = 0.6; // = 0.1 * F           (raise till real's apex touches Var apex)
+    public static double TurnI = 0.04; // = 0.1 * P           (fine ajustment of P)
+    public static double TurnD = 0.04; // = 0                     (raise to reduce ocolation)
 
     double TurningPIDCurrentTime = 0;
     double TurningPIDTime = 0;
@@ -265,10 +265,10 @@ public class robotHardware extends LinearOpMode
      */
 
     //odometry constants (tune these)
-    double L = 16.13;   //distance between left and right odometers (in inches)
+    double L = 15.375;   //distance between left and right odometers (in inches)
     double B = 4.875;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
-    double R = .7476;   //wheel radius (in inches)
-    double N = 8192;  //encoder ticks per revoluton
+    double R = .9425;   //wheel radius (in inches)
+    double N = 2000;  //encoder ticks per revoluton
     double inPerTick = 2.0 * Math.PI * R / N;
 
 
@@ -446,7 +446,7 @@ public class robotHardware extends LinearOpMode
 
     }
 
-    public void goToPosSingle(double x, double y, double finalAngle, double followAngle)
+    public double goToPosSingle(double x, double y, double finalAngle, double followAngle)
     {
         //bring in the encoder and motor objects
         //odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
@@ -472,12 +472,6 @@ public class robotHardware extends LinearOpMode
             //calculate the vector powers for the mecanum math
             double movementXpower = (reletiveXToTarget / (Math.abs(reletiveXToTarget) + Math.abs(reletiveYToTarget))) * slowDown;
             double movementYpower = (reletiveYToTarget / (Math.abs(reletiveYToTarget) + Math.abs(reletiveXToTarget))) * slowDown;
-            if (Double.isNaN(movementYpower)){
-                movementYpower = 0;
-            }
-            if (Double.isNaN(movementXpower)){
-                movementXpower = 0;
-            }
 
             //when far away from the target the robot will point at the target to get there faster.
             //at the end of the movement the robot will begin moving toward the desired final angle
@@ -489,12 +483,12 @@ public class robotHardware extends LinearOpMode
             } else {
                 reletiveTurnAngle = angleWrapRad(finalAngle - GlobalHeading);
                 movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
-                //movementTurnPower = odoTurnPID(0, reletiveTurnAngle);
             }
 
             //set the motors to the correct powers to move toward the target
             mecanumDrive(movementXpower, movementYpower, -movementTurnPower, voltComp);
 
+            return movementTurnPower;
     }
 
     public double driveToPos(double x, double y){
@@ -535,19 +529,6 @@ public class robotHardware extends LinearOpMode
         double reletiveTurnAngle;
         reletiveTurnAngle = angleWrapRad(reletiveAngleToTarget);
         movementTurnPower = Range.clip(odoTurnPID(0, reletiveTurnAngle), -turnSpeed, turnSpeed);
-
-
-        //Josephs breaking of code
-
-        //double relativeXToTarget = x - GlobalX;
-        //double relativeYToTarget = y - GlobalY;
-
-        //double slowDownX = Range.clip(odoDrivePID(0,relativeXToTarget), 0, moveSpeed);
-        //double slowDownY = Range.clip(odoDrivePID(0,relativeYToTarget), 0, moveSpeed);
-
-        //double movementXPower = (relativeXToTarget / (Math.abs(relativeXToTarget) + Math.abs(relativeYToTarget))) * slowDownX;
-        //double movementYPower = (relativeYToTarget / (Math.abs(relativeYToTarget) + Math.abs(relativeXToTarget))) * slowDownY;
-
 
         //set the motors to the correct powers to move toward the target
         mecanumDrive(movementXpower, movementYpower, 0, voltComp);
@@ -624,6 +605,12 @@ public class robotHardware extends LinearOpMode
 
     }
     */
+
+    public void duelServoController(double target, Servo servoLeft, Servo servoRight){
+        //TODO this assumes that the left servos down position is 0. Change if its the other way
+        servoLeft.setPosition(Math.abs(1-target));
+        servoRight.setPosition(target);
+    }
 
     public double odoDrivePID(double target, double current){
         DrivePIDPreviousError = DrivePIDError;

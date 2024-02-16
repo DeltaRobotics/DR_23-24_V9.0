@@ -52,7 +52,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
     public CRServo finger = null;
     public Servo wrist = null;
-    public Servo shoulder = null;
+    public Servo shoulderL = null;
+    public Servo shoulderR = null;
     public Servo intakeServo = null;
     public Servo shooterAngle = null;
 
@@ -73,7 +74,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
         finger = hardwareMap.crservo.get("finger");
         wrist = hardwareMap.servo.get("wrist");
-        shoulder = hardwareMap.servo.get("shoulder");
+        shoulderL = hardwareMap.servo.get("shoulderL");
+        shoulderR = hardwareMap.servo.get("shoulderR");
         intakeServo = hardwareMap.servo.get("intakeServo");
         shooterAngle = hardwareMap.servo.get("shooterAngle");
 
@@ -135,7 +137,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
             intakeServo.setPosition(0.78);
             shooterAngle.setPosition(0);
 
-            shoulder.setPosition(.5);
+            robot.duelServoController(.1,shoulderL,shoulderR);
             wrist.setPosition(.34);
 
             telemetry.update();
@@ -149,8 +151,9 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //first drive forward
             robot.changeSpeed(.4,.4);
 
-            shoulder.setPosition(.6);
-            wrist.setPosition(.4);
+
+            robot.duelServoController(.1,shoulderL,shoulderR);
+            wrist.setPosition(.34);
 
             robot.goToPos(28,17,Math.toRadians(-90),0);
 
@@ -166,22 +169,25 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //move to board
             robot.goToPos(28,24,Math.toRadians(-90),0);
 
-            while(slidesR.getCurrentPosition() < 380) {
-                raiseSlides(400);
+
+            while(slidesR.getCurrentPosition() < 180) {
+                raiseSlides(200);
             }
 
-            shoulder.setPosition(.08);
+
+
+            robot.duelServoController(.57,shoulderL,shoulderR);
             //intakeServo.setPosition(0.78);
 
             //find pixel pos
             robot.goToPos(21,24,Math.toRadians(-90),0);
 
-            wrist.setPosition(.75);
+            wrist.setPosition(.86);
 
             robot.wait(1000,robot.odometers);
 
             //move to place
-            robot.goToPos(21, 30, Math.toRadians(-90), 0);
+            robot.goToPos(19, 30, Math.toRadians(-90), 0);
 
             ElapsedTime driveF = new ElapsedTime();
 
@@ -206,7 +212,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            shoulder.setPosition(.57);
+            robot.duelServoController(.04,shoulderL,shoulderR);
             wrist.setPosition(.34);
 
             robot.wait(500, robot.odometers);
@@ -234,6 +240,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
             while(slidesR.getCurrentPosition() > 20) {
                 raiseSlides(0);
             }
+
+            robot.wait(500, robot.odometers);
         }
         else if(startingPos == 2){
             camera.stopStreaming();
@@ -241,10 +249,10 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //first drive forward
             robot.changeSpeed(.4,.4);
 
-            shoulder.setPosition(.6);
-            wrist.setPosition(.4);
+            robot.duelServoController(.1,shoulderL,shoulderR);
+            wrist.setPosition(.34);
 
-            robot.goToPos(37,5,Math.toRadians(-90),0);
+            robot.goToPos(38,5,Math.toRadians(-90),0);
 
             robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
@@ -255,24 +263,21 @@ public class igneaBlueBoardSide extends LinearOpMode{
             robot.wait(500,robot.odometers);
 
             //move to board
-            robot.goToPos(38,20,Math.toRadians(-90),0);
+            robot.goToPos(38,24,Math.toRadians(-90),0);
 
-            while(slidesR.getCurrentPosition() < 380) {
-                raiseSlides(400);
+            while(slidesR.getCurrentPosition() < 280) {
+                raiseSlides(300);
             }
 
-            shoulder.setPosition(.08);
+            robot.duelServoController(.57,shoulderL,shoulderR);
             //intakeServo.setPosition(0.78);
 
             //find pixel pos
-            robot.goToPos(24,20,Math.toRadians(-90),0);
+            robot.goToPos(24,24,Math.toRadians(-90),Math.toRadians(-90));
 
-            wrist.setPosition(.75);
+            wrist.setPosition(.86);
 
-            //move to place
-            robot.changeAccuracy(1,1);
-
-            robot.goToPos(26, 30, Math.toRadians(-90), 0);
+            robot.goToPos(26, 34, Math.toRadians(-90), 0);
 
             robot.wait(500, robot.odometers);
 
@@ -285,7 +290,6 @@ public class igneaBlueBoardSide extends LinearOpMode{
                 robot.refresh(robot.odometers);
 
             }
-            robot.changeAccuracy(1,1);
 
             //open
             finger.setPower(-1);
@@ -298,7 +302,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            shoulder.setPosition(.57);
+            robot.duelServoController(.04,shoulderL,shoulderR);
             wrist.setPosition(.34);
 
             robot.wait(500, robot.odometers);
@@ -314,7 +318,6 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             ElapsedTime driveB = new ElapsedTime();
 
-            //drive to the backdrop
             while(driveB.milliseconds() < 500) {
 
                 robot.mecanumDrive(.5,0,0,1);
@@ -323,9 +326,11 @@ public class igneaBlueBoardSide extends LinearOpMode{
             }
 
             robot.mecanumDrive(0,0,0,0);
-            while(slidesR.getCurrentPosition() > 20) {
+            while(slidesR.getCurrentPosition() > 10) {
                 raiseSlides(0);
             }
+
+            robot.wait(500, robot.odometers);
         }
         else if(startingPos == 3){
             camera.stopStreaming();
@@ -333,12 +338,12 @@ public class igneaBlueBoardSide extends LinearOpMode{
             robot.changeSpeed(.4,.4);
             //place purple pixel
 
-            shoulder.setPosition(.6);
-            wrist.setPosition(.4);
+            robot.duelServoController(.1,shoulderL,shoulderR);
+            wrist.setPosition(.34);
 
             robot.goToPos(28,0,Math.toRadians(-90),0);
 
-            robot.goToPos(28,-9,Math.toRadians(-90),0);
+            robot.goToPos(28,-9,Math.toRadians(-90),Math.toRadians(180));
 
             robot.goToPos(28,-5,Math.toRadians(-90),0);
 
@@ -353,22 +358,20 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //go to board
             robot.goToPos(28,10,Math.toRadians(-90),0);
 
-            while(slidesR.getCurrentPosition() < 380) {
-                raiseSlides(400);
+            while(slidesR.getCurrentPosition() < 180) {
+                raiseSlides(200);
             }
 
-            shoulder.setPosition(.08);
+            robot.duelServoController(.57,shoulderL,shoulderR);
             //intakeServo.setPosition(0.78);
 
             //find pixel pos
             robot.goToPos(34,20,Math.toRadians(-90),Math.toRadians(90));
 
-            wrist.setPosition(.75);
-
-            robot.changeAccuracy(.25,1);
+            wrist.setPosition(.86);
 
             //move to place
-            robot.goToPos(34, 30, Math.toRadians(-90), 0);
+            robot.goToPos(34, 34, Math.toRadians(-90), 0);
 
             robot.wait(500, robot.odometers);
 
@@ -380,7 +383,6 @@ public class igneaBlueBoardSide extends LinearOpMode{
                 robot.refresh(robot.odometers);
 
             }
-            robot.changeAccuracy(1,1);
 
             //open
             finger.setPower(-1);
@@ -393,7 +395,7 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            shoulder.setPosition(.57);
+            robot.duelServoController(.04,shoulderL,shoulderR);
             wrist.setPosition(.34);
 
             robot.wait(500, robot.odometers);
@@ -418,9 +420,11 @@ public class igneaBlueBoardSide extends LinearOpMode{
             }
 
             robot.mecanumDrive(0,0,0,0);
-            while(slidesR.getCurrentPosition() > 20) {
+            while(slidesR.getCurrentPosition() > 10) {
                 raiseSlides(0);
             }
+
+            robot.wait(500, robot.odometers);
         }
 
     }

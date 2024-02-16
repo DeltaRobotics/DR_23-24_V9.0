@@ -49,7 +49,8 @@ public class redWingSide extends LinearOpMode{
     //non-wheels
     public DcMotor intake = null;
     public Servo intakeServo = null;
-    public Servo shoulder = null;
+    public Servo shoulderL = null;
+    public Servo shoulderR = null;
     public Servo shooterAngle = null;
 
     public DcMotor slidesL = null;
@@ -69,7 +70,8 @@ public class redWingSide extends LinearOpMode{
 
         intake = hardwareMap.dcMotor.get("intake");
         intakeServo = hardwareMap.servo.get("intakeServo");
-        shoulder = hardwareMap.servo.get("shoulder");
+        shoulderL = hardwareMap.servo.get("shoulderL");
+        shoulderR = hardwareMap.servo.get("shoulderR");
         shooterAngle = hardwareMap.servo.get("shooterAngle");
 
         slidesR = hardwareMap.dcMotor.get("slidesR");
@@ -129,7 +131,7 @@ public class redWingSide extends LinearOpMode{
                 startingPos = 3;
             }
 
-            shoulder.setPosition(.5);
+            robot.duelServoController(.04,shoulderL,shoulderR);
             wrist.setPosition(.34);
             shooterAngle.setPosition(0);
             telemetry.update();
@@ -140,8 +142,10 @@ public class redWingSide extends LinearOpMode{
             camera.stopStreaming();
             //first drive forward
             robot.changeSpeed(.4,.4);
+            robot.duelServoController(.1,shoulderL,shoulderR);
+            wrist.setPosition(.34);
 
-            robot.goToPos(43,8,0,0);
+            robot.goToPos(43,9,0,0);
 
             robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
@@ -151,30 +155,22 @@ public class redWingSide extends LinearOpMode{
             intakeServo.setPosition(.56);
             robot.wait(500,robot.odometers);
 
-            robot.goToPos(50,8,Math.toRadians(-90),0);
+            robot.goToPos(50,8,Math.toRadians(90),0);
 
-            robot.wait(500,robot.odometers);
+            robot.wait(10000,robot.odometers);
 
             shooterAngle.setPosition(0.33);
 
-            robot.changeAccuracy(.25,.1);
-
-            robot.changeSpeed(.25,.25);
-
-            //past bar
-            robot.goToPos(50,-50,Math.toRadians(-90),Math.toRadians(180));
-
-            robot.wait(500,robot.odometers);
-
-            robot.changeSpeed(.4,.4);
+            robot.changeSpeed(.6,.6);
 
             robot.goToPos(50,-80,Math.toRadians(90),0);
 
-            shoulder.setPosition(.069);
+            robot.duelServoController(.57,shoulderL,shoulderR);
 
             robot.wait(500,robot.odometers);
 
-            robot.goToPos(32,-80,Math.toRadians(90),0);
+            //placing on board
+            robot.goToPos(31,-80,Math.toRadians(90),Math.toRadians(-90));
 
             wrist.setPosition(.8);
 
@@ -209,7 +205,7 @@ public class redWingSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            shoulder.setPosition(.57);
+            robot.duelServoController(.04,shoulderL,shoulderR);
             wrist.setPosition(.34);
 
             ElapsedTime driveG = new ElapsedTime();
@@ -235,6 +231,9 @@ public class redWingSide extends LinearOpMode{
             camera.stopStreaming();
             robot.changeSpeed(.4,.4);
 
+            robot.duelServoController(.1,shoulderL,shoulderR);
+            wrist.setPosition(.34);
+
             robot.goToPos(47,0,0,0);
 
             robot.wait(100,robot.odometers);
@@ -249,30 +248,23 @@ public class redWingSide extends LinearOpMode{
 
             robot.wait(500,robot.odometers);
 
-            robot.goToPos(50,-10,Math.toRadians(-90),0);
+            robot.goToPos(50,-10,Math.toRadians(90),0);
 
             shooterAngle.setPosition(0.33);
 
-            robot.changeAccuracy(.25,.1);
+            robot.wait(10000,robot.odometers);
 
-            robot.changeSpeed(.25,.25);
+            robot.changeSpeed(.6,.6);
 
-            //past bar
-            robot.goToPos(50,-50,Math.toRadians(-90),Math.toRadians(180));
+            robot.goToPos(50,-80,Math.toRadians(90),0);
+
+            robot.duelServoController(.57,shoulderL,shoulderR);
+
+            robot.goToPos(25,-80,Math.toRadians(90),Math.toRadians(-90));
 
             robot.wait(500,robot.odometers);
 
             robot.changeSpeed(.4,.4);
-
-            robot.goToPos(50,-80,Math.toRadians(90),0);
-
-            shoulder.setPosition(.069);
-
-            robot.changeAccuracy(.25,.25);
-
-            robot.goToPos(25,-80,Math.toRadians(90),0);
-
-            robot.wait(500,robot.odometers);
 
             wrist.setPosition(.8);
 
@@ -307,7 +299,7 @@ public class redWingSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            shoulder.setPosition(.57);
+            robot.duelServoController(.04,shoulderL,shoulderR);
             wrist.setPosition(.34);
 
             ElapsedTime driveG = new ElapsedTime();
@@ -333,10 +325,12 @@ public class redWingSide extends LinearOpMode{
             camera.stopStreaming();
             //place purple pixel
             robot.changeSpeed(.4,.4);
+            robot.duelServoController(.1,shoulderL,shoulderR);
+            wrist.setPosition(.34);
 
             robot.goToPos(28,0,Math.toRadians(-90),0);
 
-            robot.goToPos(28,-8,Math.toRadians(-90),0);
+            robot.goToPos(28,-8,Math.toRadians(-90),Math.toRadians(180));
 
             robot.goToPos(28,-4,Math.toRadians(-90),0);
 
@@ -352,36 +346,23 @@ public class redWingSide extends LinearOpMode{
 
             robot.wait(1000,robot.odometers);
 
-            robot.goToPos(50,10,Math.toRadians(-90),0);
+            robot.goToPos(50,10,Math.toRadians(90),0);
 
-            robot.wait(500,robot.odometers);
+            robot.wait(5000,robot.odometers);
 
             shooterAngle.setPosition(0.33);
 
-            robot.changeAccuracy(.25,.1);
-
-            robot.changeSpeed(.25,.25);
-
-            //past bar
-            robot.goToPos(50,-50,Math.toRadians(-90),Math.toRadians(180));
-
-            robot.wait(500,robot.odometers);
-
-            robot.changeSpeed(.4,.4);
-
-            robot.changeSpeed(.4,.4);
-
-            robot.goToPos(50,-50,Math.toRadians(90),Math.toRadians(180));
+            robot.changeSpeed(.6,.6);
 
             robot.goToPos(50,-80,Math.toRadians(90),0);
 
-            shoulder.setPosition(.069);
+            robot.duelServoController(.57,shoulderL,shoulderR);
 
-            robot.changeAccuracy(.25,.25);
-
-            robot.goToPos(22,-85,Math.toRadians(90),0);
+            robot.goToPos(20,-80,Math.toRadians(90),Math.toRadians(-90));
 
             robot.wait(500,robot.odometers);
+
+            robot.changeSpeed(.4,.4);
 
             wrist.setPosition(.8);
 
@@ -416,7 +397,7 @@ public class redWingSide extends LinearOpMode{
 
             robot.wait(500, robot.odometers);
 
-            shoulder.setPosition(.57);
+            robot.duelServoController(.04,shoulderL,shoulderR);
             wrist.setPosition(.34);
 
             ElapsedTime driveG = new ElapsedTime();

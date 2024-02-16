@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.robotHardware;
 
 @TeleOp(name="igneaTeleopTesting")
-//@Disabled
+@Disabled
 
 public class igneaTeleopTesting extends LinearOpMode{
 
