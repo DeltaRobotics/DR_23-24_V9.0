@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.gen2;
 
 //import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -58,6 +59,8 @@ public class blueWingSide extends LinearOpMode{
     public Servo shooterAngle = null;
     public Servo wrist = null;
 
+    RevBlinkinLedDriver blinkinLedDriver;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -65,6 +68,8 @@ public class blueWingSide extends LinearOpMode{
 
         //FtcDashboard dashboard = FtcDashboard.getInstance();
         //telemetry = dashboard.getTelemetry();
+
+        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
         robotHardware robot = new robotHardware(hardwareMap);
 
@@ -135,6 +140,8 @@ public class blueWingSide extends LinearOpMode{
                 telemetry.addData("location", "no head seen");
                 startingPos = 1;
             }
+
+            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE);
 
             //telemetry.addData("x", myPipeline.getRectMidpointX());
             //telemetry.addData("y", myPipeline.getRectMidpointY());

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.gen2;
 
 //import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -58,6 +59,8 @@ public class redWingSide extends LinearOpMode{
     public Servo wrist = null;
     public CRServo finger = null;
 
+    RevBlinkinLedDriver blinkinLedDriver;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -65,6 +68,8 @@ public class redWingSide extends LinearOpMode{
 
         //FtcDashboard dashboard = FtcDashboard.getInstance();
         //telemetry = dashboard.getTelemetry();
+
+        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
         robotHardware robot = new robotHardware(hardwareMap);
 
@@ -130,6 +135,8 @@ public class redWingSide extends LinearOpMode{
                 telemetry.addData("location", "no head seen");
                 startingPos = 3;
             }
+
+            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE);
 
             robot.duelServoController(.04,shoulderL,shoulderR);
             wrist.setPosition(.34);

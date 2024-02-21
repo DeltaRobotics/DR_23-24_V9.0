@@ -24,6 +24,8 @@ public class igneaThirdTeleop extends LinearOpMode{
     public Servo shoulderR = null;
     public Servo intakeServo = null;
     public Servo shooter = null;
+    public Servo pixMover = null;
+    public Servo pixScraper = null;
 
     public DcMotor intake = null;
     public DcMotor slidesL = null;
@@ -87,14 +89,14 @@ public class igneaThirdTeleop extends LinearOpMode{
     public double oldOutTime = 0;
     public int newOutTime = 0;
 
+    RevBlinkinLedDriver blinkinLedDriver;
 
-
-    //RevBlinkinLedDriver blinkinLedDriver;
 
     public void runOpMode() throws InterruptedException {
 
         robotHardware robot = new robotHardware(hardwareMap);
 
+        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
         robot.resetDriveEncoders();
 
@@ -107,6 +109,8 @@ public class igneaThirdTeleop extends LinearOpMode{
         shoulderR = hardwareMap.servo.get("shoulderR");
         intakeServo = hardwareMap.servo.get("intakeServo");
         shooter = hardwareMap.servo.get("shooter");
+        pixMover = hardwareMap.servo.get("pixMover");
+        pixScraper = hardwareMap.servo.get("pixScraper");
 
         intake = hardwareMap.dcMotor.get("intake");
         slidesL = hardwareMap.dcMotor.get("slidesL");
@@ -121,8 +125,6 @@ public class igneaThirdTeleop extends LinearOpMode{
         slidesR.setDirection(DcMotorSimple.Direction.REVERSE);
         slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
-
 
 
         //0.95 for grabbing from intake
@@ -131,16 +133,21 @@ public class igneaThirdTeleop extends LinearOpMode{
 
             //blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
 
-            shooterAngle.setPosition(0.35);
+            shooterAngle.setPosition(0.30);
             shooter.setPosition(.57);
 
-            robot.duelServoController(.04,shoulderL,shoulderR);
+            robot.duelServoController(.05,shoulderL,shoulderR);
             //shoulderL.setPosition(0);
             //shoulderR.setPosition(1);
 
             wrist.setPosition(.34);
             //finger.setPower(0);//positive = out
             //intakeServo.setPosition(0.78);
+
+            pixScraper.setPosition(.95);
+            pixMover.setPosition(.5);//about .7 or so for moving
+
+            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE);
         }
 
         while (opModeIsActive()) {
@@ -157,7 +164,7 @@ public class igneaThirdTeleop extends LinearOpMode{
                 outputPos = false;
                 wrist.setPosition(.34);
 
-                robot.duelServoController(.04,shoulderL,shoulderR);
+                robot.duelServoController(.05,shoulderL,shoulderR);
 
                 buttonA = false;
                 slideEncoder = 0;
@@ -291,7 +298,7 @@ public class igneaThirdTeleop extends LinearOpMode{
                 buttonY2 = false;
             }
             else if (gamepad2.a && buttonA2){
-                slideEncoder = 1500;
+                slideEncoder = 1000;
                 robot.duelServoController(.8,shoulderL,shoulderR);
                 buttonA2 = false;
             }
@@ -305,8 +312,18 @@ public class igneaThirdTeleop extends LinearOpMode{
                 buttonY2  = true;
             }
 
+            //pixMover fine adjust
+            robot.servoFineAdjust(pixScraper, gamepad2.dpad_up, gamepad2.dpad_down, .01);
 
-            //shooter fine adjust
+            if (gamepad2.right_trigger > .3){
+                pixScraper.setPosition(.63);
+            }
+            else if (gamepad2.left_trigger > .3){
+                pixScraper.setPosition(.9);
+            }
+
+
+            //shoulder fine adjust
             if (gamepad2.dpad_right && buttonRight2){
                 robot.duelServoController(shoulderR.getPosition()+.01,shoulderL,shoulderR);
                 buttonRight2 = false;
@@ -354,6 +371,8 @@ public class igneaThirdTeleop extends LinearOpMode{
             telemetry.addData("wrist", wrist.getPosition());
             telemetry.addData("shooterAngle", shooterAngle.getPosition());
             telemetry.addData("speed", speed);
+            telemetry.addData("pixMover", pixMover.getPosition());
+            telemetry.addData("pixScraper", pixScraper.getPosition());
             telemetry.update();
         }
     }

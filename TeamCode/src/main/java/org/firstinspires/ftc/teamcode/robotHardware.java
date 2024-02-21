@@ -39,6 +39,9 @@ public class robotHardware extends LinearOpMode
     public double moveAccuracy  = 1;
     public double angleAccuracy = Math.toRadians(1);
 
+    boolean button1 = false;
+    boolean button2 = false;
+
     //PID Drive Variables
 
     public static double DriveF = .1; // = 32767 / maxV      (do not edit from this number)
@@ -607,9 +610,25 @@ public class robotHardware extends LinearOpMode
     */
 
     public void duelServoController(double target, Servo servoLeft, Servo servoRight){
-        //TODO this assumes that the left servos down position is 0. Change if its the other way
         servoLeft.setPosition(Math.abs(1-target));
         servoRight.setPosition(target);
+    }
+
+    public void servoFineAdjust(Servo s, boolean increase, boolean decrease, double increment){
+        if (increase && button1){
+            s.setPosition(s.getPosition() + increment);
+            button1 = false;
+        }
+        else if (decrease && button2){
+            s.setPosition(s.getPosition() - increment);
+            button2 = false;
+        }
+        else if (!increase && !button1){
+            button1 = true;
+        }
+        else if (!decrease && !button2){
+            button2 = true;
+        }
     }
 
     public double odoDrivePID(double target, double current){

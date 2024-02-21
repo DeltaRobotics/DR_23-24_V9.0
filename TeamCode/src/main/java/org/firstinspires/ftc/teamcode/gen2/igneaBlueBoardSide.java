@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.gen2;
 
 //import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -57,6 +58,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
     public Servo intakeServo = null;
     public Servo shooterAngle = null;
 
+    RevBlinkinLedDriver blinkinLedDriver;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -64,6 +67,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
         //FtcDashboard dashboard = FtcDashboard.getInstance();
         //telemetry = dashboard.getTelemetry();
+
+        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
         robotHardware robot = new robotHardware(hardwareMap);
 
@@ -139,6 +144,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
 
             robot.duelServoController(.1,shoulderL,shoulderR);
             wrist.setPosition(.34);
+
+            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE);
 
             telemetry.update();
         }
@@ -265,8 +272,8 @@ public class igneaBlueBoardSide extends LinearOpMode{
             //move to board
             robot.goToPos(38,24,Math.toRadians(-90),0);
 
-            while(slidesR.getCurrentPosition() < 280) {
-                raiseSlides(300);
+            while(slidesR.getCurrentPosition() < 180) {
+                raiseSlides(200);
             }
 
             robot.duelServoController(.57,shoulderL,shoulderR);
