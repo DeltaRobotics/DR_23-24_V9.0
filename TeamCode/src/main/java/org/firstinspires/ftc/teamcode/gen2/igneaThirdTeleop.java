@@ -279,7 +279,7 @@ public class igneaThirdTeleop extends LinearOpMode{
 
             //shooter
             if(gamepad2.right_bumper){
-                shooterAngle.setPosition(0.21);
+                shooterAngle.setPosition(0.2);
             }
             if(gamepad2.right_bumper && gamepad2.left_bumper){
                 shooter.setPosition(0.5);
@@ -312,11 +312,29 @@ public class igneaThirdTeleop extends LinearOpMode{
                 buttonY2  = true;
             }
 
-            //pixMover fine adjust
-            robot.servoFineAdjust(pixScraper, gamepad2.dpad_up, gamepad2.dpad_down, .01);
 
+            //pixMover
+            if (gamepad2.dpad_right && buttonRight2){
+                //in robot
+                pixMover.setPosition(.5);
+                buttonRight2 = false;
+            }
+            else if (gamepad2.dpad_left && buttonLeft2){
+                //moving pix
+                pixMover.setPosition(.7);
+                buttonLeft2 = false;
+            }
+            else if (!gamepad2.dpad_right && !buttonRight2){
+                buttonRight2 = true;
+            }
+            else if (!gamepad2.dpad_left && !buttonLeft2){
+                buttonLeft2 = true;
+            }
+
+
+            //pixScraper
             if (gamepad2.right_trigger > .3){
-                pixScraper.setPosition(.63);
+                pixScraper.setPosition(pixScraper.getPosition()-.001);
             }
             else if (gamepad2.left_trigger > .3){
                 pixScraper.setPosition(.9);
@@ -324,6 +342,7 @@ public class igneaThirdTeleop extends LinearOpMode{
 
 
             //shoulder fine adjust
+            /*
             if (gamepad2.dpad_right && buttonRight2){
                 robot.duelServoController(shoulderR.getPosition()+.01,shoulderL,shoulderR);
                 buttonRight2 = false;
@@ -338,6 +357,8 @@ public class igneaThirdTeleop extends LinearOpMode{
             else if (!gamepad2.dpad_left && !buttonLeft2){
                 buttonLeft2 = true;
             }
+
+             */
 
 
 
