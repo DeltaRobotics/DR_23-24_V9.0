@@ -58,6 +58,7 @@ public class redWingSide extends LinearOpMode{
     public DcMotor slidesR = null;
     public Servo wrist = null;
     public CRServo finger = null;
+    public Servo pixScraper = null;
 
     RevBlinkinLedDriver blinkinLedDriver;
 
@@ -83,6 +84,7 @@ public class redWingSide extends LinearOpMode{
         slidesL = hardwareMap.dcMotor.get("slidesL");
         finger = hardwareMap.crservo.get("finger");
         wrist = hardwareMap.servo.get("wrist");
+        pixScraper = hardwareMap.servo.get("pixScraper");
 
         slidesR.setDirection(DcMotorSimple.Direction.REVERSE);
         slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -141,6 +143,7 @@ public class redWingSide extends LinearOpMode{
             robot.duelServoController(.04,shoulderL,shoulderR);
             wrist.setPosition(.34);
             shooterAngle.setPosition(0);
+            pixScraper.setPosition(.85);
             telemetry.update();
         }
 
@@ -167,6 +170,7 @@ public class redWingSide extends LinearOpMode{
             robot.wait(10000,robot.odometers);
 
             shooterAngle.setPosition(0.33);
+            pixScraper.setPosition(.7);
 
             robot.changeSpeed(.6,.6);
 
@@ -176,8 +180,12 @@ public class redWingSide extends LinearOpMode{
 
             robot.wait(500,robot.odometers);
 
+            robot.changeAccuracy(.25, Math.toRadians(1));
+
             //placing on board
             robot.goToPos(31,-80,Math.toRadians(90),Math.toRadians(-90));
+
+            robot.changeAccuracy(1, Math.toRadians(1));
 
             wrist.setPosition(.8);
 
@@ -258,6 +266,7 @@ public class redWingSide extends LinearOpMode{
             robot.goToPos(50,-10,Math.toRadians(90),0);
 
             shooterAngle.setPosition(0.33);
+            pixScraper.setPosition(.7);
 
             robot.wait(10000,robot.odometers);
 
@@ -267,7 +276,11 @@ public class redWingSide extends LinearOpMode{
 
             robot.duelServoController(.57,shoulderL,shoulderR);
 
+            robot.changeAccuracy(.25, Math.toRadians(1));
+
             robot.goToPos(25,-80,Math.toRadians(90),Math.toRadians(-90));
+
+            robot.changeAccuracy(1, Math.toRadians(1));
 
             robot.wait(500,robot.odometers);
 
@@ -358,6 +371,7 @@ public class redWingSide extends LinearOpMode{
             robot.wait(5000,robot.odometers);
 
             shooterAngle.setPosition(0.33);
+            pixScraper.setPosition(.7);
 
             robot.changeSpeed(.6,.6);
 

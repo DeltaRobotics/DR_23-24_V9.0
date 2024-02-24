@@ -145,7 +145,7 @@ public class igneaThirdTeleop extends LinearOpMode{
             //intakeServo.setPosition(0.78);
 
             pixScraper.setPosition(.95);
-            pixMover.setPosition(.5);//about .7 or so for moving
+            pixMover.setPosition(.4);
 
             blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE);
         }
@@ -206,11 +206,11 @@ public class igneaThirdTeleop extends LinearOpMode{
 
             //slides fine adjust
             if (gamepad1.x && buttonX){
-                slideEncoder -= 400;
+                slideEncoder -= 200;
                 buttonX = false;
             }
             else if (gamepad1.y && buttonY){
-                slideEncoder += 400;
+                slideEncoder += 200;
                 buttonY = false;
             }
 
@@ -312,16 +312,17 @@ public class igneaThirdTeleop extends LinearOpMode{
                 buttonY2  = true;
             }
 
+            robot.servoFineAdjust(pixScraper, gamepad2.dpad_up, gamepad2.dpad_down, .01);
 
             //pixMover
             if (gamepad2.dpad_right && buttonRight2){
                 //in robot
-                pixMover.setPosition(.5);
+                pixMover.setPosition(.4);
                 buttonRight2 = false;
             }
             else if (gamepad2.dpad_left && buttonLeft2){
                 //moving pix
-                pixMover.setPosition(.7);
+                pixMover.setPosition(.57);
                 buttonLeft2 = false;
             }
             else if (!gamepad2.dpad_right && !buttonRight2){
@@ -361,6 +362,12 @@ public class igneaThirdTeleop extends LinearOpMode{
              */
 
 
+            if (outputPos){
+                speed = .4;
+            }
+            else{
+                speed = 1;
+            }
 
             //setting slide power
             if(slidesR.getCurrentPosition() < 20 && slideEncoder < 20){

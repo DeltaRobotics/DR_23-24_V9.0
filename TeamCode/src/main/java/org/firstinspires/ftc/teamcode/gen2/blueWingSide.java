@@ -58,6 +58,7 @@ public class blueWingSide extends LinearOpMode{
     public Servo shoulderR = null;
     public Servo shooterAngle = null;
     public Servo wrist = null;
+    public Servo pixScraper = null;
 
     RevBlinkinLedDriver blinkinLedDriver;
 
@@ -84,6 +85,7 @@ public class blueWingSide extends LinearOpMode{
         shooterAngle = hardwareMap.servo.get("shooterAngle");
         finger = hardwareMap.crservo.get("finger");
         wrist = hardwareMap.servo.get("wrist");
+        pixScraper = hardwareMap.servo.get("pixScraper");
 
         slidesR.setDirection(DcMotorSimple.Direction.REVERSE);
         slidesL.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -146,6 +148,7 @@ public class blueWingSide extends LinearOpMode{
             //telemetry.addData("x", myPipeline.getRectMidpointX());
             //telemetry.addData("y", myPipeline.getRectMidpointY());
             shooterAngle.setPosition(0);
+            pixScraper.setPosition(.85);
 
             robot.duelServoController(.1,shoulderL,shoulderR);
             wrist.setPosition(.34);
@@ -185,6 +188,7 @@ public class blueWingSide extends LinearOpMode{
             robot.wait(500,robot.odometers);
 
             shooterAngle.setPosition(0.33);
+            pixScraper.setPosition(.7);
 
             robot.wait(5000,robot.odometers);
 
@@ -197,7 +201,11 @@ public class blueWingSide extends LinearOpMode{
 
             robot.duelServoController(.57,shoulderL,shoulderR);
 
-            robot.goToPos(21,80,Math.toRadians(-90),Math.toRadians(90));
+            robot.changeAccuracy(.25, Math.toRadians(1));
+
+            robot.goToPos(21.5,80,Math.toRadians(-90),Math.toRadians(90));
+
+            robot.changeAccuracy(1, Math.toRadians(1));
 
             robot.changeSpeed(.4,.4);
 
@@ -283,6 +291,7 @@ public class blueWingSide extends LinearOpMode{
             robot.wait(500,robot.odometers);
 
             shooterAngle.setPosition(0.33);
+            pixScraper.setPosition(.75);
 
             robot.wait(10000,robot.odometers);
 
@@ -294,8 +303,12 @@ public class blueWingSide extends LinearOpMode{
 
             robot.duelServoController(.57,shoulderL,shoulderR);
 
+            robot.changeAccuracy(.25, Math.toRadians(1));
+
             //ready to place
-            robot.goToPos(27,80,Math.toRadians(-90),Math.toRadians(90));
+            robot.goToPos(27.5,80,Math.toRadians(-90),Math.toRadians(90));
+
+            robot.changeAccuracy(1, Math.toRadians(1));
 
             robot.changeSpeed(.4,.4);
 
@@ -382,6 +395,7 @@ public class blueWingSide extends LinearOpMode{
             robot.wait(10000,robot.odometers);
 
             shooterAngle.setPosition(0.33);
+            pixScraper.setPosition(.75);
 
             robot.wait(500,robot.odometers);
 
@@ -392,8 +406,12 @@ public class blueWingSide extends LinearOpMode{
 
             robot.duelServoController(.57,shoulderL,shoulderR);
 
+            robot.changeAccuracy(.25, Math.toRadians(1));
+
             //move to bord
             robot.goToPos(34,80,Math.toRadians(-90),Math.toRadians(90));
+
+            robot.changeAccuracy(1, Math.toRadians(1));
 
             robot.changeSpeed(.4,.4);
 

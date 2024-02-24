@@ -152,6 +152,7 @@ public class igneaRedBoardSideV2 extends LinearOpMode{
             //starting left
             //first drive forward
             robot.changeSpeed(1,1);
+            robot.changeAccuracy(.25,Math.toRadians(1));
 
             while(slidesR.getCurrentPosition() < 180) {
                 raiseSlides(200);
@@ -162,6 +163,8 @@ public class igneaRedBoardSideV2 extends LinearOpMode{
             wrist.setPosition(.86);
 
             robot.goToPos(34, -30, Math.toRadians(90), 0);
+
+            robot.changeAccuracy(1,Math.toRadians(1));
 
             ElapsedTime driveF = new ElapsedTime();
             //drive to the backdrop
@@ -181,20 +184,21 @@ public class igneaRedBoardSideV2 extends LinearOpMode{
 
             finger.setPower(0);
 
-            wrist.setPosition(.4);
-            robot.duelServoController(.04,shoulderL,shoulderR);
+            robot.changeSpeed(.4,.4);
 
-            robot.changeSpeed(1,1);
-
-            robot.duelServoController(.1,shoulderL,shoulderR);
+            robot.duelServoController(.2,shoulderL,shoulderR);
             wrist.setPosition(.34);
 
             robot.goToPos(34, -30, Math.toRadians(90), Math.toRadians(180));
 
-            //purple pixel
-            robot.goToPos(28,0, Math.toRadians(90),0);
+            robot.changeSpeed(1,1);
+
+            robot.goToPos(5,-5, Math.toRadians(180),0);
 
             robot.changeSpeed(.4,.4);
+
+            //purple pixel
+            robot.goToPos(28,0, Math.toRadians(90),Math.toRadians(180));
 
             robot.goToPos(28,6, Math.toRadians(90),0);
 
@@ -212,6 +216,9 @@ public class igneaRedBoardSideV2 extends LinearOpMode{
 
             //move to park
             robot.goToPos(5,-4, Math.toRadians(90),Math.toRadians(90));
+
+            robot.wait(5000,robot.odometers);
+
             robot.goToPos(5,-30, Math.toRadians(90),0);
 
 
@@ -247,16 +254,19 @@ public class igneaRedBoardSideV2 extends LinearOpMode{
             //starting middle
             //first drive forward
             robot.changeSpeed(1,1);
+            robot.changeAccuracy(.25,Math.toRadians(1));
 
-            while(slidesR.getCurrentPosition() < 180) {
-                raiseSlides(200);
-            }
+            //while(slidesR.getCurrentPosition() < 180) {
+            //    raiseSlides(200);
+            //}
 
             robot.duelServoController(.57,shoulderL,shoulderR);
 
             wrist.setPosition(.86);
 
             robot.goToPos(26, -34, Math.toRadians(90), 0);
+
+            robot.changeAccuracy(1,Math.toRadians(1));
 
             ElapsedTime driveF = new ElapsedTime();
             //drive to the backdrop
@@ -276,21 +286,18 @@ public class igneaRedBoardSideV2 extends LinearOpMode{
 
             finger.setPower(0);
 
-            wrist.setPosition(.4);
-            robot.duelServoController(.04,shoulderL,shoulderR);
 
-            robot.changeSpeed(1,1);
-
-            robot.duelServoController(.1,shoulderL,shoulderR);
+            robot.duelServoController(.2,shoulderL,shoulderR);
             wrist.setPosition(.34);
 
             robot.goToPos(26,-34, Math.toRadians(90),Math.toRadians(180));
 
+            robot.changeSpeed(1,1);
 
             //purple pixel
             robot.goToPos(5,-5, Math.toRadians(180),0);
             robot.changeSpeed(.4,.4);
-            robot.goToPos(20,-5, Math.toRadians(180),Math.toRadians(180));
+            robot.goToPos(28,-2, Math.toRadians(180),Math.toRadians(180));
 
             robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
@@ -304,6 +311,9 @@ public class igneaRedBoardSideV2 extends LinearOpMode{
 
             //move to park
             robot.goToPos(5,-5, Math.toRadians(90),0);
+
+            robot.wait(10000, robot.odometers);
+
             robot.goToPos(5,-30, Math.toRadians(90),0);
 
 
@@ -340,12 +350,15 @@ public class igneaRedBoardSideV2 extends LinearOpMode{
             //place purple pixel
 
             robot.changeSpeed(1,1);
+            robot.changeAccuracy(.25,Math.toRadians(1));
 
-            while(slidesR.getCurrentPosition() < 180) {
-                raiseSlides(200);
-            }
+            //while(slidesR.getCurrentPosition() < 180) {
+            //    raiseSlides(200);
+            //}
 
             robot.duelServoController(.57,shoulderL,shoulderR);
+
+            robot.changeAccuracy(1,Math.toRadians(1));
 
             wrist.setPosition(.86);
 
@@ -369,21 +382,17 @@ public class igneaRedBoardSideV2 extends LinearOpMode{
 
             finger.setPower(0);
 
-            wrist.setPosition(.4);
-            robot.duelServoController(.04,shoulderL,shoulderR);
-
-            robot.changeSpeed(1,1);
-
-            robot.duelServoController(.1,shoulderL,shoulderR);
+            robot.duelServoController(.2,shoulderL,shoulderR);
             wrist.setPosition(.34);
 
             robot.goToPos(20,-34, Math.toRadians(90),Math.toRadians(180));
 
+            robot.changeSpeed(1,1);
 
             //purple pixel
             robot.goToPos(5,-5, Math.toRadians(180),0);
             robot.changeSpeed(.4,.4);
-            robot.goToPos(12,-12, Math.toRadians(180),Math.toRadians(180));
+            robot.goToPos(19,-8, Math.toRadians(180),Math.toRadians(180));
 
             robot.wait(100,robot.odometers);
             intake.setPower(-0.1);
@@ -393,7 +402,9 @@ public class igneaRedBoardSideV2 extends LinearOpMode{
             intakeServo.setPosition(.56);
             robot.wait(500,robot.odometers);
 
-            robot.goToPos(5,-12, Math.toRadians(180),0);
+            robot.goToPos(5,-8, Math.toRadians(90),0);
+
+            robot.wait(10000,robot.odometers);
 
             //move to park
             robot.goToPos(5,-30, Math.toRadians(90),0);
