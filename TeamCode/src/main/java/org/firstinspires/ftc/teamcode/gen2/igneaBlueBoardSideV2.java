@@ -169,7 +169,7 @@ public class igneaBlueBoardSideV2 extends LinearOpMode{
             robot.changeAccuracy(.25,Math.toRadians(1));
 
             //move to place
-            robot.goToPos(19, 34, Math.toRadians(-90), 0);
+            robot.goToPos(18, 34, Math.toRadians(-90), 0);
 
             robot.changeAccuracy(1,Math.toRadians(1));
 

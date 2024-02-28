@@ -178,6 +178,7 @@ public class igneaThirdTeleop extends LinearOpMode{
                 wrist.setPosition(.86);
                 buttonB = false;
                 slideEncoder = 400;
+                speed = .4;
 
             }
 
@@ -312,30 +313,30 @@ public class igneaThirdTeleop extends LinearOpMode{
                 buttonY2  = true;
             }
 
-            robot.servoFineAdjust(pixScraper, gamepad2.dpad_up, gamepad2.dpad_down, .01);
+            //robot.servoFineAdjust(pixScraper, gamepad2.dpad_up, gamepad2.dpad_down, .01);
 
             //pixMover
-            if (gamepad2.dpad_right && buttonRight2){
+            if (gamepad2.dpad_up && buttonRight2){
                 //in robot
                 pixMover.setPosition(.4);
                 buttonRight2 = false;
             }
-            else if (gamepad2.dpad_left && buttonLeft2){
+            else if (gamepad2.dpad_down && buttonLeft2){
                 //moving pix
                 pixMover.setPosition(.57);
                 buttonLeft2 = false;
             }
-            else if (!gamepad2.dpad_right && !buttonRight2){
+            else if (!gamepad2.dpad_up && !buttonRight2){
                 buttonRight2 = true;
             }
-            else if (!gamepad2.dpad_left && !buttonLeft2){
+            else if (!gamepad2.dpad_down && !buttonLeft2){
                 buttonLeft2 = true;
             }
 
 
             //pixScraper
             if (gamepad2.right_trigger > .3){
-                pixScraper.setPosition(pixScraper.getPosition()-.001);
+                pixScraper.setPosition(pixScraper.getPosition()-.005);
             }
             else if (gamepad2.left_trigger > .3){
                 pixScraper.setPosition(.9);
