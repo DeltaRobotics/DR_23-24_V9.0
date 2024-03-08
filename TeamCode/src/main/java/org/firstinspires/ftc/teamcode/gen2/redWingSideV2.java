@@ -30,7 +30,7 @@ public class redWingSideV2 extends LinearOpMode{
     private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
     // Yellow Range                                      Y      Cr     Cb
-    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 230.0, 50.0);
+    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 210.0, 0.0);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 180.0);
 
     double poleOffset = 0;

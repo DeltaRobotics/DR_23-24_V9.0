@@ -132,7 +132,7 @@ public class blueWingSide extends LinearOpMode{
             if(myPipeline.getRectMidpointX() >= 240 && myPipeline.getRectMidpointX() <= 370){
                 telemetry.addData("location", 2);
                 startingPos = 2;
-            } else if(myPipeline.getRectMidpointX() >= 430 && myPipeline.getRectMidpointX() <= 550){
+            } else if(myPipeline.getRectMidpointX() >= 430 && myPipeline.getRectMidpointX() <= 600){
                 telemetry.addData("location", 1);
                 startingPos = 1;
             } else if(myPipeline.getRectMidpointX() >= 0 && myPipeline.getRectMidpointX() <= 160){
@@ -203,7 +203,7 @@ public class blueWingSide extends LinearOpMode{
 
             robot.changeAccuracy(.25, Math.toRadians(1));
 
-            robot.goToPos(21.5,80,Math.toRadians(-90),Math.toRadians(90));
+            robot.goToPos(23,80,Math.toRadians(-90),Math.toRadians(90));
 
             robot.changeAccuracy(1, Math.toRadians(1));
 
@@ -306,7 +306,7 @@ public class blueWingSide extends LinearOpMode{
             robot.changeAccuracy(.25, Math.toRadians(1));
 
             //ready to place
-            robot.goToPos(27.5,80,Math.toRadians(-90),Math.toRadians(90));
+            robot.goToPos(27,80,Math.toRadians(-90),Math.toRadians(90));
 
             robot.changeAccuracy(1, Math.toRadians(1));
 
@@ -319,11 +319,11 @@ public class blueWingSide extends LinearOpMode{
             //drive to the backdrop
             while(driveF.milliseconds() < 3000) {
 
-                slidesL.setTargetPosition(600);
+                slidesL.setTargetPosition(300);
                 slidesL.setPower(1);
                 slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                slidesR.setTargetPosition(600);
+                slidesR.setTargetPosition(300);
                 slidesR.setPower(1);
                 slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 

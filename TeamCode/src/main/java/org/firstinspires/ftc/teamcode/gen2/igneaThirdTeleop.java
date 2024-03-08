@@ -133,7 +133,7 @@ public class igneaThirdTeleop extends LinearOpMode{
 
             //blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
 
-            shooterAngle.setPosition(0.30);
+            shooterAngle.setPosition(0.32);
             shooter.setPosition(.57);
 
             robot.duelServoController(.05,shoulderL,shoulderR);
@@ -168,7 +168,7 @@ public class igneaThirdTeleop extends LinearOpMode{
 
                 buttonA = false;
                 slideEncoder = 0;
-
+                speed = 1;
             }
             else if (gamepad1.right_bumper && buttonB){
                 //placement
@@ -179,9 +179,7 @@ public class igneaThirdTeleop extends LinearOpMode{
                 buttonB = false;
                 slideEncoder = 400;
                 speed = .4;
-
             }
-
             if (!gamepad1.left_bumper && !buttonA){
                 buttonA = true;
             }
@@ -191,17 +189,11 @@ public class igneaThirdTeleop extends LinearOpMode{
 
 
             //speed
-            if (gamepad1.back && backButton){
-                if (speed == 0.6){
-                    speed = 1;
-                }
-                else{
-                    speed = 0.6;
-                }
-                backButton = false;
+            if (slideEncoder > 100 && slideEncoder < 3000){
+                speed = .7;
             }
-            else if (!gamepad1.back && !backButton){
-                backButton  = true;
+            else if (slideEncoder < 100){
+                speed = 1;
             }
 
 
@@ -214,7 +206,6 @@ public class igneaThirdTeleop extends LinearOpMode{
                 slideEncoder += 200;
                 buttonY = false;
             }
-
             else if (!gamepad1.x && !buttonX){
                 buttonX  = true;
             }
@@ -225,13 +216,13 @@ public class igneaThirdTeleop extends LinearOpMode{
 
 
             //intake
-            if(gamepad1.right_trigger > 0.5){
+            if(gamepad1.right_trigger > 0.5 && intakePos){
                 intake.setPower(0.85);
                 finger.setPower(1);
             }
             else if(gamepad1.left_trigger > 0.5){
                 if(intakePos){
-                    intake.setPower(-0.5);
+                    intake.setPower(-0.8);
                     finger.setPower(-1);
                 } else if(outputPos && !leftTrigger) {
                     finger.setPower(-1);
@@ -243,7 +234,7 @@ public class igneaThirdTeleop extends LinearOpMode{
                 intake.setPower(0);
                 //finger.setPower(0);
             }
-            if(outputPos && leftTrigger && (oldOutTime + 250 < outputTime.milliseconds())){
+            if(outputPos && leftTrigger && (oldOutTime + 400 < outputTime.milliseconds())){
                 finger.setPower(0);
                 leftTrigger = false;
             }
@@ -280,7 +271,7 @@ public class igneaThirdTeleop extends LinearOpMode{
 
             //shooter
             if(gamepad2.right_bumper){
-                shooterAngle.setPosition(0.2);
+                shooterAngle.setPosition(0.22);
             }
             if(gamepad2.right_bumper && gamepad2.left_bumper){
                 shooter.setPosition(0.5);
@@ -340,6 +331,16 @@ public class igneaThirdTeleop extends LinearOpMode{
             }
             else if (gamepad2.left_trigger > .3){
                 pixScraper.setPosition(.9);
+            }
+
+            if (gamepad2.dpad_right){
+                pixScraper.setPosition(.67);
+            }
+            else if (gamepad2.dpad_left){
+                pixScraper.setPosition(.61);
+            }
+            else if (gamepad2.b){
+                pixScraper.setPosition(.60);
             }
 
 

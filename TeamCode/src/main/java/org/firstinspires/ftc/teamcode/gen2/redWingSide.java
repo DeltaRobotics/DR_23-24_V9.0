@@ -30,7 +30,7 @@ public class redWingSide extends LinearOpMode{
     private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
     // Yellow Range                                      Y      Cr     Cb
-    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 230.0, 50.0);
+    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 210.0, 0.0);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 180.0);
 
     double poleOffset = 0;
@@ -183,9 +183,9 @@ public class redWingSide extends LinearOpMode{
             robot.changeAccuracy(.25, Math.toRadians(1));
 
             //placing on board
-            robot.goToPos(31,-80,Math.toRadians(90),Math.toRadians(-90));
+            robot.goToPos(34,-80,Math.toRadians(90),Math.toRadians(-90));
 
-            robot.changeAccuracy(1, Math.toRadians(1));
+            //robot.changeAccuracy(1, Math.toRadians(1));
 
             wrist.setPosition(.8);
 
@@ -194,11 +194,11 @@ public class redWingSide extends LinearOpMode{
             //drive to the backdrop
             while(driveF.milliseconds() < 3000) {
 
-                slidesL.setTargetPosition(500);
+                slidesL.setTargetPosition(400);
                 slidesL.setPower(1);
                 slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                slidesR.setTargetPosition(500);
+                slidesR.setTargetPosition(400);
                 slidesR.setPower(1);
                 slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -278,7 +278,7 @@ public class redWingSide extends LinearOpMode{
 
             robot.changeAccuracy(.25, Math.toRadians(1));
 
-            robot.goToPos(25,-80,Math.toRadians(90),Math.toRadians(-90));
+            robot.goToPos(27.5,-80,Math.toRadians(90),Math.toRadians(-90));
 
             robot.changeAccuracy(1, Math.toRadians(1));
 
@@ -293,11 +293,11 @@ public class redWingSide extends LinearOpMode{
             //drive to the backdrop
             while(driveF.milliseconds() < 3000) {
 
-                slidesL.setTargetPosition(500);
+                slidesL.setTargetPosition(400);
                 slidesL.setPower(1);
                 slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                slidesR.setTargetPosition(500);
+                slidesR.setTargetPosition(400);
                 slidesR.setPower(1);
                 slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -379,7 +379,9 @@ public class redWingSide extends LinearOpMode{
 
             robot.duelServoController(.57,shoulderL,shoulderR);
 
-            robot.goToPos(20,-80,Math.toRadians(90),Math.toRadians(-90));
+            robot.changeAccuracy(.25,Math.toRadians(1));
+
+            robot.goToPos(23,-80,Math.toRadians(90),Math.toRadians(-90));
 
             robot.wait(500,robot.odometers);
 
@@ -392,11 +394,11 @@ public class redWingSide extends LinearOpMode{
             //drive to the backdrop
             while(driveF.milliseconds() < 3000) {
 
-                slidesL.setTargetPosition(500);
+                slidesL.setTargetPosition(300);
                 slidesL.setPower(1);
                 slidesL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                slidesR.setTargetPosition(500);
+                slidesR.setTargetPosition(300);
                 slidesR.setPower(1);
                 slidesR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
