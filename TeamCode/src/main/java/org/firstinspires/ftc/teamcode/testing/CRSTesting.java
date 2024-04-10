@@ -18,8 +18,6 @@ public class CRSTesting extends LinearOpMode{
         waitForStart();
 
         while (opModeIsActive()) {
-
-
             if (gamepad1.right_bumper){
                 finger.setPower(1);
             }
