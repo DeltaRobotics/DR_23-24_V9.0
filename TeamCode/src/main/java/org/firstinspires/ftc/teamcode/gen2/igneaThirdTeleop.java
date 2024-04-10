@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.gen2;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -154,7 +153,7 @@ public class igneaThirdTeleop extends LinearOpMode{
 
             robot.refresh(robot.odometers);
 
-            robot.mecanumDrive(gamepad1.right_stick_y, -gamepad1.right_stick_x, gamepad1.left_stick_x, speed);
+            robot.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x,gamepad1.right_stick_x , speed);
 
             intakeServo.setPosition(intakePos2);
 
